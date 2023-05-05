@@ -43,9 +43,9 @@
        <td>21521509@gm.uit.edu.vn</td>  
       </tr>
       <tr>
-       <td></td>
-       <td>2152</td>
-       <td></td>
-       <td>2152@gm.uit.edu.vn</td>  
+       <td>Trần Lê Yến Linh</td>
+       <td>21520327</td>
+       <td>https://github.com/Tlyl1111</td>
+       <td>21520327@gm.uit.edu.vn</td>  
       </tr>
 </table>
