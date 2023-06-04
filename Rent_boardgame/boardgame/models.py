@@ -25,26 +25,39 @@ class Version(models.Model):
         return f"{self.name}"
     
 class BoardGame(models.Model):
-    AGE_RATINGS = (
+    AGE_RATINGS = [
         ('G', 'Phổ biến'),
         ('7+', 'Trên 7 tuổi'),
         ('12+', 'Trên 12 tuổi'),
         ('16+', 'Trên 16 tuổi'),
         ('18+', 'Trên 18 tuổi'),
-    )
+    ]
+    STATUS_CHOICES = [
+        ('rental', 'Rental'),
+        ('in_stock', 'In Stock'),
+    ]
 
+    name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
     version = models.ForeignKey(Version, related_name='boardgames', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    rule = models.TextField(blank=True, null=True)
+    
     age_rating = models.CharField(max_length=5, choices=AGE_RATINGS)
     people = models.CharField(max_length=100)
     play_time = models.CharField(max_length=50)
     price = models.FloatField()
     # rating = models.DecimalField(max_digits=3, decimal_places=1)
     image= models.ImageField(upload_to='item_images', blank=True, null=True)
-    quantity_available = models.IntegerField()
+    author = models.CharField(max_length=255, null=True, blank=True)
+    producer = models.CharField(max_length=255, null=True, blank=True)
+    publication_year = models.FloatField( null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='in_stock')
+    condition = models.TextField(blank=True, null=True)
+    quantity_in_stock = models.PositiveIntegerField(default=1)
+    quantity_rented = models.PositiveIntegerField(default=0)
     is_sold = models.BooleanField(default=False)
+    rented_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
 
