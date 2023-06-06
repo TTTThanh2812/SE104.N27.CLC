@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ boardgame.name }}{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-6 gap-6">
+        <div class="col-span-1">
+        </div>
+        <div class="col-span-3">
+            <img src="{{ boardgame.image.url }}" alt="" class="rounded-xl object-contain h-screen w-full object-center">
+        </div>
+
+        <div class="col-span-2 p-6 py-20 bg-white-100 rounded-xl ">
+            <h1 class="mb-6 text-4xl font-bold"> {{ boardgame.name }} </h1>
+                                                    
+            <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>4</p>
+            <p class="text-xl text-gray-500"><strong>Phiên bản: </strong>{{ boardgame.version}}</p>
+            <p class="text-xl text-gray-500"><strong>Giá thuê: </strong>{{ boardgame.rental_price}}.000 VNĐ / Ngày</p>
+            <p class="text-xl text-gray-500"><strong>Số lượng hiện có: </strong>{{ boardgame.quantity_in_stock }} Boardgame</p>
+            <p class="text-xl text-gray-500"><strong>Thời gian: </strong>{{ boardgame.play_time}} phút</p>
+            <p class="text-xl text-gray-500"><strong>Độ tuổi: </strong>{{ boardgame.age_rating}} </p>
+            <p class="text-xl text-gray-500"><strong>Số lượng người chơi: </strong>{{ boardgame.people }} người</p>
+            <p class="text-xl text-gray-500"><strong>Tác giả: </strong>{{ boardgame.author }} </p>
+            <p class="text-xl text-gray-500"><strong>Nhà xuất bản: </strong>{{ boardgame.producer}}</p>
+            <p class="text-xl text-gray-500"><strong>Năm sản xuất: </strong>{{ boardgame.publication_year}}</p>
+            <a  href="#" 
+                class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-[#c32f2f] text-white rounded-xl hover:bg-[#871313]">
+                Thuê
+            </a>
+        </div>
+        
+        <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl">
+            <p class="text-xl text-gray-500"><strong>Mô tả: </strong>{{ boardgame.description }}</p>
+            <p class="text-xl text-gray-500"><strong>Luật chơi: </strong>{{ boardgame.rule}}</p>
+            
+
+        </div>
+    </div>
+
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Related boardgames</h2>
+    
+        <div class="grid grid-cols-3 gap-3">
+            {% for boardgame in related_boardgame %}
+                <div>
+                    <a href="{% url 'boardgame:detail' boardgame.id %}">
+                        <div class="rounded-t-xl bg-white">
+                            <img src="{{ boardgame.image.url }}" class="rounded-t-xl object-contain max-h-48 w-full transition " sizes="100vw">
+                        </div>
+    
+                        <div class="p-6 bg-white rounded-b-xl">
+                            <h2 class="text-2xl">{{ boardgame.name }}</h2>
+                            <p class="text-lg text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                            <p class="text-lg text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+
+                        </div>
+
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock %}

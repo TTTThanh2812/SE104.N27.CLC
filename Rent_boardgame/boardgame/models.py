@@ -72,6 +72,10 @@ class BoardGame(models.Model):
         return int(self.people.split('-')[0])
     def get_max_value(self):
         return int(self.people.split('-')[1])
+    
+    # Giá thuê
+    def rental_price(self):
+        return int(self.price * 0.1)
 
 class Review(models.Model):
     boardgame = models.ForeignKey(BoardGame, on_delete=models.CASCADE, related_name='reviews')
