@@ -24,7 +24,7 @@
                         {% if boardgame.category.name == categori.name %}
                             <div class="shadow bg-[#ffffff] rounded-lg">
                                 <!-- href -> đi tới boardgame cụ thể -->
-                                <a href="#" >
+                                <a href="{% url 'boardgame:detail' boardgame.id %}" >
                                     <!-- Hình ảnh boardgame -->
                                     <div >
                                         <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
@@ -101,7 +101,8 @@
             {% for boardgame_rating in boardgame_ratings %}
                 {% if boardgame.name == boardgame_rating.boardgame.name%}
                     <div class="relative ">
-                        <a href="#">
+                        <!-- href -> đi tới boardgame cụ thể -->
+                        <a href="{% url 'boardgame:detail' boardgame.id %}">
                             <img class="rounded-t-lg object-contain h-80 w-3/4 object-center" src="{{ boardgame.image.url }}" alt="" />
                             
                             <div class=" absolute bottom-6 right-6 max-w-lg rounded-lg shadow bg-white-100 ">

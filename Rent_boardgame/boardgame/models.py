@@ -77,6 +77,12 @@ class BoardGame(models.Model):
     def rental_price(self):
         return int(self.price * 0.1)
 
+    # Cập nhập số lượng hiện có
+    def update_quantity_in_stock(self):
+        total_quantity = BoardGame.objects.filter(name=self.name, category=self.category, version=self.version).count()
+        self.quantity_in_stock = total_quantity
+        self.save()
+
 class Review(models.Model):
     boardgame = models.ForeignKey(BoardGame, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
