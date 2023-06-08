@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.db import models
 from django.db.models import Avg
 
-from .models import BoardGame, Review, Rating
+from .models import BoardGame, Review, Rating, Category
 # Create your views here.
 def detail(request, pk):
     boardgame = get_object_or_404(BoardGame, pk=pk)
