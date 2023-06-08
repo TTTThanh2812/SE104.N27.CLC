@@ -53,3 +53,26 @@ def home(request):
 def contact(request):
     return render(request, 'core/contact.html')
 
+def allCategories(request):
+    boardgames = BoardGame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
+    categories = Category.objects.all()
+    boardgame_ratings = []
+    for boardgame in boardgames:
+        total_comments = Review.objects.filter(boardgame=boardgame).exclude(comment='').count()
+        if Rating.objects.filter(boardgame=boardgame).exclude(stars=None).aggregate(models.Avg('stars'))['stars__avg'] != None:
+            average_stars = int(Rating.objects.filter(boardgame=boardgame).exclude(stars=None).aggregate(models.Avg('stars'))['stars__avg'])
+        else:
+            average_stars = 0
+        draw_average_stars = range(0,average_stars)
+        draw_non_stars = range(0,5 - average_stars)
+        boardgame_ratings.append({'boardgame': boardgame, 
+                                  'total_comments': total_comments,
+                                  'average_stars': average_stars,
+                                  'draw_average_stars':draw_average_stars,
+                                  'draw_non_stars': draw_non_stars,
+                                })
+    return render(request, 'core/allCategories.html',{
+        'categories': categories,
+        'boardgames': boardgames,
+        'boardgame_ratings':boardgame_ratings,
+    })
