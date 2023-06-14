@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ CategoryAll.name }}{% endblock %}
+
+{% block content %}
+<div>
+    <div>
+        <div class="grid grid-cols-3 gap-4 justify-items-center items-center">
+            <div class="text-black font-semibold text-3xl pt-6 justify-self-start">
+                Logo
+            </div>
+            <div class="flex pt-6 gap-x-6">
+                <a href="#" class=" text-[#0FB3AF] hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Trang chủ
+                </a>
+                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Thể loại
+                </a>
+                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Xếp hạng
+                </a>
+            </div>
+            <div class="pt-6 mx-6xl flex space-x-8 justify-self-end px-6">
+                <button type="button"
+                    class=" text-black-400 hover:text-gray-500 rounded-full focus:ring-offset-black-800">
+                    <i class="fa fa-bell fa-lg"></i>
+                </button>
+                <button type="button" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-8 text-white">
+                    Đăng nhập
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="flex ...">
+        <div class="flex-1 ...">01</div>
+        <div class="contents">
+            <div class="flex-1 ...">02</div>
+            <div class="flex-1 ...">03</div>
+        </div>
+        <div class="flex-1 ...">04</div>
+    </div>
+</div>
