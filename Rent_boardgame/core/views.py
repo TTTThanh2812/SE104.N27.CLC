@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from boardgame.models import Category, BoardGame, Rating, Review
 
+from .forms import SignUpForm
 # Create your views here.
 def home(request):
     boardgames = BoardGame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
@@ -75,4 +76,19 @@ def allCategories(request):
         'categories': categories,
         'boardgames': boardgames,
         'boardgame_ratings':boardgame_ratings,
+    })
+
+def signUp(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('/signIn/')
+    else:
+        form = SignUpForm()
+
+    return render(request, 'core/signUp.html', {
+        'form': form
     })

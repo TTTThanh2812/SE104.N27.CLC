@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+SIGNIN = '/signIn/'
+SIGNIN_REDIRECT_URL ='/'
+LOGOUT_REDIRECT_URL ='/'
 # Application definition
 
 INSTALLED_APPS = [
