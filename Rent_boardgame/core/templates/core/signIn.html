@@ -1,60 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'core/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=My+Soul&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./test.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./Tailwind/build/tailwind.css">
-</head>
+{% block title %}Log in{% endblock %}
 
-<body>
-    <div>
-        <div class="grid grid-cols-3 gap-4 justify-items-center items-center">
-            <div class="text-black font-semibold text-3xl pt-6 justify-self-start">
-                Logo
-            </div>
-            <div class="flex pt-6 gap-x-6">
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-bold"
-                    aria-current="page">
-                    Trang chủ
-                </a>
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Thể loại
-                </a>
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Xếp hạng
-                </a>
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Quy tắc
-                </a>
-            </div>
-            <div class="pt-6 mx-6xl flex space-x-8 justify-self-end px-6">
-                <a href=""><button type="button"
-                        class=" text-black-400 hover:text-gray-500 rounded-full focus:ring-offset-black-800">
-                        <i class="fa fa-bell fa-lg"></i>
-                    </button></a>
-                <a href="">
-                    <button type="button" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-8
-                    text-white">
-                        Đăng nhập
-                    </button>
-                </a>
-            </div>
-        </div>
-    </div>
+{% block content %}
     <div class="grid justify-items-center pt-32">
         <div class="text-6xl" style="font-family: My Soul;">Nice to See You Again</div>
         <div class="text-3xl pt-8" style="font-family: My Soul;">Welcome back </div>
@@ -65,133 +13,57 @@
                 <h1 class="mb-8 text-3xl text-center font-bold text-[#3C3C3B]" style="font-family: Maven Pro;">Log In
                     Please</h1>
 
-                <div class=" flex border border-l-4 border-l-[#3C3C3B] w-full h-12 p-3 rounded mb-4 shadow-md focus-within:ring-1 focus-within:ring-[#0FB3AF]">
-                    <i class="fa fa-envelope-o self-center pr-4 text-[#3C3C3B] fa-lg" aria-hidden="true"></i>
-                    <input type="text" name="email" class="focus:outline-none self-center w-full"
-                        placeholder="Enter your email address here" />
-                </div>
-
-                <div class=" flex border border-l-4 border-l-[#3C3C3B] w-full h-12 p-3 rounded mb-4 shadow-md focus-within:ring-1 focus-within:ring-[#0FB3AF]">
-                    <i class="fa fa-key self-center pr-4 text-[#3C3C3B]  fa-lg" aria-hidden="true"></i>
-                    <input type="text" name="password" class="focus:outline-none w-full " placeholder="Enter your password here" />
-                </div>
-
-                <div class="flex items-center justify-between py-4 text-[#3C3C3B]">
-                    <div class="flex items-start">
-                        <div class="flex items-center h-5">
-                            <input id="remember" aria-describedby="remember" type="checkbox"
-                                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-[#3C3C3B] checked">
-                        </div>
-                        <div class="ml-3 text-sm pr-48">
-                            <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
-                        </div>
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class=" flex border border-l-4 border-l-[#3C3C3B] w-full h-12 p-3 rounded mb-4 shadow-md focus-within:ring-1 focus-within:ring-[#0FB3AF]">
+                        <i class="fa fa-envelope-o self-center pr-4 text-[#3C3C3B] fa-lg" aria-hidden="true"></i>
+                        {{ form.email }} 
                     </div>
-                    <a href="#"
-                        class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
-                        password?</a>
-                </div>
+    
+                    <div class=" flex border border-l-4 border-l-[#3C3C3B] w-full h-12 p-3 rounded mb-4 shadow-md focus-within:ring-1 focus-within:ring-[#0FB3AF]">
+                        <i class="fa fa-key self-center pr-4 text-[#3C3C3B]  fa-lg" aria-hidden="true"></i>
+                        {{ form.password }} 
+                    </div>
 
-                <a class="pt-4" href="">
-                    <button type="button" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-10 w-28
+                    {% if form.errors or form.non_field_errors %}
+                        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                            {% for field in form %}
+                                {{ field.errors }}
+                            {% endfor %}
+
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}                
+
+                    <div class="flex items-center justify-between py-4 text-[#3C3C3B]">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="remember" aria-describedby="remember" type="checkbox"
+                                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-[#3C3C3B] checked">
+                            </div>
+                            <div class="ml-3 text-sm pr-48">
+                                <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
+                            </div>
+                        </div>
+                        <a href="#"
+                            class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
+                            password?</a>
+                    </div>
+
+                    <button class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-10 w-28
                         text-white font-semibold">
                         Log In
                     </button>
-                </a>
+                
+                </form>
             </div>
             <hr style="width: 100%; height: 1px; background-color: #C4C4C4;">
             <div class="text-[#A7A7A6] mt-8">
                 Don’t have an account?
-                <a class="no-underline border-b border-blue text-blue text-[#0FB3AF] font-medium" href="../signUp/">
+                <a class="no-underline border-b border-blue text-blue text-[#0FB3AF] font-medium" href="{% url 'core:signUp'%}">
                     SIGN UP
                 </a>
             </div>
         </div>
     </div>
-    <div class="grid grid-cols-3 gap-4 justify-items-center items-center bg-[#EAEAEA] mt-32 ">
-        <div class="self-center grid justify-items-center">
-            <div class="text-black font-semibold text-3xl pt-6 ">
-                Logo
-            </div>
-            <div class="text-black font-regular font-[Open Sans] text-md pt-6">
-                We're shutting the door on <br />
-                second-rate student housing
-            </div>
-        </div>
-        <div class="self-start pt-8">
-            <div class="text-center text-2xl font-bold text-[#0FB3AF]">Thông Tin Liên Hệ</div>
-            <table class="justify-self-center text-center mt-4">
-                <tbody>
-                    <tr class="m-32">
-                        <td>
-                            <i class="fa fa-phone fa-lg text-[#3C3C3B] px-4 py-3" aria-hidden="true"></i>
-                        </td>
-                        <td>
-                            <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B] text-left">012
-                                9638595661
-                            </div>
-                        </td>
-                    <tr>
-                        <td>
-                            <i class="fa fa-envelope fa-lg text-[#3C3C3B] py-4" aria-hidden="true"></i>
-                        </td>
-                        <td>
-                            <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B] text-left">
-                                info@uniletadvisor.com</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="fa fa-map-marker fa-lg text-[#3C3C3B]" aria-hidden="true"></i>
-                        </td>
-                        <td>
-                            <div class="font-regular text-left font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">10
-                                Archibald St <br />
-                                Toowoomba QLD 4350</div>
-                        </td>
-                    </tr>
-
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-        <div class="self-start pt-8">
-            <div class="text-center text-2xl font-bold text-[#0FB3AF]"> Kết Nối</div>
-            <table class="justify-self-center mt-4">
-                <tbody>
-                    <tr pt>
-                        <td>
-                            <i class="fa fa-facebook fa-lg text-[#3C3C3B] px-4 py-3" aria-hidden="true"></i>
-                        </td>
-                        <td>
-                            <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">Facebook
-                            </div>
-                        </td>
-                    <tr>
-                        <td>
-                            <i class="fa fa-twitter fa-lg text-[#3C3C3B] px-4 py-3" aria-hidden="true"></i>
-                        </td>
-                        <td>
-                            <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">
-                                Twitter</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="fa fa-instagram fa-lg text-[#3C3C3B] px-4" aria-hidden="true"></i>
-                        </td>
-                        <td>
-                            <div class="font-regular text-left font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">
-                                Instagram</div>
-                        </td>
-                    </tr>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-</body>
-
-</html>
+{% endblock %}
