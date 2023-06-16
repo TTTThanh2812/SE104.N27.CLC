@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
     path('allCategories/', views.allCategories, name='allCategories'),
+    path('category/<int:category_mstl>/', views.category_view, name='category'),
     path('signUp/', views.signUp, name='signUp'),
     path('signIn/', auth_views.LoginView.as_view(template_name = 'core/signIn.html', authentication_form = SignInForm), name='signIn'),
 ]
