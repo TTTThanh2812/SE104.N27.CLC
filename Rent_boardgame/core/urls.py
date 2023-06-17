@@ -13,4 +13,5 @@ urlpatterns = [
     path('category/<int:category_mstl>/', views.category_view, name='category'),
     path('signUp/', views.signUp, name='signUp'),
     path('signIn/', auth_views.LoginView.as_view(template_name = 'core/signIn.html', authentication_form = SignInForm), name='signIn'),
+    path('logout/', views.user_logout, name='logout'),
 ]

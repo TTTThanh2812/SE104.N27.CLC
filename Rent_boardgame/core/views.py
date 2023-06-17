@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect
 from django.db import models
+from django.contrib.auth import logout
 
 from django.contrib.auth.models import User
 from boardgame.models import Category, BoardGame, Rating, Review
 
-from .forms import SignUpForm
+from .forms import SignUpForm, SignInForm
+from .models import UserProfile
+
 # Create your views here.
 def home(request):
     boardgames = BoardGame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
     categories = Category.objects.all()[0:2]
     boardgame_ratings = []
     for boardgame in boardgames:
-        total_ratings = Rating.objects.filter(boardgame=boardgame).count()
         total_comments = Review.objects.filter(boardgame=boardgame).exclude(comment='').count()
         if Rating.objects.filter(boardgame=boardgame).exclude(stars=None).aggregate(models.Avg('stars'))['stars__avg'] != None:
             average_stars = int(Rating.objects.filter(boardgame=boardgame).exclude(stars=None).aggregate(models.Avg('stars'))['stars__avg'])
@@ -30,8 +32,10 @@ def home(request):
         # Lấy ngày và giờ bình luận
         comment_date = latest_comment.created_at.date()
         comment_time = latest_comment.created_at.time()
+
+        #MSBG
+        msbg = boardgame.get_msbg()
         boardgame_ratings.append({'boardgame': boardgame, 
-                                  'total_ratings': total_ratings, 
                                   'total_comments': total_comments,
                                   'average_stars': average_stars,
                                   'draw_average_stars':draw_average_stars,
@@ -97,12 +101,10 @@ def category_view(request, category_mstl):
                                   'draw_non_stars': draw_non_stars,
                                 })
 
-    #Search form
     search_query = request.GET.get('search')
     if search_query:
         boardgames = boardgames.filter(name__icontains=search_query)
 
-    # Sort options
     sort_option = request.GET.get('sort')
     if sort_option == 'category':
         boardgames = boardgames.order_by('category')
@@ -135,11 +137,32 @@ def signUp(request):
 
         if form.is_valid():
             form.save()
-
-            return redirect('/signIn/')
+            # username = form.cleaned_data['username']
+            # email = form.cleaned_data['email']
+            # profile = UserProfile.objects.create(
+            #     user=username,
+            #     email=email,
+            #     # Các trường khác
+            # )
+            return redirect('/')
     else:
         form = SignUpForm()
 
     return render(request, 'core/signUp.html', {
         'form': form
     })
+
+def signin(request):
+    if request.method == 'POST':
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+            return redirect('/')
+    else:
+        form = SignInForm()
+    return render(request, 'signin.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')
