@@ -50,11 +50,18 @@
     </div>
 
     <div class="grid grid-cols-2 justify-items-center px-56 pt-32">
-        <div class="pt-6 self-center">
-            <button type="button" class="w-full mb-6 h-56 sm:h-48 sm:w-56 sm:mb-0">
-                <img src="https://source.unsplash.com/100x100/?portrait?1" alt=""
+        <div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat pt-6 self-center" data-te-ripple-init
+            data-te-ripple-color="light">
+            <button type="button"
+                class="w-full mb-6 h-56 sm:h-48 sm:w-56 sm:mb-0 rounded-sm focus:outline-none focus:ring focus:ring-gray-300">
+                <img src="https://source.unsplash.com/100x100/?portrait?1" alt="Louvre"
                     class="object-cover object-center w-full h-full rounded">
             </button>
+            <a href="#!">
+                <div
+                    class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100">
+                </div>
+            </a>
         </div>
         <div class="justify-self-start">
             <div class="pb-8 text-3xl font-bold font-[Open Sans]">
