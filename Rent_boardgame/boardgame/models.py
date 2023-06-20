@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from userauths.models import User
 import random
 # Create your models here.
 class Category(models.Model):

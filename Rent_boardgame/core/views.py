@@ -131,38 +131,3 @@ def category_view(request, category_mstl):
         'boardgame_ratings':boardgame_ratings,
     })
 
-def signUp(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-            # username = form.cleaned_data['username']
-            # email = form.cleaned_data['email']
-            # profile = UserProfile.objects.create(
-            #     user=username,
-            #     email=email,
-            #     # Các trường khác
-            # )
-            return redirect('/')
-    else:
-        form = SignUpForm()
-
-    return render(request, 'core/signUp.html', {
-        'form': form
-    })
-
-def signin(request):
-    if request.method == 'POST':
-        form = SignInForm(request.POST)
-        if form.is_valid():
-            form.save()
-
-            return redirect('/')
-    else:
-        form = SignInForm()
-    return render(request, 'signin.html', {'form': form})
-
-def user_logout(request):
-    logout(request)
-    return redirect('/')
