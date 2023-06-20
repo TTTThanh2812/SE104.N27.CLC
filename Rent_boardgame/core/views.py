@@ -2,11 +2,8 @@ from django.shortcuts import render, redirect
 from django.db import models
 from django.contrib.auth import logout
 
-from django.contrib.auth.models import User
 from boardgame.models import Category, BoardGame, Rating, Review
 
-from .forms import SignUpForm, SignInForm
-from .models import UserProfile
 
 # Create your views here.
 def home(request):
@@ -24,14 +21,14 @@ def home(request):
         # Lấy bình luận gần nhất của boardgame
         if Review.objects.filter(boardgame=boardgame).exclude(comment=''):
             latest_comment = Review.objects.filter(boardgame=boardgame).latest('created_at')
-        # Lấy tên người bình luận
-        comment_author_name = latest_comment.user.username
-        # Lấy nội dung bình luận
-        comment_content = latest_comment.comment
-        # comment_created_at = latest_comment.created_at
-        # Lấy ngày và giờ bình luận
-        comment_date = latest_comment.created_at.date()
-        comment_time = latest_comment.created_at.time()
+            # Lấy tên người bình luận
+            comment_author_name = latest_comment.user.username
+            # Lấy nội dung bình luận
+            comment_content = latest_comment.comment
+            # comment_created_at = latest_comment.created_at
+            # Lấy ngày và giờ bình luận
+            comment_date = latest_comment.created_at.date()
+            comment_time = latest_comment.created_at.time()
 
         #MSBG
         # msbg = boardgame.get_msbg()
