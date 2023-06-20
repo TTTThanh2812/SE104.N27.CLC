@@ -34,7 +34,7 @@ def home(request):
         comment_time = latest_comment.created_at.time()
 
         #MSBG
-        msbg = boardgame.get_msbg()
+        # msbg = boardgame.get_msbg()
         boardgame_ratings.append({'boardgame': boardgame, 
                                   'total_comments': total_comments,
                                   'average_stars': average_stars,
