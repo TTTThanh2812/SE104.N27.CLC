@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from django.db import models
 from django.contrib.auth import logout
 
-from boardgame.models import Category, BoardGame, Rating, Review
+from boardgame.models import Category, Boardgame, Rating, Review
 
 
 # Create your views here.
 def home(request):
-    boardgames = BoardGame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
+    boardgames = Boardgame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
     categories = Category.objects.all()[0:2]
     boardgame_ratings = []
     for boardgame in boardgames:
@@ -42,7 +42,7 @@ def home(request):
                                   'comment_date':comment_date,
                                   'comment_time':comment_time,
                                   })
-    top_boardgames = BoardGame.objects.annotate(avg_rating=models.Avg('rating__stars')).order_by('-avg_rating')[:3]
+    top_boardgames = Boardgame.objects.annotate(avg_rating=models.Avg('rating__stars')).order_by('-avg_rating')[:3]
 
 
     return render(request, 'core/home.html', {
@@ -56,7 +56,7 @@ def contact(request):
     return render(request, 'core/contact.html')
 
 def allCategories(request):
-    boardgames = BoardGame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
+    boardgames = Boardgame.objects.filter(is_sold=False)[0:6] # Hiển thị ra tối đa bao nhiêu boardgame 
     categories = Category.objects.all()
     boardgame_ratings = []
     for boardgame in boardgames:
@@ -81,7 +81,7 @@ def allCategories(request):
 
 def category_view(request, category_mstl):
     category = Category.objects.get(mstl=category_mstl)
-    boardgames = BoardGame.objects.filter(category=category)
+    boardgames = Boardgame.objects.filter(category=category)
     boardgame_ratings = []
     for boardgame in boardgames:
         total_comments = Review.objects.filter(boardgame=boardgame).exclude(comment='').count()

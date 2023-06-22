@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.db import models
 from django.db.models import Avg
 
-from .models import BoardGame, Review, Rating, Category
+from .models import Boardgame, Review, Rating, Category
 # Create your views here.
 def detail(request, pk):
-    boardgame = get_object_or_404(BoardGame, pk=pk)
+    boardgame = get_object_or_404(Boardgame, pk=pk)
     rental_price = boardgame.rental_price
     quantity_in_stock = boardgame.update_quantity_in_stock()
     total_comments = Review.objects.exclude(boardgame=boardgame).count()
@@ -15,7 +15,7 @@ def detail(request, pk):
         average_stars = 0
     draw_average_stars = range(0,average_stars)
     draw_non_stars = range(0,5 - average_stars)
-    related_boardgame = BoardGame.objects.filter(category=boardgame.category, is_sold=False).exclude(pk=pk)[0:3]
+    related_boardgame = Boardgame.objects.filter(category=boardgame.category, is_sold=False).exclude(pk=pk)[0:3]
     related_boardgame_rating = []
     for relate_bg_rating in related_boardgame:
         total_comments = Review.objects.filter(boardgame=relate_bg_rating).exclude(comment='').count()
