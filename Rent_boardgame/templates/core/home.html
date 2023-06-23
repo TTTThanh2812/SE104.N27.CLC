@@ -15,16 +15,16 @@
                 <!-- href -> đi tới thể loại cụ thể -->
                 <a href="#">
                     <!-- Tên thể loại -->
-                    <p class="text-left text-2xl font-bold text-[#0FB3AF]">{{ categori.name }}</p>
+                    <p class="text-left text-2xl font-bold text-[#0FB3AF]">{{ categori.title }}</p>
                 </a>
 
                 <!-- Hiển thị boardgame -->
                 <div class="grid grid-cols-3 gap-3 ">
                     {% for boardgame in boardgames %}
-                        {% if boardgame.category.name == categori.name %}
+                        {% if boardgame.category.title == categori.title %}
                             <div class="shadow bg-[#ffffff] rounded-lg">
                                 <!-- href -> đi tới boardgame cụ thể -->
-                                <a href="{% url 'boardgame:detail' boardgame.id %}" >
+                                <a href="{% url "boardgame:detail" boardgame.bgid %}" >
                                     <!-- Hình ảnh boardgame -->
                                     <div >
                                         <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
@@ -33,11 +33,13 @@
                                     <div class="p-6 rounded-b-xl bg-white-100">
                                         <!-- Thông tin boardgame -->
                                         <h2 class="text-xl font-bold">{{ boardgame.name }}</h2>
+                                        {% comment %} <p class="text-gray-500">MSBG: {{ boardgame.get_msbg()}} phút</p> {% endcomment %}
+                                        
                                         <!-- <p class="text-gray-500">Tuổi: {{ boardgame.age_rating }}</p> -->
                                         <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
                                         <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
                                         <!--Số sao-->
-                                        {% for boardgame_rating in boardgame_ratings %}
+                                        <!-- {% for boardgame_rating in boardgame_ratings %}
                                             {% if boardgame.name == boardgame_rating.boardgame.name%} 
                                                 <div class="flex items-center pt-1">
                                                     <div class="text-[#0FB3AF] text-2xl font-medium pr-2 ">
@@ -62,16 +64,16 @@
                                                     {% endfor %} 
                                                 </div>
                                             {% endif %} 
-                                        {% endfor %}    
+                                        {% endfor %}     -->
                                             
                                         <!-- Số lượt đánh giá-->
-                                        {% for boardgame_rating in boardgame_ratings %}
+                                        <!-- {% for boardgame_rating in boardgame_ratings %}
                                             {% if boardgame.name == boardgame_rating.boardgame.name%} 
                                                 <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
                                                     {{ boardgame_rating.total_comments }} Đánh giá
                                                 </div>
                                             {% endif %} 
-                                        {% endfor %}  
+                                        {% endfor %}   -->
 
                                     </div>
                                 </a>
@@ -86,7 +88,7 @@
         
         <div class=" grid  justify-items-center items-center pt-12 ">
             <!-- href -> đi tới trang tất cả thể loại -->
-            <a  href="{% url 'core:allCategories' %}"
+            <a  href="#"
                 class="rounded-md h-10 border-2 border-primary px-6 py-2 text-xs font-bold bg-[#3C3C3B] text-white text-center hover:bg-[#3C3C3BCC] ">
                 Xem tất cả
             </a>
@@ -95,14 +97,13 @@
     </div> 
     
     <!-- Bảng xếp hạng -->
-    <div>
+    {% comment %} <div>
         <div class="text-center pt-30 text-3xl font-bold text-[#0FB3AF] py-3">Bảng xếp hạng</div>
         {% for boardgame in top_boardgames %}
             {% for boardgame_rating in boardgame_ratings %}
                 {% if boardgame.name == boardgame_rating.boardgame.name%}
                     <div class="relative ">
                         <!-- href -> đi tới boardgame cụ thể -->
-                        
                         <img class="rounded-t-lg object-contain h-80 w-3/4 object-center" src="{{ boardgame.image.url }}" alt="" />
                         
                         <div class=" absolute bottom-6 right-6 max-w-lg rounded-lg shadow bg-white-100 ">
@@ -161,7 +162,7 @@
             {% endfor %}
         {% endfor %}
 
-    </div>
+    </div> {% endcomment %}
     <!-- Quy tắc -->
     <div>
         <div class="text-center pt-30 text-3xl font-bold text-[#0FB3AF]">Quy tắc</div>

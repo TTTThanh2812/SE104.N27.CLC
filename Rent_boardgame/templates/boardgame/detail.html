@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 
-{% block title %}{{ boardgame.name }}{% endblock %}
+{% block title %}{{ boardgame.title }}{% endblock %}
 
 {% block content %}
     <div class="grid grid-cols-6 gap-6">
@@ -11,12 +11,13 @@
         </div>
 
         <div class="col-span-2 p-6 py-20 bg-white-100 rounded-xl ">
-            <h1 class="mb-6 text-4xl font-bold"> {{ boardgame.name }} </h1>
-                          
+            <h1 class="mb-6 text-4xl font-bold"> {{ boardgame.title }} </h1>
+                                                    
             <div class="flex items-center pt-1">
-                <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>4</p>
+                {% comment %} <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ average_stars }}</p> {% endcomment %}
+            
                 <!--Vẽ sao đánh giá-->
-                {% for star in draw_average_stars %}
+                {% comment %} {% for star in draw_average_stars %}
                     <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
                         <title> {{star}}</title>
                         <path
@@ -31,18 +32,18 @@
                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                         </path>
                     </svg> 
-                {% endfor %}
+                {% endfor %} {% endcomment %}
             </div>
+
             <p class="text-xl text-gray-500"><strong>Phiên bản: </strong>{{ boardgame.version}}</p>
-            <p class="text-xl text-gray-500"><strong>Giá thuê: </strong>{{ boardgame.rental_price}}.000 VNĐ / Ngày</p>
-            <p class="text-xl text-gray-500"><strong>Số lượng hiện có: </strong>{{ boardgame.quantity_in_stock }} Boardgame</p>
+            <p class="text-xl text-gray-500"><strong>Giá thuê: </strong>{{ boardgame.rental_price}}00 VNĐ / Ngày</p>
+            <p class="text-xl text-gray-500"><strong>Số lượng hiện có: </strong>{{ boardgame.in_stock }} Boardgame</p>
             <p class="text-xl text-gray-500"><strong>Thời gian: </strong>{{ boardgame.play_time}} phút</p>
             <p class="text-xl text-gray-500"><strong>Độ tuổi: </strong>{{ boardgame.age_rating}} </p>
             <p class="text-xl text-gray-500"><strong>Số lượng người chơi: </strong>{{ boardgame.people }} người</p>
             <p class="text-xl text-gray-500"><strong>Tác giả: </strong>{{ boardgame.author }} </p>
             <p class="text-xl text-gray-500"><strong>Nhà xuất bản: </strong>{{ boardgame.producer}}</p>
             <p class="text-xl text-gray-500"><strong>Năm sản xuất: </strong>{{ boardgame.publication_year}}</p>
-            <p class="text-xl text-gray-500"><strong>Số lượng có sẵn: </strong>{{ boardgame.quantity_in_stock}}</p>
             
             <a  href="#" 
                 class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-[#c32f2f] text-white rounded-xl hover:bg-[#871313]">
@@ -53,10 +54,14 @@
         <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl">
             <p class="text-xl text-gray-500"><strong>Mô tả: </strong>{{ boardgame.description }}</p>
             <p class="text-xl text-gray-500"><strong>Luật chơi: </strong>{{ boardgame.rule}}</p>
-            
-
         </div>
+
     </div>
+
+    
+    <!-- <p class="text-xl text-gray-500"><strong>Comment: </strong>{{ total_comments }}</p> -->
+    
+    
 
     <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
         <h2 class="mb-12 text-2xl text-center">Related boardgames</h2>
@@ -64,18 +69,17 @@
         <div class="grid grid-cols-3 gap-3">
             {% for boardgame in related_boardgame %}
                 <div>
-                    <a href="{% url 'boardgame:detail' boardgame.id %}">
+                    <a href="{% url 'boardgame:detail' boardgame.bgid %}">
                         <div class="rounded-t-xl bg-white">
                             <img src="{{ boardgame.image.url }}" class="rounded-t-xl object-contain max-h-48 w-full transition " sizes="100vw">
                         </div>
     
                         <div class="p-6 bg-white rounded-b-xl">
-                            <h2 class="text-2xl">{{ boardgame.name }}</h2>
+                            <h2 class="text-2xl">{{ boardgame.title }}</h2>
                             <p class="text-lg text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
                             <p class="text-lg text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
-
                             <!--Số sao-->
-                            {% for boardgame_rating in related_boardgame_rating %}
+                            <!-- {% for boardgame_rating in related_boardgame_rating %}
                                 {% if boardgame.name == boardgame_rating.boardgame.name%} 
                                     <div class="flex items-center pt-1">
                                         <div class="text-[#0FB3AF] text-2xl font-medium pr-2 ">
@@ -100,22 +104,22 @@
                                         {% endfor %} 
                                     </div>
                                 {% endif %} 
-                            {% endfor %}    
+                            {% endfor %}    -->
                             
                             <!-- Số lượt đánh giá-->
-                            {% for boardgame_rating in related_boardgame_rating %}
+                            <!-- {% for boardgame_rating in related_boardgame_rating %}
                                 {% if boardgame.name == boardgame_rating.boardgame.name%} 
                                     <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
                                         {{ boardgame_rating.total_comments }} Đánh giá
                                     </div>
                                 {% endif %} 
                             {% endfor %}
-                        </div>
-
+                        </div> -->
+                        
                     </a>
                 </div>
             {% endfor %}
         </div>
-    </div>
+    </div> 
     
 {% endblock %}
