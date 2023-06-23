@@ -116,7 +116,6 @@ class  Boardgame(models.Model):
     def get_average_rating(self):
         return self.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
     
-
     def __str__(self):
         return self.title
     

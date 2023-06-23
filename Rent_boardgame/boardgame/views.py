@@ -4,12 +4,13 @@ from django.db import models
 from django.db.models import Avg
 from boardgame.forms import BoardgameReviewForm
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from .models import Boardgame, BoardgameReviews#, Review, Rating, Category
 # Create your views here.
 def detail(request, bgid):
-    # boardgame = get_object_or_404(Boardgame, bgid=bgid)
-    boardgame = Boardgame.objects.get(bgid=bgid)
+    boardgame = get_object_or_404(Boardgame, bgid=bgid)
+    # boardgame = Boardgame.objects.get(bgid=bgid)
     # Giá thuê của boardgame 
     rental_price = boardgame.rental_price
 
@@ -70,3 +71,22 @@ def detail(request, bgid):
     }
 
     return render(request, 'boardgame/detail.html', context)
+
+def search_view(request):
+    query = request.GET.get('q')  # Get the search query from the request
+
+    boardgames = Boardgame.objects.filter(title__icontains=query).order_by("-date")
+    # if query:
+    #     # Perform the search query using Q objects to search across multiple fields
+    #     search_results = Boardgame.objects.filter(
+    #         Q(title__icontains=query) 
+    #     )
+    # else:
+    #     search_results = Boardgame.objects.none()  # Return an empty queryset if no query is provided
+
+    context = {
+        'boardgames': boardgames,
+        'query': query,
+    }
+
+    return render(request, 'boardgame/search.html', context)
