@@ -54,8 +54,65 @@
         <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl">
             <p class="text-xl text-gray-500"><strong>Mô tả: </strong>{{ boardgame.description }}</p>
             <p class="text-xl text-gray-500"><strong>Luật chơi: </strong>{{ boardgame.rule}}</p>
+            
         </div>
 
+        <!-- Hiển thị danh sách đánh giá -->
+        <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl comment-list">
+            <div>
+                <h4 class="text-xxl text-gray-500"> Customer reviews </h4>
+
+                <p class="text-xl text-gray-500"><strong>Tổng đánh giá: </strong>{{ reviews.count }}</p>
+                {% for r in page_obj %}
+                    <div class="review">
+                        <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user.username|title }}</p>
+                        <p class="text-xl text-gray-500"><strong>Thời gian đánh giá: </strong>{{ r.date| date:"d M, Y" }}</p>
+                        <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ r.review }}</p>
+                        <p class="text-xl text-gray-500"><strong>Số sao: </strong>{{ r.rating}}</p>
+                    </div>
+                {% empty %}
+                    <p>No reviews yet.</p>
+                {% endfor %}
+            </div>
+            <!-- Chuyển trang -->
+            <div class="text-center">
+                {% if page_obj.has_other_pages %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">First</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if num == page_obj.number %}
+                                <span class="current-page">{{ num }}</span>
+                            {% else %}
+                                <a href="?page={{ num }}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                        {% endif %}
+                    </div>
+                {% endif %} 
+            </div>
+        </div>
+
+    
+        <div class="col-span-2 p-6 bg-gray-100 rounded-xl comment-list">
+            <h4 class="text-xxl text-gray-500"> Star reviews </h4>
+            <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0 }}</p>
+
+        </div>
+
+        <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl form-group">
+            <h4 class="text-xxl text-gray-500"> Add a review </h4>
+            <form method="POST">
+                {% csrf_token %}
+                {{ review_form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 
     

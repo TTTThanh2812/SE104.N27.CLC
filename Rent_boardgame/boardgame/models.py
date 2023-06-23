@@ -3,6 +3,7 @@ from django.utils import timezone
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from userauths.models import User
+from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 import random
@@ -112,8 +113,13 @@ class  Boardgame(models.Model):
     def rental_price(self):
         return float(self.price) * 0.1
     
+    def get_average_rating(self):
+        return self.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
+    
+
     def __str__(self):
         return self.title
+    
 
 class BoardgameImages(models.Model):
     image = models.ImageField(upload_to="boardgame-images")
@@ -212,3 +218,6 @@ class BoardgameReviews(models.Model):
     
     def get_rating(self):
         return self.rating
+
+    def get_username(self):
+        return self.user.username

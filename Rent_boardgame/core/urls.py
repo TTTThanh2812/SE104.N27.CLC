@@ -6,8 +6,8 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('contact/', views.contact, name='contact'),
-    # path('allCategories/', views.allCategories, name='allCategories'),
-    # path('category/<int:category_mstl>/', views.category_view, name='category'),
+    # path('contact/', views.contact, name='contact'),
+    path('allCategories/', views.allCategories, name='allCategories'),
+    path('category/<cid>/', views.category_view, name='category'),
  
 ]

@@ -10,54 +10,37 @@
             happy with Us. Are You Next One?</div>
     </div>
 
-    <div class="grid grid-row-2 gap-2">
-        {% for categori in categories %} 
-            <div class="text-left pt-6 text-xl font-medium text-[#0FB3AF] px-48 pb-4">{{ categori.name }}</div>
-            
-            <!-- Hiển thị boardgame -->
-            <div class="grid grid-cols-3 gap-2 justify-items-center items-center pl-32 pr-32">
-                {% for boardgame in boardgames %}
-                    {% if boardgame.category.name == categori.name %}
-                        <div class="relative pb-4 max-w-sm w-full h-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-                            <!-- href -> đi tới boardgame cụ thể -->
-                            <a href="{% url 'boardgame:detail' boardgame.id %}" class=" w-full">
-                                <!-- Thông tin boardgame -->
-                                <div>
-                                    <img class="rounded-t-lg object-contain max-h-48 w-full transition " 
-                                         sizes="100vw" src="{{ boardgame.image.url }}">
-                                </div>
+    <div class="grid grid-row-2 gap-2 ">
 
-                                <div class="font-medium px-3">
-                                    {{ boardgame.name }}
-                                </div>
-                                <table class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs pt-1 mx-3">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                Số lượng người chơi:
-                                            </td>
-                                            <td class="px-3">
-                                                {{ boardgame.people }} (người)
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Thời gian:
-                                            </td>
-                                            <td class="px-3">
-                                                {{ boardgame.play_time }} phút
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+        {% for categori in categories %} 
+            <!-- href -> đi tới thể loại cụ thể -->
+            <a href="{% url "core:category" categori.cid %}">
+                <!-- Tên thể loại -->
+                <p class="text-left text-2xl font-bold text-[#0FB3AF]">{{ categori.title }}</p>
+            </a>
+            <!-- Hiển thị boardgame -->
+            <div class="grid grid-cols-3 gap-3 ">
+                {% for boardgame in categori.boardgame_set.all|slice:":3" %}
+                    <div class="shadow bg-[#ffffff] rounded-lg">
+                        <!-- href -> đi tới boardgame cụ thể -->
+                        <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                            <!-- Hình ảnh boardgame -->
+                            <div >
+                                <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
+                            </div>
+    
+                            <div class="p-6 rounded-b-xl bg-white-100">
+                                <!-- Thông tin boardgame -->
+                                <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
+                                <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
+                                <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                                <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
 
                                 <!--Số sao-->
-                                {% for boardgame_rating in boardgame_ratings %}
-                                    {% if boardgame.name == boardgame_rating.boardgame.name%}
-                                        <div class="flex items-center pt-1">
-                                            <div class="text-[#0FB3AF] text-2xl font-medium pr-2 px-3">
-                                                {{ boardgame_rating.average_stars }}
-                                            </div>
+                                {{boardgame.get_average_rating}}
+                                <!-- {% for boardgame_rating in boardgame_ratings %}
+                                    {% if boardgame.name == boardgame_rating.boardgame.name%}                        
+                                            
                                             {% for star in boardgame_rating.draw_average_stars %}
                                                 <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
                                                     <title> {{star}}</title>
@@ -73,32 +56,30 @@
                                                         d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                                                     </path>
                                                 </svg> 
-                                            {% endfor %}
+                                            {% endfor %} 
                                         </div>
                                     {% endif %} 
-                                {% endfor %} 
-
+                                {% endfor %}     -->
+                                    
                                 <!-- Số lượt đánh giá-->
-                                {% for boardgame_rating in boardgame_ratings %}
-                                    {% if boardgame.name == boardgame_rating.boardgame.name%}
-                                        <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs px-3">
-                                            33 đánh giá
-                                        </div>
-                                    {% endif %} 
-                                {% endfor %} 
+                                <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
+                                    {{boardgame.reviews.all.count}} Đánh giá
+                                </div> 
 
-                            </a>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div class=" grid justify-items-center items-center pt-12 ">
-                <a  href="#"
-                    class="rounded-md h-10 px-6 py-2 text-xs font-bold bg-[#3C3C3B] text-white hover:bg-[#3C3C3BCC] ">
+                            </div>
+                        </a>
+                    </div>
+
+                {% endfor %} 
+            </div> 
+            <div class=" grid  justify-items-center items-center pt-12 ">
+                <!-- href -> đi tới trang tất cả thể loại -->
+                <a  href="{% url "core:category" categori.cid %}"
+                    class="rounded-md h-10 border-2 border-primary px-6 py-2 text-xs font-bold bg-[#3C3C3B] text-white text-center hover:bg-[#3C3C3BCC] ">
                     Xem tất cả
                 </a>
             </div>
-        {% endfor %} 
+        {% endfor %}
     </div>
     
     <!--Chuyển trang-->
