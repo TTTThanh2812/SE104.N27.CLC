@@ -5,7 +5,6 @@ from django.utils.html import mark_safe
 from userauths.models import User
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from uuid import uuid4
 import random
 # Create your models here.
 def user_directory_path(instance, filename):
@@ -97,7 +96,7 @@ class  Boardgame(models.Model):
     class Meta:
         verbose_name_plural = "Boardgame"
 
-    def product_image(self):
+    def boardgame_image(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % (self.image.url))
     
     # Lựa chọn khoản giá trị 
@@ -111,11 +110,10 @@ class  Boardgame(models.Model):
 
     # Giá thuê
     def rental_price(self):
-        return int(self.price * 0.1)
+        return float(self.price) * 0.1
     
     def __str__(self):
         return self.title
-
 
 class BoardgameImages(models.Model):
     image = models.ImageField(upload_to="boardgame-images")
@@ -133,12 +131,14 @@ class BoardgameNumbers(models.Model):
     bgnid = ShortUUIDField(unique=True, prefix="bgn", alphabet='1234567890', length=2, max_length=20)
 
     boardgame = models.ForeignKey(Boardgame, on_delete=models.CASCADE, related_name='boardgame_numbers', null=True)
-    boardgame_number_status = models.CharField(choices=STATUS_BGN, max_length=20, default="rental")
+    boardgame_number_status = models.CharField(choices=STATUS_BGN, max_length=20)
     
+    description = models.TextField(null=True, blank=True, default="This is boardgame status")
+
     date = models.DateTimeField(default=timezone.now)   
 
     class Meta:
-        verbose_name_plural = "BoardgameNumbers"
+        verbose_name_plural = "Boardgame Numbers"
 
     def save(self, *args, **kwargs):
         if not self.bgnid:
@@ -146,21 +146,14 @@ class BoardgameNumbers(models.Model):
             mstl = self.boardgame.category.cid
             mpb = self.boardgame.version.vid
             msbg = self.boardgame.bgid
-            sequence_number = str(uuid4())[-6:]  # Lấy 6 ký tự cuối của UUID
-            self.bgnid = f"{mstl}{mpb}{msbg}{sequence_number}"
+            sequence_number = self.bgnid
+            new_bgnid = f"{mstl}{mpb}{msbg}{sequence_number}"
+            self.bgnid = new_bgnid
 
         super().save(*args, **kwargs)
 
 @receiver(post_save, sender=BoardgameNumbers)
 def update_boardgame_stats(sender, instance, **kwargs):
-    #  boardgame = instance.boardgame
-    # if instance.status == 'in_stock':
-    #     boardgame.in_stock = BoardgameNumbers.objects.filter(boardgame=boardgame, status='in_stock').count()
-    # elif instance.status == 'rental':
-    #     boardgame.in_stock = BoardgameNumbers.objects.filter(boardgame=boardgame, status='in_stock').count()
-    #     boardgame.rental = BoardgameNumbers.objects.filter(boardgame=boardgame, status='rental').count()
-    # boardgame.total = boardgame.in_stock + boardgame.rental
-    # boardgame.save()
     boardgame = instance.boardgame
     boardgame_numbers = boardgame.boardgame_numbers.all()
     
@@ -197,23 +190,25 @@ def update_boardgame_stats_on_delete(sender, instance, **kwargs):
     
     boardgame.save()
 
+RATING = (
+    (1, "★☆☆☆☆"),
+    (2, "★★☆☆☆"),
+    (3, "★★★☆☆"),
+    (4, "★★★★☆"),
+    (5, "★★★★★"),
+)
+class BoardgameReviews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    boardgame = models.ForeignKey(Boardgame, on_delete=models.SET_NULL, null=True, related_name="reviews")
+    review = models.TextField()
+    rating = models.IntegerField(choices=RATING, default=None)
+    date = models.DateTimeField(default=timezone.now)   
 
-
-class Review(models.Model):
-    boardgame = models.ForeignKey(Boardgame, on_delete=models.CASCADE, related_name='reviews')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f'Review by {self.user.username} for {self.boardgame.name}'
+    class Meta:
+        verbose_name_plural = "Boardgame Reviews"
     
-class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    boardgame = models.ForeignKey(Boardgame, on_delete=models.CASCADE)
-    stars = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
-    created_at = models.DateTimeField(default=timezone.now)
-
     def __str__(self):
-        return f"{self.user.username} - {self.boardgame.name} - {self.stars} stars"
+        return self.boardgame.title
     
+    def get_rating(self):
+        return self.rating
