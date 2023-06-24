@@ -23,10 +23,11 @@
     </select>
 
     <!-- Boardgame list -->
-    <ul>
+    {% comment %}<ul>
         <div class="grid grid-cols-3 gap-3 ">
             {% for boardgame in boardgames %}
-                <div class="shadow bg-[#ffffff] rounded-lg">
+                {{boardgame}}
+                {% comment %} <div class="shadow bg-[#ffffff] rounded-lg">
                     <!-- href -> đi tới boardgame cụ thể -->
                     <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
                         <!-- Hình ảnh boardgame -->
@@ -73,8 +74,8 @@
 
                         </div>
                     </a>
-                </div>
-            {% endfor %}
+                </div> {% endcomment %}
+    {% comment %}        {% endfor %}
         </div>
-    </ul>
+    </ul>{% endcomment %}
 {% endblock %}
