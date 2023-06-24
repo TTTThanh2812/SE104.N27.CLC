@@ -9,8 +9,8 @@ from django.db.models import Q
 from .models import Boardgame, BoardgameReviews#, Review, Rating, Category
 # Create your views here.
 def detail(request, bgid):
-    boardgame = get_object_or_404(Boardgame, bgid=bgid)
-    # boardgame = Boardgame.objects.get(bgid=bgid)
+    # boardgame = get_object_or_404(Boardgame, bgid=bgid)
+    boardgame = Boardgame.objects.get(bgid=bgid)
     # Giá thuê của boardgame 
     rental_price = boardgame.rental_price
 
