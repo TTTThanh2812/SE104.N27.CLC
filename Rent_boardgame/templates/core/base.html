@@ -32,7 +32,7 @@
                     <a href="#" class="fa fa-bell fa-lg"></a>
                 </button>
                 {% if request.user.is_authenticated %}
-                    {% comment %} <a href="#" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Tài khoản</a> {% endcomment %}
+                    <a href="http://127.0.0.1:5500/templates/core/account.html" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Tài khoản</a> 
                     <a href="{% url "userauths:sign_out" %}" class="px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl hover:bg-red-700">Đăng xuất</a>
                 {% else %} 
                     <a href="{% url "userauths:sign_in" %}" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Đăng nhập</a>
