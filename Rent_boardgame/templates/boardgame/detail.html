@@ -45,10 +45,148 @@
             <p class="text-xl text-gray-500"><strong>Nhà xuất bản: </strong>{{ boardgame.producer}}</p>
             <p class="text-xl text-gray-500"><strong>Năm sản xuất: </strong>{{ boardgame.publication_year}}</p>
             
-            <a  href="#" 
-                class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-[#c32f2f] text-white rounded-xl hover:bg-[#871313]">
-                Thuê
-            </a>
+            <dh-component>
+                <div class="py-12 bg-gray-200 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+                    id="modal">
+                    <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
+                        <div class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
+                            <h1 class="mb-8 text-4xl text-center font-bold text-[#3C3C3B]">Nhập thông tin thuê</h1>
+                            <div
+                                class="grid justify-items-center bg-white px-20 py-4 rounded text-black w-full text-sm">
+
+                                <div class="grid justify-self-start text-[#3C3C3B] pb-2">
+                                    Phiên bản
+                                </div>
+                                <div class="">
+                                    <select id="countries"
+                                        class="border border-l-2 border-l-[#3C3C3B] w-72 p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF] focus:outline-none">
+                                        <option disabled selected></option>
+                                        <option value="US">Mattel</option>
+                                        <option value="CA">Battle</option>
+                                        <option value="FR">Storm</option>
+                                        <option value="DE">H2O</option>
+                                    </select>
+                                </div>
+
+                                <div class="grid justify-self-start text-[#3C3C3B] pb-2">
+                                    Ngày thuê
+                                </div>
+
+                                <div class="">
+                                    <input datetimepicker
+                                        class="flex border border-l-2 border-l-[#3C3C3B] w-72 p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF] focus:outline-none"
+                                        type="text" placeholder="Please select a date" />
+                                    <script src="../path/to/flatpickr.min.js"></script>
+                                </div>
+
+                                <div class="grid justify-self-start text-[#3C3C3B] pb-2">
+                                    Số ngày thuê
+                                </div>
+                                <div
+                                    class=" flex border border-l-2 border-l-[#3C3C3B] w-full p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF]">
+                                    <input type="text" name="password"
+                                        class="focus:outline-none self-center w-full text-right" placeholder="0" />
+                                </div>
+
+                            </div>
+                            <div class="grid justify-items-center pb-4">
+                                <hr style="width: 100%; height: 1px; background-color: #C4C4C4;">
+                                <div class="pt-4">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Ngày trả</td>
+                                                <td class="pl-16">00/00/0000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tiền thuê</td>
+                                                <td class="pl-16">0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tiền cọc</td>
+                                                <td class="pl-16">0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tổng tiền</td>
+                                                <td class="pl-16">0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="pt-4 text-xs">
+                                    <div class="pr-48 pb-2 text-[#0FB3AF]">Thông tin và điều khoản</div>
+                                    <div class="border border-[#3C3C3B] rounded-lg p-2">
+                                        <p>
+                                            + Mỗi lần thuê chỉ thuê duy nhất được 1 boardgame.</p>
+                                        <p>+ Thời gian giữ chỗ tối đa là 12 tiếng tính từ khi đặt chỗ thành công.</p>
+                                        <p>+ Tiền thuê game sẽ bằng tổng tiền thuê và tiền cọc của các bộ game được
+                                            chọn.</p>
+                                        <p></p>
+                                        <p>+ Số ngày có thể thuê tối đa là 60 ngày.</p>
+                                        <p>+ Phải trả lại boardgame theo đúng thời hạn (nếu trễ nộp thêm ?k /ngày).</p>
+                                        <p>+ Phải trả lại nguyên vẹn như khi được giao (nếu hư, mất nộp thêm ?k/chi
+                                            tiết).
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start pt-4">
+                                    <div class="flex items-center h-5">
+                                        <input id="remember" aria-describedby="remember" type="checkbox"
+                                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-[#3C3C3B] checked">
+                                    </div>
+                                    <div class="ml-3 pr-16 text-sm text-[#3C3C3B] text-xs">
+                                        <label for="remember" class="text-[#3C3C3B] text-xs">Tôi đã đọc và đồng ý với thông tin và điều khoản trên</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-32 items-center justify-center w-full">
+                                <button class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded px-8 text-md text-center h-8
+                                    text-white ">Xong</button>
+                                <button class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded px-8 text-md text-center h-8
+                                text-white" onclick="modalHandler()">Hủy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full flex justify-center py-12" id="button">
+                    <button
+                        class=" bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
+                        onclick="modalHandler(true)">Thuê</button>
+                </div>
+                <script>
+                    let modal = document.getElementById("modal");
+                    function modalHandler(val) {
+                        if (val) {
+                            fadeIn(modal);
+                        } else {
+                            fadeOut(modal);
+                        }
+                    }
+                    function fadeOut(el) {
+                        el.style.opacity = 1;
+                        (function fade() {
+                            if ((el.style.opacity -= 0.1) < 0) {
+                                el.style.display = "none";
+                            } else {
+                                requestAnimationFrame(fade);
+                            }
+                        })();
+                    }
+                    function fadeIn(el, display) {
+                        el.style.opacity = 0;
+                        el.style.display = display || "flex";
+                        (function fade() {
+                            let val = parseFloat(el.style.opacity);
+                            if (!((val += 0.2) > 1)) {
+                                el.style.opacity = val;
+                                requestAnimationFrame(fade);
+                            }
+                        })();
+                    }
+                </script>
+
+            </dh-component>
         </div>
         
         <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl">
