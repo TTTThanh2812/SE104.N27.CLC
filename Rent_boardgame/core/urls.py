@@ -9,5 +9,5 @@ urlpatterns = [
     # path('contact/', views.contact, name='contact'),
     path('allCategories/', views.allCategories, name='allCategories'),
     path('category/<cid>/', views.category_view, name='category'),
- 
+    path("account/", views.account, name="account"),
 ]

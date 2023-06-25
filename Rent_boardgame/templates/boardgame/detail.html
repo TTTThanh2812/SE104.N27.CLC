@@ -65,7 +65,7 @@
                 <p class="text-xl text-gray-500"><strong>Tổng đánh giá: </strong>{{ reviews.count }}</p>
                 {% for r in page_obj %}
                     <div class="review">
-                        <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user.username|title }}</p>
+                        <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user_reviews.username|title }}</p>
                         <p class="text-xl text-gray-500"><strong>Thời gian đánh giá: </strong>{{ r.date| date:"d M, Y" }}</p>
                         <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ r.review }}</p>
                         <p class="text-xl text-gray-500"><strong>Số sao: </strong>{{ r.rating}}</p>

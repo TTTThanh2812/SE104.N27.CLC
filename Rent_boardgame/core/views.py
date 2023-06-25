@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.db import models
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth.models import User
 from boardgame.models import Category, Boardgame#, Rating, Review
-
+from userauths.models import User
 
 # from .models import UserProfile
 
@@ -63,4 +63,10 @@ def category_view(request, cid):
         'boardgames': boardgames,
     })
 
-
+@login_required
+def account(request):
+    user =  User.objects.get(user_id=request.user.user_id)
+    context = {
+        'user': user
+    }
+    return render(request, 'core/account.html', context)
