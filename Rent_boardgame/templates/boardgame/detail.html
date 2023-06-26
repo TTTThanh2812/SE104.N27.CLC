@@ -151,7 +151,7 @@
         </div>
       </div>
       <div id="failed"
-        class="hidden grid justify-items-center max-w-lg p-6 bg-white border border-gray-300 rounded-md shadow">
+        class="hidden grid justify-items-center max-w-lg p-6 bg-white border border-gray-300 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md py-6 space-y-5 drop-shadow-lg">
         <i class="fa fa-exclamation-circle fa-5x text-[#B30F0F] p-2" aria-hidden="true"></i>
         <p class="text-[#B30F0F] text-xl font-bold p-2">Đặt chỗ thuê không thành công</p>
         <p class="font-normal text-sm text-center text-black">Bạn đang thuê 1 boardgame khác nên không thể đặt chỗ
@@ -159,7 +159,7 @@
       </div>
 
       <div id="successful"
-        class="hidden grid justify-items-center max-w-lg p-6 bg-white border border-gray-300 rounded-md shadow">
+        class="hidden grid justify-items-center max-w-lg p-32 bg-white border border-gray-300 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md py-6 space-y-5 drop-shadow-lg">
         <i class="fa fa-check-circle fa-5x text-[#0FB3AF] p-2" aria-hidden="true"></i>
         <p class="text-[#0FB3AF] text-xl font-bold p-2">Đặt chỗ thuê thành công</p>
         <p class="font-normal text-sm text-center text-black">Bạn đã đặt chỗ thuê thành công</p>
@@ -189,17 +189,24 @@
           overlay.classList.add('hidden');
         });
         submitButton.addEventListener('click', function () {
-        if (false) {
-          dialog.classList.add('hidden');
-          overlay.classList.add('hidden');
-          successful.classList.remove('hidden');
+          if (false) {
+            successful.classList.remove('hidden');
+            dialog.classList.add('hidden');
+            overlay.classList.remove('hidden');
+            setTimeout(STimeout, 3000);
+          }
+          else {
+            failed.classList.remove('hidden');
+            dialog.classList.add('hidden');
+            overlay.classList.remove('hidden');
+            setTimeout(STimeout, 3000);
+          }
+        });
+        function STimeout() {
+          successful.classList.add('hidden');
+          failed.classList.add('hidden');
+          overlay.classList.add('hidden')
         }
-        else {
-          dialog.classList.add('hidden');
-          overlay.classList.add('hidden');
-          failed.classList.remove('hidden');
-        }
-      });
       </script>
     </dh-component>
   </div>
