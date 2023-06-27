@@ -11,5 +11,5 @@ urlpatterns = [
     path('category/<cid>/', views.category_view, name='category'),
     path('account/', views.account, name='account'),
     path('change_password/', views.change_password, name='change_password'),
-    path('editInfomation/', views.editInfomation, name='editInfomation'),
+    path('edit_infomation/', views.edit_infomation, name='edit_infomation'),
 ]

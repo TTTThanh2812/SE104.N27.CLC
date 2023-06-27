@@ -99,7 +99,7 @@ def change_password(request):
     return render(request, 'core/change_password.html', context)
 
 @login_required
-def editInfomation(request):
+def edit_infomation(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -112,4 +112,4 @@ def editInfomation(request):
     context = {
         'form': form
     }
-    return render(request, 'core/editInfomation.html', context)
+    return render(request, 'core/edit_infomation.html', context)
