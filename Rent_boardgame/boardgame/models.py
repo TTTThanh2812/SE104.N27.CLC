@@ -203,7 +203,7 @@ RATING = (
     (5, "★★★★★"),
 )
 class BoardgameReviews(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="user_reviews")
     boardgame = models.ForeignKey(Boardgame, on_delete=models.SET_NULL, null=True, related_name="reviews")
     review = models.TextField()
     rating = models.IntegerField(choices=RATING, default=None)

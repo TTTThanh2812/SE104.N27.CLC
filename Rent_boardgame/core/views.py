@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect
 from django.db import models
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.urls import reverse
 
-from django.contrib.auth.models import User
 from boardgame.models import Category, Boardgame#, Rating, Review
-
+from userauths.models import User
+from django.contrib.auth.forms import PasswordChangeForm
+from core.forms import UserProfileForm
 
 # from .models import UserProfile
 
@@ -63,4 +68,48 @@ def category_view(request, cid):
         'boardgames': boardgames,
     })
 
+@login_required
+def account(request):
+    user =  User.objects.get(user_id=request.user.user_id)
+    context = {
+        'user': user
+    }
+    return render(request, 'core/account.html', context)
 
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Cập nhật session auth hash để tránh đăng xuất người dùng
+            messages.success(request, 'Mật khẩu đã được thay đổi thành công!')
+            return redirect(reverse('core:account'))
+        else:
+            if 'old_password' in form.errors:
+                messages.error(request, 'Mật khẩu cũ không đúng.')
+            if 'new_password2' in form.errors:
+                messages.error(request, 'Mật khẩu xác nhận không khớp với mật khẩu mới.')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'core/change_password.html', context)
+
+@login_required
+def edit_infomation(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Thông tin cá nhân đã được cập nhật thành công!')
+            return redirect(reverse('core:account'))
+    else:
+        form = UserProfileForm(instance=request.user)
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'core/edit_infomation.html', context)
