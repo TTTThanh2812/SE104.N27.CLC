@@ -9,6 +9,7 @@ urlpatterns = [
     # path('contact/', views.contact, name='contact'),
     path('allCategories/', views.allCategories, name='allCategories'),
     path('category/<cid>/', views.category_view, name='category'),
-    path("account/", views.account, name="account"),
-    path("change_password/", views.change_password, name="change_password"),
+    path('account/', views.account, name='account'),
+    path('change_password/', views.change_password, name='change_password'),
+    path('editInfomation/', views.editInfomation, name='editInfomation'),
 ]

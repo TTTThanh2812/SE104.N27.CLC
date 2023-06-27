@@ -31,7 +31,7 @@
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Họ và tên:</td>
-                        <td class="pl-8">{{ user }} </td>
+                        <td class="pl-8">{{ user.first_name }} {{ user.last_name }} </td>
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Số điện thoại:</td>
@@ -57,13 +57,13 @@
                 </a>
             </div>
             <div class="sm:flex sm:space-x-8 pt-6 font-medium">
-                <a href={% url "userauths:sign_out" %}>
+                <a href="{% url "userauths:sign_out" %}">
                     <button type="button" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded-md px-3 text-sm h-8
                         text-white" style="font-family: Maven Pro;">
                         Đăng xuất
                     </button>
                 </a>
-                <a href="">
+                <a href="{% url 'core:editInfomation' %}">
                     <button type="button" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-8
                     text-white" style="font-family: Maven Pro;">
                         Chỉnh sửa thông tin
