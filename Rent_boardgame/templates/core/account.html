@@ -1,53 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'core/base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./test.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./Tailwind/build/tailwind.css">
-    <link rel="stylesheet" href="./font.css">
-</head>
+{% block title %}All Category{% endblock %}
 
-<body>
-    <div>
-        <div class="grid grid-cols-3 gap-4 justify-items-center items-center">
-            <div class="text-black font-semibold text-3xl pt-6 justify-self-start">
-                Logo
-            </div>
-            <div class="flex pt-6 gap-x-6">
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Trang chủ
-                </a>
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Thể loại
-                </a>
-                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Xếp hạng
-                </a>
-                <a href="#" class=" text-[#0FB3AF] hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
-                    aria-current="page">
-                    Tài khoản
-                </a>
-            </div>
-            <div class="pt-6 mx-6xl flex space-x-8 justify-self-end px-6">
-                <a href=""><button type="button"
-                        class=" text-black-400 hover:text-gray-500 rounded-full focus:ring-offset-black-800">
-                        <i class="fa fa-bell fa-lg"></i>
-                    </button></a>
-            </div>
-        </div>
-    </div>
+{% block content %}
 
     <div class="grid grid-cols-2 justify-items-center px-56 pt-32">
         <div class="relative max-w-xs overflow-hidden bg-cover bg-no-repeat pt-6 self-center" data-te-ripple-init
@@ -71,19 +27,19 @@
                 <tbody>
                     <tr>
                         <td class="text-[#0FB3AF]">MSKH:</td>
-                        <td class="pl-8">12345678 </td>
+                        <td class="pl-8">{{ user.user_id }}</td>
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Họ và tên:</td>
-                        <td class="pl-8">ABC</td>
+                        <td class="pl-8">{{ user.first_name }} {{ user.last_name }} </td>
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Số điện thoại:</td>
-                        <td class="pl-8">0123456789</td>
+                        <td class="pl-8">{{ user.phone_number }}</td>
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Email:</td>
-                        <td class="pl-8">abc@gmail.com</td>
+                        <td class="pl-8">{{ user.email }}</td>
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Điểm tích lũy:</td>
@@ -91,23 +47,23 @@
                     </tr>
                     <tr>
                         <td class="text-[#0FB3AF]">Địa chỉ:</td>
-                        <td class="pl-8">123/45/678/9</td>
+                        <td class="pl-8">{{ user.address }}</td>
                     </tr>
                 </tbody>
             </table>
             <div class="text-[#0FB3AF] italic pt-2">
-                <a class="no-underline border-b border-blue text-blue text-[#0FB3AF]" href="../changePassword/">
+                <a class="no-underline border-b border-blue text-blue text-[#0FB3AF]" href="{% url 'core:change_password' %}">
                     Đổi mật khẩu
                 </a>
             </div>
             <div class="sm:flex sm:space-x-8 pt-6 font-medium">
-                <a href="http://127.0.0.1:8000/user/sign_in/">
+                <a href="{% url "userauths:sign_out" %}">
                     <button type="button" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded-md px-3 text-sm h-8
                         text-white" style="font-family: Maven Pro;">
                         Đăng xuất
                     </button>
                 </a>
-                <a href="http://127.0.0.1:5500/templates/core/editInfomation.html">
+                <a href="{% url 'core:edit_infomation' %}">
                     <button type="button" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-8
                     text-white" style="font-family: Maven Pro;">
                         Chỉnh sửa thông tin
@@ -307,6 +263,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+{% endblock %}
