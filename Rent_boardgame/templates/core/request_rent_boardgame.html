@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./Tailwind/build/tailwind.css">
+    <link rel="stylesheet" href="./font.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/datepicker.min.js"></script>
+</head>
+
+<body>
+
+
+    <div>
+        <div class="grid grid-cols-3 gap-4 justify-items-center items-center">
+            <div class="text-black font-semibold text-3xl pt-6 justify-self-start">
+                Logo
+            </div>
+            <div class="flex pt-6 gap-x-6">
+                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Trang chủ
+                </a>
+                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Thể loại
+                </a>
+                <a href="#" class=" text-black hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Xếp hạng
+                </a>
+                <a href="#" class=" text-[#0FB3AF] hover:text-[#0FB3AFCC] rounded-md px-3 py-2 text-md font-medium"
+                    aria-current="page">
+                    Tài khoản
+                </a>
+            </div>
+            <div class="pt-6 mx-6xl flex space-x-8 justify-self-end px-6">
+                <a href=""><button type="button"
+                        class=" text-black-400 hover:text-gray-500 rounded-full focus:ring-offset-black-800">
+                        <i class="fa fa-bell fa-lg"></i>
+                    </button></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid justify-items-center">
+        <dh-component>
+            <button id="open" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded text-white px-5 text-md text-center h-8 text-white inline-flex items-center justify-center
+            shadow transform active:scale-90 transition-transform duration-700 hover:text-white hover:-translate-y-1 hover:scale-110">
+              Thuê
+            </button>
+        
+        
+            <div id="overlay" class="fixed hidden z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div>
+        
+        
+            <div id="dialog"
+              class="hidden fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-md py-6 space-y-5 drop-shadow-lg">
+              <h1 class="mb-8 text-4xl text-center font-bold text-[#3C3C3B]">Nhập thông tin thuê</h1>
+              <div class="max-h-96 overflow-y-hidden hover:overflow-y-auto px-8 ">
+                <div class="grid justify-items-center bg-white px-20 py-4 rounded text-black w-full text-sm">
+                  <div class="grid justify-self-start text-[#3C3C3B] pb-2">
+                    Phiên bản
+                  </div>
+                  <div class="">
+                    <select id="countries"
+                      class="border border-l-2 border-l-[#3C3C3B] w-72 p-3 pl-4 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF] focus:outline-none">
+                      <option disabled selected></option>
+                      <option value="US">Mattel</option>
+                      <option value="CA">Battle</option>
+                      <option value="FR">Storm</option>
+                      <option value="DE">H2O</option>
+                    </select>
+                  </div>
+                  <div class="grid justify-self-start text-[#3C3C3B] pb-2">
+                    Ngày thuê
+                  </div>
+                  <div
+                    class="relative border border-l-2 border-l-[#3C3C3B] w-full p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF]">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-60 pointer-events-none">
+                      <i class='fa fa-calendar fa-lg'></i>
+                    </div>
+                    <input datepicker type="text"
+                      class="bg-gray-50 text-gray-900 text-sm rounded-lg self-center w-full pl-2 focus:outline-none"
+                      placeholder="">
+                  </div>
+                  <div class="grid justify-self-start text-[#3C3C3B] pb-2">
+                    Số ngày thuê
+                  </div>
+                  <div
+                    class=" flex border border-l-2 border-l-[#3C3C3B] w-full p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF]">
+                    <input type="text" name="password" class="focus:outline-none self-center w-full pl-2" placeholder="0" />
+                  </div>
+        
+                </div>
+                <div class="grid justify-items-center pb-4">
+                  <hr style="width: 100%; height: 1px; background-color: #C4C4C4;">
+                  <div class="pt-4">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>Ngày trả</td>
+                          <td class="pl-16">00/00/0000</td>
+                        </tr>
+                        <tr>
+                          <td>Tiền thuê</td>
+                          <td class="pl-16">0</td>
+                        </tr>
+                        <tr>
+                          <td>Tiền cọc</td>
+                          <td class="pl-16">0</td>
+                        </tr>
+                        <tr>
+                          <td>Tổng tiền</td>
+                          <td class="pl-16">0</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="pt-4 text-xs">
+                    <div class="pl-4 pb-2 text-[#0FB3AF]">Thông tin và điều khoản</div>
+                    <div class="border border-[#3C3C3B] rounded-lg p-2">
+                      <p>
+                        + Mỗi lần thuê chỉ thuê duy nhất được 1 boardgame.</p>
+                      <p>+ Thời gian giữ chỗ tối đa là 12 tiếng tính từ khi đặt chỗ thành công.</p>
+                      <p>+ Tiền thuê game sẽ bằng tổng tiền thuê và tiền cọc của các bộ game được
+                        chọn.</p>
+                      <p></p>
+                      <p>+ Số ngày có thể thuê tối đa là 60 ngày.</p>
+                      <p>+ Phải trả lại boardgame theo đúng thời hạn (nếu trễ nộp thêm ?k /ngày).</p>
+                      <p>+ Phải trả lại nguyên vẹn như khi được giao (nếu hư, mất nộp thêm ?k/chi
+                        tiết).
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center pt-4">
+                    <div class="flex items-center h-5">
+                      <input id="remember" aria-describedby="remember" type="checkbox"
+                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-[#3C3C3B] checked">
+                    </div>
+                    <div class="ml-3 pr-16 text-sm text-[#3C3C3B] text-xs">
+                      <label for="remember" class="text-[#3C3C3B] text-xs">Tôi đã đọc và đồng ý với
+                        thông tin và điều khoản trên</label>
+                    </div>
+                  </div>
+                </div>
+        
+              </div>
+              <div class="flex gap-32 justify-center  w-full">
+                <button id="submit" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded px-5 text-md text-center cursor-pointer h-8
+                    text-white ">Xong</button>
+                <button id="close" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded px-5 text-md text-center cursor-pointer h-8
+                text-white">Hủy</button>
+              </div>
+            </div>
+            <div id="failed"
+              class="hidden grid justify-items-center max-w-lg p-6 bg-white border border-gray-300 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md py-6 space-y-5 drop-shadow-lg">
+              <i class="fa fa-exclamation-circle fa-5x text-[#B30F0F]" aria-hidden="true"></i>
+              <p class="text-[#B30F0F] text-xl font-bold">Đặt chỗ thuê không thành công</p>
+              <p class="font-normal text-sm text-center text-black">Bạn đang thuê 1 boardgame khác nên không thể đặt chỗ
+                boardgame mới được (thời gian còn lại của boardgame cũ > 12 tiếng)</p>
+            </div>
+        
+            <div id="successful"
+              class="hidden grid justify-items-center max-w-lg p-32 bg-white border border-gray-300 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md py-6 space-y-5 drop-shadow-lg">
+              <i class="fa fa-check-circle fa-5x text-[#0FB3AF]" aria-hidden="true"></i>
+              <p class="text-[#0FB3AF] text-xl font-bold">Đặt chỗ thuê thành công</p>
+              <p class="font-normal text-sm text-center text-black">Bạn đã đặt chỗ thuê thành công</p>
+            </div>
+        
+        
+            <!-- Javascript code -->
+            <script>
+              var openButton = document.getElementById('open');
+              var dialog = document.getElementById('dialog');
+              var closeButton = document.getElementById('close');
+              var overlay = document.getElementById('overlay');
+              var submitButton = document.getElementById('submit');
+              var failed = document.getElementById('failed');
+              var successful = document.getElementById('successful');
+        
+              // show the overlay and the dialog
+              openButton.addEventListener('click', function () {
+                dialog.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+              });
+        
+              // hide the overlay and the dialog
+              closeButton.addEventListener('click', function () {
+                dialog.classList.add('hidden');
+                overlay.classList.add('hidden');
+              });
+              submitButton.addEventListener('click', function () {
+                if (false) {
+                  successful.classList.remove('hidden');
+                  dialog.classList.add('hidden');
+                  overlay.classList.remove('hidden');
+                  setTimeout(STimeout, 2000);
+                }
+                else {
+                  failed.classList.remove('hidden');
+                  dialog.classList.add('hidden');
+                  overlay.classList.remove('hidden');
+                  setTimeout(STimeout, 2000);
+                }
+              });
+        
+              function STimeout() {
+                successful.classList.add('hidden');
+                failed.classList.add('hidden');
+                overlay.classList.add('hidden')
+              }
+            </script>
+          </dh-component>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 justify-items-center bg-[#EAEAEA] mt-32  py-96">
+        <div class="self-center grid justify-items-center">
+          <div class="text-black font-semibold text-3xl pt-6 ">
+            Logo
+          </div>
+          <div class="text-black font-regular font-[Open Sans] text-md pt-6">
+            We're shutting the door on <br />
+            second-rate student housing
+          </div>
+        </div>
+        <div class="self-start pt-6">
+          <div class="text-center text-2xl font-bold text-[#0FB3AF]">Thông Tin Liên Hệ</div>
+          <table class="justify-self-center text-center mt-4">
+            <tbody>
+              <tr class="m-32">
+                <td>
+                  <i class="fa fa-phone fa-lg text-[#3C3C3B] px-4 py-3" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B] text-left">012
+                    9638595661
+                  </div>
+                </td>
+              <tr>
+                <td>
+                  <i class="fa fa-envelope fa-lg text-[#3C3C3B] py-4" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B] text-left">
+                    info@uniletadvisor.com</div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="fa fa-map-marker fa-lg text-[#3C3C3B]" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="font-regular text-left font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">10
+                    Archibald St <br />
+                    Toowoomba QLD 4350</div>
+                </td>
+              </tr>
+    
+              </tr>
+            </tbody>
+          </table>
+    
+        </div>
+        <div class="self-start pt-6">
+          <div class="text-center text-2xl font-bold text-[#0FB3AF]"> Kết Nối</div>
+          <table class="justify-self-center mt-4">
+            <tbody>
+              <tr pt>
+                <td>
+                  <i class="fa fa-facebook fa-lg text-[#3C3C3B] px-4 py-3" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">Facebook
+                  </div>
+                </td>
+              <tr>
+                <td>
+                  <i class="fa fa-twitter fa-lg text-[#3C3C3B] px-4 py-3" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="font-regular font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">
+                    Twitter</div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <i class="fa fa-instagram fa-lg text-[#3C3C3B] px-4" aria-hidden="true"></i>
+                </td>
+                <td>
+                  <div class="font-regular text-left font-[Open Sans] text-sm pl-2 font-[#3C3C3B]">
+                    Instagram</div>
+                </td>
+              </tr>
+    
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    
+      </div>
+</body>
+
+</html>
