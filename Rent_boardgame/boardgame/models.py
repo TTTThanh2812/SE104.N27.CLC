@@ -6,7 +6,7 @@ from userauths.models import User
 from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-import random
+from rent.models import RentBoardgame
 # Create your models here.
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
@@ -145,18 +145,6 @@ class BoardgameNumbers(models.Model):
     class Meta:
         verbose_name_plural = "Boardgame Numbers"
 
-    def save(self, *args, **kwargs):
-        if not self.bgnid:
-            # Tạo bgnid tự động
-            mstl = self.boardgame.category.cid
-            mpb = self.boardgame.version.vid
-            msbg = self.boardgame.bgid
-            sequence_number = self.bgnid
-            new_bgnid = f"{mstl}{mpb}{msbg}{sequence_number}"
-            self.bgnid = new_bgnid
-
-        super().save(*args, **kwargs)
-
 @receiver(post_save, sender=BoardgameNumbers)
 def update_boardgame_stats(sender, instance, **kwargs):
     boardgame = instance.boardgame
@@ -194,6 +182,21 @@ def update_boardgame_stats_on_delete(sender, instance, **kwargs):
     boardgame.total = boardgame.in_stock + boardgame.rental
     
     boardgame.save()
+
+# @receiver(post_save, sender=RentBoardgame)
+# def update_boardgame_stats_on_rental_status(sender, instance, **kwargs):
+#     rental = instance
+#     boardgame_number = rental.boardgame_number
+
+#     if rental.rental_status == 'canceled':
+#         boardgame_number.boardgame.in_stock += 1
+#         boardgame_number.boardgame.rental -= 1
+#     elif rental.rental_status in ['active', 'expired']:
+#         boardgame_number.boardgame.in_stock -= 1
+#         boardgame_number.boardgame.rental += 1
+
+#     boardgame_number.boardgame.total = boardgame_number.boardgame.in_stock + boardgame_number.boardgame.rental
+#     boardgame_number.boardgame.save()
 
 RATING = (
     (1, "★☆☆☆☆"),

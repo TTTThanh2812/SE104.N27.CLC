@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('boardgames/', include('boardgame.urls')),
     path("user/", include("userauths.urls")),
+    path("rent/", include("rent.urls")),
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
