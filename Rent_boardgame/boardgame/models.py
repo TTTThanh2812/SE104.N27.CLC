@@ -67,7 +67,7 @@ STATUS_BG = (
     ('stocking', 'Boardgame này vẫn còn'),
 )
 class  Boardgame(models.Model):
-    bgid = ShortUUIDField(unique=True, prefix="bg", alphabet='1234567890', length=2, max_length=6)
+    bgid = ShortUUIDField(unique=True, primary_key=True, prefix="bg", alphabet='1234567890', length=2, max_length=6)
     
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField(default=timezone.now)  
