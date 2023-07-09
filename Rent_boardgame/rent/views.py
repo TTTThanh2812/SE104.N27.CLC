@@ -13,7 +13,15 @@ def request_rent_boardgame(request, bgid):
             rent_request.renter = request.user
             boardgame_number = boardgame.boardgame_numbers.filter(boardgame_number_status='in_stock').first()
             rent_request.boardgame_numbers = boardgame_number
-            rent_request.rental_price = rent_request.calculate_rental_price()
+            
+            # Tính toán giá thuê, giá cọc, tổng tiền phải trả
+            rental_price = rent_request.calculate_rental_price()
+            # deposit_price = rent_request.calculate_deposit_price()
+            # total_price = rent_request.calculate_total_price()
+
+            rent_request.rental_price = rental_price
+            # rent_request.deposit_price = deposit_price
+            # rent_request.total_price = total_price
             rent_request.save()
             return redirect('rent:rent_success')
     else:
@@ -22,6 +30,7 @@ def request_rent_boardgame(request, bgid):
 
     context = {
         'rent_form': rent_form,
+        'boardgame': boardgame,
     }
     return render(request, "rent/request_rent_boardgame.html", context)
 

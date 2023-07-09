@@ -3,279 +3,123 @@
 {% block title %}{{ boardgame.title }}{% endblock %}
 
 {% block content %}
-    <div class="grid grid-cols-6 gap-6">
-        <div class="col-span-1">
-        </div>
-        <div class="col-span-3">
-            <img src="{{ boardgame.image.url }}" alt="" class="rounded-xl object-contain h-screen w-full object-center">
+<div class="grid grid-cols-6 gap-6">
+    <div class="col-span-1">
+    </div>
+    <div class="col-span-3">
+        <img src="{{ boardgame.image.url }}" alt="" class="rounded-xl object-contain h-screen w-full object-center">
+    </div>
+
+    <div class="col-span-2 p-6 py-20 bg-white-100 rounded-xl ">
+        <h1 class="mb-6 text-4xl font-bold"> {{ boardgame.title }} </h1>
+
+        <div class="flex items-center pt-1">
+            {% comment %} <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ average_stars }}</p> {%
+            endcomment %}
+
+            <!--Vẽ sao đánh giá-->
+            {% comment %} {% for star in draw_average_stars %}
+            <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                <title> {{star}}</title>
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+            {% endfor %}
+
+            {% for non_star in draw_non_stars %}
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+            {% endfor %} {% endcomment %}
         </div>
 
-        <div class="col-span-2 p-6 py-20 bg-white-100 rounded-xl ">
-            <h1 class="mb-6 text-4xl font-bold"> {{ boardgame.title }} </h1>
-                                                    
-            <div class="flex items-center pt-1">
-                {% comment %} <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ average_stars }}</p> {% endcomment %}
-            
-                <!--Vẽ sao đánh giá-->
-                {% comment %} {% for star in draw_average_stars %}
-                    <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
-                        <title> {{star}}</title>
-                        <path
-                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                        </path>
-                    </svg>
-                {% endfor %}  
-            
-                {% for non_star in draw_non_stars %}
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
-                        <path
-                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                        </path>
-                    </svg> 
-                {% endfor %} {% endcomment %}
-            </div>
-
-            <p class="text-xl text-gray-500"><strong>Phiên bản: </strong>{{ boardgame.version}}</p>
-            <p class="text-xl text-gray-500"><strong>Giá thuê: </strong>{{ boardgame.rental_price}}00 VNĐ / Ngày</p>
-            <p class="text-xl text-gray-500"><strong>Số lượng hiện có: </strong>{{ boardgame.in_stock }} Boardgame</p>
-            <p class="text-xl text-gray-500"><strong>Thời gian: </strong>{{ boardgame.play_time}} phút</p>
-            <p class="text-xl text-gray-500"><strong>Độ tuổi: </strong>{{ boardgame.age_rating}} </p>
-            <p class="text-xl text-gray-500"><strong>Số lượng người chơi: </strong>{{ boardgame.people }} người</p>
-            <p class="text-xl text-gray-500"><strong>Tác giả: </strong>{{ boardgame.author }} </p>
-            <p class="text-xl text-gray-500"><strong>Nhà xuất bản: </strong>{{ boardgame.producer}}</p>
-            <p class="text-xl text-gray-500"><strong>Năm sản xuất: </strong>{{ boardgame.publication_year}}</p>
+        <p class="text-xl text-gray-500"><strong>Phiên bản: </strong>{{ boardgame.version}}</p>
+        <p class="text-xl text-gray-500"><strong>Giá thuê: </strong>{{ boardgame.rental_price}}00 VNĐ / Ngày</p>
+        <p class="text-xl text-gray-500"><strong>Số lượng hiện có: </strong>{{ boardgame.in_stock }} Boardgame</p>
+        <p class="text-xl text-gray-500"><strong>Thời gian: </strong>{{ boardgame.play_time}} phút</p>
+        <p class="text-xl text-gray-500"><strong>Độ tuổi: </strong>{{ boardgame.age_rating}} </p>
+        <p class="text-xl text-gray-500"><strong>Số lượng người chơi: </strong>{{ boardgame.people }} người</p>
+        <p class="text-xl text-gray-500"><strong>Tác giả: </strong>{{ boardgame.author }} </p>
+        <p class="text-xl text-gray-500"><strong>Nhà xuất bản: </strong>{{ boardgame.producer}}</p>
+        <p class="text-xl text-gray-500"><strong>Năm sản xuất: </strong>{{ boardgame.publication_year}}</p>
 
         <dh-component>
-        <a href="{% url "rent:request_rent_boardgame" bgid=boardgame.bgid%}">
-            <button id="open" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded px-5 text-md text-center h-8
+            <a href="{% url " rent:request_rent_boardgame" bgid=boardgame.bgid%}">
+                <button id="open" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded px-5 text-md text-center h-8
                         text-white">
-                Thuê
-            </button>
-        </a>
-        {% comment %} <div id="overlay" class="fixed hidden z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div>
-        <div id="dialog"
-            class="hidden fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-md py-6 space-y-5 drop-shadow-lg">
-            <h1 class="mb-8 text-4xl text-center font-bold text-[#3C3C3B]">Nhập thông tin thuê</h1>
-            <div class="max-h-96 overflow-y-hidden hover:overflow-y-auto px-8 ">
-            <div class="grid justify-items-center bg-white px-20 py-4 rounded text-black w-full text-sm">
-                <div class="grid justify-self-start text-[#3C3C3B] pb-2">
-                Phiên bản
-                </div>
-                <div class="">
-                <select id="countries"
-                    class="border border-l-2 border-l-[#3C3C3B] w-72 p-3 pl-4 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF] focus:outline-none">
-                    <option disabled selected></option>
-                    <option value="US">Mattel</option>
-                    <option value="CA">Battle</option>
-                    <option value="FR">Storm</option>
-                    <option value="DE">H2O</option>
-                </select>
-                </div>
-                <div class="grid justify-self-start text-[#3C3C3B] pb-2">
-                Ngày thuê
-                </div>
-                <div
-                class="relative border border-l-2 border-l-[#3C3C3B] w-full p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF]">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-60 pointer-events-none">
-                    <i class='fa fa-calendar fa-lg'></i>
-                </div>
-                <input datepicker type="text"
-                    class="bg-gray-50 text-gray-900 text-sm rounded-lg self-center w-full pl-2 focus:outline-none"
-                    placeholder="">
-                </div>
-                <div class="grid justify-self-start text-[#3C3C3B] pb-2">
-                Số ngày thuê
-                </div>
-                <div
-                class=" flex border border-l-2 border-l-[#3C3C3B] w-full p-3 rounded mb-4 shadow-lg focus-within:ring-1 focus-within:ring-[#0FB3AF]">
-                <input type="text" name="password" class="focus:outline-none self-center w-full pl-2" placeholder="0" />
-                </div>
-
-            </div>
-            <div class="grid justify-items-center pb-4">
-                <hr style="width: 100%; height: 1px; background-color: #C4C4C4;">
-                <div class="pt-4">
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>Ngày trả</td>
-                        <td class="pl-16">00/00/0000</td>
-                    </tr>
-                    <tr>
-                        <td>Tiền thuê</td>
-                        <td class="pl-16">0</td>
-                    </tr>
-                    <tr>
-                        <td>Tiền cọc</td>
-                        <td class="pl-16">0</td>
-                    </tr>
-                    <tr>
-                        <td>Tổng tiền</td>
-                        <td class="pl-16">0</td>
-                    </tr>
-                    </tbody>
-                </table>
-                </div>
-                <div class="pt-4 text-xs">
-                <div class="pl-4 pb-2 text-[#0FB3AF]">Thông tin và điều khoản</div>
-                <div class="border border-[#3C3C3B] rounded-lg p-2">
-                    <p>
-                    + Mỗi lần thuê chỉ thuê duy nhất được 1 boardgame.</p>
-                    <p>+ Thời gian giữ chỗ tối đa là 12 tiếng tính từ khi đặt chỗ thành công.</p>
-                    <p>+ Tiền thuê game sẽ bằng tổng tiền thuê và tiền cọc của các bộ game được
-                    chọn.</p>
-                    <p></p>
-                    <p>+ Số ngày có thể thuê tối đa là 60 ngày.</p>
-                    <p>+ Phải trả lại boardgame theo đúng thời hạn (nếu trễ nộp thêm ?k /ngày).</p>
-                    <p>+ Phải trả lại nguyên vẹn như khi được giao (nếu hư, mất nộp thêm ?k/chi
-                    tiết).
-                    </p>
-                </div>
-                </div>
-                <div class="flex items-center pt-4">
-                <div class="flex items-center h-5">
-                    <input id="remember" aria-describedby="remember" type="checkbox"
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 accent-[#3C3C3B] checked">
-                </div>
-                <div class="ml-3 pr-16 text-sm text-[#3C3C3B] text-xs">
-                    <label for="remember" class="text-[#3C3C3B] text-xs">Tôi đã đọc và đồng ý với
-                    thông tin và điều khoản trên</label>
-                </div>
-                </div>
-            </div>
-
-            </div>
-            <div class="flex gap-32 justify-center  w-full">
-            <button id="submit" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded px-5 text-md text-center cursor-pointer h-8
-                            text-white ">Xong</button>
-            <button id="close" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded px-5 text-md text-center cursor-pointer h-8
-                        text-white">Hủy</button>
-            </div>
-        </div>
-        <div id="failed"
-            class="hidden grid justify-items-center max-w-lg p-6 bg-white border border-gray-300 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md py-6 space-y-5 drop-shadow-lg">
-            <i class="fa fa-exclamation-circle fa-5x text-[#B30F0F] p-2" aria-hidden="true"></i>
-            <p class="text-[#B30F0F] text-xl font-bold p-2">Đặt chỗ thuê không thành công</p>
-            <p class="font-normal text-sm text-center text-black">Bạn đang thuê 1 boardgame khác nên không thể đặt chỗ
-            boardgame mới được (thời gian còn lại của boardgame cũ > 12 tiếng)</p>
-        </div>
-
-        <div id="successful"
-            class="hidden grid justify-items-center max-w-lg p-32 bg-white border border-gray-300 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md py-6 space-y-5 drop-shadow-lg">
-            <i class="fa fa-check-circle fa-5x text-[#0FB3AF] p-2" aria-hidden="true"></i>
-            <p class="text-[#0FB3AF] text-xl font-bold p-2">Đặt chỗ thuê thành công</p>
-            <p class="font-normal text-sm text-center text-black">Bạn đã đặt chỗ thuê thành công</p>
-
-        </div>
-
-        <!-- Javascript code -->
-        <script>
-            var openButton = document.getElementById('open');
-            var dialog = document.getElementById('dialog');
-            var closeButton = document.getElementById('close');
-            var overlay = document.getElementById('overlay');
-            var submitButton = document.getElementById('submit');
-            var failed = document.getElementById('failed');
-            var successful = document.getElementById('successful');
-
-
-            // show the overlay and the dialog
-            openButton.addEventListener('click', function () {
-            dialog.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-            });
-
-            // hide the overlay and the dialog
-            closeButton.addEventListener('click', function () {
-            dialog.classList.add('hidden');
-            overlay.classList.add('hidden');
-            });
-            submitButton.addEventListener('click', function () {
-            if (false) {
-                successful.classList.remove('hidden');
-                dialog.classList.add('hidden');
-                overlay.classList.remove('hidden');
-                setTimeout(STimeout, 3000);
-            }
-            else {
-                failed.classList.remove('hidden');
-                dialog.classList.add('hidden');
-                overlay.classList.remove('hidden');
-                setTimeout(STimeout, 3000);
-            }
-            });
-            function STimeout() {
-            successful.classList.add('hidden');
-            failed.classList.add('hidden');
-            overlay.classList.add('hidden')
-            }
-        </script>
+                    Thuê
+                </button>
+            </a>
         </dh-component>
-    </div> {% endcomment %}
-
-  <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl">
-    <p class="text-xl text-gray-500"><strong>Mô tả: </strong>{{ boardgame.description }}</p>
-    <p class="text-xl text-gray-500"><strong>Luật chơi: </strong>{{ boardgame.rule}}</p>
-
-  </div>
-
-  <!-- Hiển thị danh sách đánh giá -->
-  <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl comment-list">
-    <div>
-      <h4 class="text-xxl text-gray-500"> Customer reviews </h4>
-
-      <p class="text-xl text-gray-500"><strong>Tổng đánh giá: </strong>{{ reviews.count }}</p>
-      {% for r in page_obj %}
-      <div class="review">
-        <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user.username|title }}</p>
-        <p class="text-xl text-gray-500"><strong>Thời gian đánh giá: </strong>{{ r.date| date:"d M, Y" }}</p>
-        <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ r.review }}</p>
-        <p class="text-xl text-gray-500"><strong>Số sao: </strong>{{ r.rating}}</p>
-      </div>
-      {% empty %}
-      <p>No reviews yet.</p>
-      {% endfor %}
     </div>
-    <!-- Chuyển trang -->
-    <div class="text-center">
-        {% if page_obj.has_other_pages %}
+
+    <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl">
+        <p class="text-xl text-gray-500"><strong>Mô tả: </strong>{{ boardgame.description }}</p>
+        <p class="text-xl text-gray-500"><strong>Luật chơi: </strong>{{ boardgame.rule}}</p>
+
+    </div>
+
+    <!-- Hiển thị danh sách đánh giá -->
+    <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl comment-list">
+        <div>
+            <h4 class="text-xxl text-gray-500"> Customer reviews </h4>
+
+            <p class="text-xl text-gray-500"><strong>Tổng đánh giá: </strong>{{ reviews.count }}</p>
+            {% for r in page_obj %}
+            <div class="review">
+                <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user.username|title }}</p>
+                <p class="text-xl text-gray-500"><strong>Thời gian đánh giá: </strong>{{ r.date| date:"d M, Y" }}</p>
+                <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ r.review }}</p>
+                <p class="text-xl text-gray-500"><strong>Số sao: </strong>{{ r.rating}}</p>
+            </div>
+            {% empty %}
+            <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+        <!-- Chuyển trang -->
+        <div class="text-center">
+            {% if page_obj.has_other_pages %}
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                    <a href="?page=1">First</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
                 {% endif %}
                 {% for num in page_obj.paginator.page_range %}
-                    {% if num == page_obj.number %}
-                        <span class="current-page">{{ num }}</span>
-                    {% else %}
-                        <a href="?page={{ num }}">{{ num }}</a>
-                    {% endif %}
+                {% if num == page_obj.number %}
+                <span class="current-page">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
                 {% endif %}
             </div>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
-  </div>
 
 
-  <div class="col-span-2 p-6 bg-gray-100 rounded-xl comment-list">
-    <h4 class="text-xxl text-gray-500"> Star reviews </h4>
-    <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0 }}
-    </p>
+    <div class="col-span-2 p-6 bg-gray-100 rounded-xl comment-list">
+        <h4 class="text-xxl text-gray-500"> Star reviews </h4>
+        <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0
+            }}
+        </p>
 
-  </div>
+    </div>
 
-  <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl form-group">
-    <h4 class="text-xxl text-gray-500"> Add a review </h4>
-    <form method="POST">
-      {% csrf_token %}
-      {{ review_form.as_p }}
-      <button type="submit">Submit</button>
-    </form>
-  </div>
+    <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl form-group">
+        <h4 class="text-xxl text-gray-500"> Add a review </h4>
+        <form method="POST">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </div>
 
 
@@ -284,23 +128,23 @@
 
 
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-  <h2 class="mb-12 text-2xl text-center">Related boardgames</h2>
+    <h2 class="mb-12 text-2xl text-center">Related boardgames</h2>
 
-  <div class="grid grid-cols-3 gap-3">
-    {% for boardgame in related_boardgame %}
-    <div>
-      <a href="{% url 'boardgame:detail' boardgame.bgid %}">
-        <div class="rounded-t-xl bg-white">
-          <img src="{{ boardgame.image.url }}" class="rounded-t-xl object-contain max-h-48 w-full transition "
-            sizes="100vw">
-        </div>
+    <div class="grid grid-cols-3 gap-3">
+        {% for boardgame in related_boardgame %}
+        <div>
+            <a href="{% url 'boardgame:detail' boardgame.bgid %}">
+                <div class="rounded-t-xl bg-white">
+                    <img src="{{ boardgame.image.url }}" class="rounded-t-xl object-contain max-h-48 w-full transition "
+                        sizes="100vw">
+                </div>
 
-        <div class="p-6 bg-white rounded-b-xl">
-          <h2 class="text-2xl">{{ boardgame.title }}</h2>
-          <p class="text-lg text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
-          <p class="text-lg text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
-          <!--Số sao-->
-          <!-- {% for boardgame_rating in related_boardgame_rating %}
+                <div class="p-6 bg-white rounded-b-xl">
+                    <h2 class="text-2xl">{{ boardgame.title }}</h2>
+                    <p class="text-lg text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                    <p class="text-lg text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+                    <!--Số sao-->
+                    <!-- {% for boardgame_rating in related_boardgame_rating %}
                                 {% if boardgame.name == boardgame_rating.boardgame.name%} 
                                     <div class="flex items-center pt-1">
                                         <div class="text-[#0FB3AF] text-2xl font-medium pr-2 ">
@@ -327,8 +171,8 @@
                                 {% endif %} 
                             {% endfor %}    -->
 
-          <!-- Số lượt đánh giá-->
-          <!-- {% for boardgame_rating in related_boardgame_rating %}
+                    <!-- Số lượt đánh giá-->
+                    <!-- {% for boardgame_rating in related_boardgame_rating %}
                                 {% if boardgame.name == boardgame_rating.boardgame.name%} 
                                     <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
                                         {{ boardgame_rating.total_comments }} Đánh giá
@@ -337,10 +181,226 @@
                             {% endfor %}
                         </div> -->
 
-      </a>
+            </a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-  </div>
+</div>
+
+<div class="ml-64 w-3/5">
+    <div class="ml-10 mt-10">
+        <button
+            class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+            Mô tả
+        </button>
+        <button
+            class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+            Quy tắc
+        </button>
+        <button
+            class="px-4 py-1 mr-4 text-sm text-[#0FB3AF] font-semibold rounded-full border border-[#0FB3AF] hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+            Bình luận
+        </button>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+        <div>
+            <div class="ml-8 mt-6 pt-3 text-xl font-bold text-black-500 font-['Open Sans']">
+                Câu hỏi và bình luận của khách hàng
+            </div>
+            <div class="p-8 max-w-sm ml-8 mt-6 bg-white rounded-xl shadow-lg flex items-center space-x-4">
+                <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
+                    <img src="/media/user_directory_path/avatar_user.png" alt="tailwind logo" class="rounded-xl" />
+                </div>
+                <div>
+                    <p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="text-sm text-slate-500">
+                            10/06/2023
+                        </div>
+
+                        <div class="ml-9 flex items-center pt-1">
+
+                            <svg aria-hidden="true" class="w-3 h-3 text-[#0FB3AF]" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <title>First star</title>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                            <svg aria-hidden="true" class="w-3 h-3 text-[#0FB3AF]" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <title>Second star</title>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                            <svg aria-hidden="true" class="w-3 h-3 text-[#0FB3AF]" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <title>Third star</title>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                            <svg aria-hidden="true" class="w-3 h-3 text-[#0FB3AF]" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <title>Fourth star</title>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                            <svg aria-hidden="true" class="w-3 h-3 text-gray-300 " fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <title>Fifth star</title>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                        </div>
+
+                    </div>
+                    </p>
+                    <div class="text-xl font-medium text-black">Ngọc Nhi</div>
+                    <p class="text-slate-500">Thật tuyệt vời</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="ml-10 pt-3 mt-6 text-xl font-bold text-black-500 font-['Open Sans']">
+                Đánh giá của khách hàng
+            </div>
+            <div class="ml-12 mt-4 flex items-center pt-1">
+                <div class="text-[#0FB3AF] text-2xl font-medium pr-2 px-3">
+                    4.0
+                </div>
+                <svg aria-hidden="true" class="w-7 h-7 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                    <title>First star</title>
+                    <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                    </path>
+                </svg>
+                <svg aria-hidden="true" class="w-7 h-7 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                    <title>Second star</title>
+                    <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                    </path>
+                </svg>
+                <svg aria-hidden="true" class="w-7 h-7 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                    <title>Third star</title>
+                    <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                    </path>
+                </svg>
+                <svg aria-hidden="true" class="w-7 h-7 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                    <title>Fourth star</title>
+                    <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                    </path>
+                </svg>
+                <svg aria-hidden="true" class="w-7 h-7 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                    <title>Fifth star</title>
+                    <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                    </path>
+                </svg>
+            </div>
+            <div class="ml-10 mt-4 h-8 w-64  flex content-center">
+                <div class="flex-none text-[#0FB3AF] items-center text-xl font-medium pr-2 px-3">
+                    5.0
+                </div>
+                <div class="grow h-5 mt-1 items-center bg-gray-300">
+                    <div class="w-48 h-5 items-center bg-[#0FB3AF]"></div>
+                </div>
+            </div>
+            <div class="ml-10 mt-2 h-8 w-64  flex content-center">
+                <div class="flex-none text-[#0FB3AF] items-center text-xl font-medium pr-2 px-3">
+                    4.0
+                </div>
+                <div class="grow h-5 mt-1 items-center bg-gray-300">
+                    <div class="w-32 h-5 items-center bg-[#0FB3AF]"></div>
+                </div>
+            </div>
+            <div class="ml-10 mt-2 h-8 w-64  flex content-center">
+                <div class="flex-none text-[#0FB3AF] items-center text-xl font-medium pr-2 px-3">
+                    3.0
+                </div>
+                <div class="grow h-5 mt-1 items-center bg-gray-300">
+                    <div class="w-0 h-5 items-center bg-[#0FB3AF]"></div>
+                </div>
+            </div>
+            <div class="ml-10 mt-2 h-8 w-64  flex content-center">
+                <div class="flex-none text-[#0FB3AF] items-center text-xl font-medium pr-2 px-3">
+                    2.0
+                </div>
+                <div class="grow h-5 mt-1 items-center bg-gray-300">
+                    <div class="w-0 h-5 items-center bg-[#0FB3AF]"></div>
+                </div>
+            </div>
+            <div class="ml-10 mt-2 h-8 w-64  flex content-center">
+                <div class="flex-none text-[#0FB3AF] items-center text-xl font-medium pr-2 px-3">
+                    1.0
+                </div>
+                <div class="grow h-5 mt-1 items-center bg-gray-300">
+                    <div class="w-0 h-5 items-center bg-[#0FB3AF]"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="ml-10 pt-3 mt-8 text-xl font-bold text-black-500 font-['Open Sans']">
+            Đánh giá của bạn
+        </div>
+        <div class="ml-12 mt-4 flex items-center pt-1">
+
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <title>First star</title>
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <title>Second star</title>
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <title>Third star</title>
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <title>Fourth star</title>
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                <title>Fifth star</title>
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
+            </svg>
+        </div>
+        <div class="mt-4 ml-12 flex border w-3/4 h-32 p-3 rounded mb-4 shadow-md ">
+            <input type="text" class="focus:outline-none self-start w-full" placeholder="Viết bình luận" />
+        </div>
+        <div class=" w-4/5 grid grid-cols-2 gap-2">
+            <div class="mt-4 ml-12 flex border h-12 p-3 rounded mb-4 shadow-md ">
+                <input type="text" class="focus:outline-none self-start w-full" placeholder="Tên" />
+            </div>
+            <div class="mt-4 ml-12 flex border h-12 p-3 rounded mb-4 shadow-md ">
+                <input type="text" class="focus:outline-none self-start w-full" placeholder="Email" />
+            </div>
+        </div>
+        <div class="mt-4 ml-12 flex border w-3/4 h-12 p-3 rounded mb-4 shadow-md ">
+            <input type="text" class="focus:outline-none self-start w-full" placeholder="Website" />
+        </div>
+        <button type="button" class=" ml-12 mt-4 bg-[#0FB3AF] hover:bg-[#0FB3AFCC] rounded-md px-3 text-sm h-8
+                text-white">
+            Gửi
+        </button>
+    </div>
 </div>
 
 {% endblock %}

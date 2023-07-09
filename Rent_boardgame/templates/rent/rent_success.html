@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Rent Success {% endblock %}
+
+{% block content %}
+    <h1>Rent Success</h1>
+    <h3>Your Rental Requests:</h3>
+    {% for rental_request in rental_requests %}
+        <p>{{ rental_request }}</p>
+    {% endfor %}
+{% endblock %}
