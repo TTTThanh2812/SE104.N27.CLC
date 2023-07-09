@@ -3,7 +3,7 @@ from rent.models import RentBoardgame
 
 class RentBoardgameAdmin(admin.ModelAdmin):
     list_display = ['renter', 'boardgame_title', 'boardgame_rent_id']
-    list_filter = ['status', 'rental_status']
+    list_filter = ['order_status', 'rental_status']
     search_fields = ['renter__username', 'boardgame_numbers__boardgame__title']
 
     def boardgame_title(self, obj):

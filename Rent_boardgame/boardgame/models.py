@@ -91,6 +91,7 @@ class  Boardgame(models.Model):
 
     boardgame_status = models.CharField(choices=STATUS_BG, max_length=20, default="out_of_stock")
     in_stock = models.PositiveIntegerField(default=0)
+    order = models.PositiveIntegerField(default=0)
     rental = models.PositiveIntegerField(default=0)
     total = models.PositiveIntegerField(default=0)
 
@@ -129,6 +130,7 @@ class BoardgameImages(models.Model):
         verbose_name_plural = "Boardgame Images"
 
 STATUS_BGN = (
+        ('order', 'Order'),
         ('rental', 'Rental'),
         ('in_stock', 'In Stock'),
 )
@@ -151,6 +153,7 @@ def update_boardgame_stats(sender, instance, **kwargs):
     boardgame_numbers = boardgame.boardgame_numbers.all()
     
     in_stock_count = boardgame_numbers.filter(boardgame_number_status='in_stock').count()
+    order_count = boardgame_numbers.filter(boardgame_number_status='order').count()
     rental_count = boardgame_numbers.filter(boardgame_number_status='rental').count()
     
     if in_stock_count == 0:
@@ -159,8 +162,9 @@ def update_boardgame_stats(sender, instance, **kwargs):
         boardgame.boardgame_status = 'stocking'
     
     boardgame.in_stock = in_stock_count
+    boardgame.order = order_count
     boardgame.rental = rental_count
-    boardgame.total = boardgame.in_stock + boardgame.rental
+    boardgame.total = boardgame.in_stock + boardgame.order + boardgame.rental
     
     boardgame.save()
 
@@ -170,6 +174,7 @@ def update_boardgame_stats_on_delete(sender, instance, **kwargs):
     boardgame_numbers = boardgame.boardgame_numbers.all()
     
     in_stock_count = boardgame_numbers.filter(boardgame_number_status='in_stock').count()
+    order_count = boardgame_numbers.filter(boardgame_number_status='order').count()
     rental_count = boardgame_numbers.filter(boardgame_number_status='rental').count()
     
     if in_stock_count == 0:
@@ -178,25 +183,13 @@ def update_boardgame_stats_on_delete(sender, instance, **kwargs):
         boardgame.boardgame_status = 'stocking'
     
     boardgame.in_stock = in_stock_count
+    boardgame.order = order_count
     boardgame.rental = rental_count
-    boardgame.total = boardgame.in_stock + boardgame.rental
+    boardgame.total = boardgame.in_stock + boardgame.order + boardgame.rental
     
     boardgame.save()
 
-# @receiver(post_save, sender=RentBoardgame)
-# def update_boardgame_stats_on_rental_status(sender, instance, **kwargs):
-#     rental = instance
-#     boardgame_number = rental.boardgame_number
 
-#     if rental.rental_status == 'canceled':
-#         boardgame_number.boardgame.in_stock += 1
-#         boardgame_number.boardgame.rental -= 1
-#     elif rental.rental_status in ['active', 'expired']:
-#         boardgame_number.boardgame.in_stock -= 1
-#         boardgame_number.boardgame.rental += 1
-
-#     boardgame_number.boardgame.total = boardgame_number.boardgame.in_stock + boardgame_number.boardgame.rental
-#     boardgame_number.boardgame.save()
 
 RATING = (
     (1, "★☆☆☆☆"),
