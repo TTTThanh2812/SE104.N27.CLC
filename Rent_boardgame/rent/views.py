@@ -14,14 +14,19 @@ def request_rent_boardgame(request, bgid):
             boardgame_number = boardgame.boardgame_numbers.filter(boardgame_number_status='in_stock').first()
             rent_request.boardgame_numbers = boardgame_number
             
+            start_date = rent_request.start_date
+            end_date = rent_request.end_date
+            rental_days = (end_date - start_date).days
             # Tính toán giá thuê, giá cọc, tổng tiền phải trả
-            rental_price = rent_request.calculate_rental_price()
-            # deposit_price = rent_request.calculate_deposit_price()
-            # total_price = rent_request.calculate_total_price()
+            rental_price_per_day = float(boardgame_number.boardgame.price) * 0.1
+            rental_price = rental_price_per_day * rental_days
+            # rental_price = rent_request.calculate_rental_price()
+            deposit_price = rental_price * 0.5
+            total_price = rental_price + deposit_price
 
             rent_request.rental_price = rental_price
-            # rent_request.deposit_price = deposit_price
-            # rent_request.total_price = total_price
+            rent_request.deposit_price = deposit_price
+            rent_request.total_price = total_price
             rent_request.save()
             return redirect('rent:rent_success')
     else:
