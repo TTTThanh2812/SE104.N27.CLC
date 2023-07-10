@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'boardgame',
     'userauths',
     'rent',
+    'notifications',
 ]
 
 MIDDLEWARE = [
