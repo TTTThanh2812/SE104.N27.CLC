@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,26 +15,71 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./Tailwind/build/tailwind.css">
 </head>
-
 <body>
-    <div class="flex justify-center mt-10">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-            class="w-6 h-6 mt-3">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-        </svg>
-        <h1 class="mb-8 ml-10 text-4xl font-bold text-[#3C3C3B]">Thông báo</h1>
+    <div class=" grid justify-items-center pb-32 pt-16 ">
+        <div id="overlay" class="fixed z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div>
+        <div id="dialog" class="fixed z-50 bg-white rounded-md py-6 drop-shadow-lg">
+            <div class="grid justify-items-end px-4">
+                <button type="button" class="bg-white rounded-md px-1 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 active:scale-75 transition-transform duration-700 hover:-translate-y-1 hover:scale-110">
+                    <span class="sr-only">Close menu</span>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </button>
+            </div>
+            <div class="grid justify-items-center items-center w-full px-16 pb-2">
+                <h3 class="font-bold text-xl sm:text-3xl text-[#3C3C3B]">Thông báo</h3>
+            </div>
+            <div class="max-h-96 overflow-y-hidden hover:overflow-y-auto px-8 ">
+                <div id="content"
+                    class="grid justify-items-center bg-white px-8 py-4 rounded text-black w-full text-sm">
+                    <div class="grid justify-self-start text-[#3C3C3B]">
+                        Hôm nay
+                    </div>
+                    <div class="flex flex-col justify-center h-32">
+                        <div
+                            class="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 md:max-w-2xl w-96 bg-white border border-l-2 border-l-[#3C3C3B] pl-3 rounded shadow-lg">
+                            <div
+                                class="self-center w-20 md:w-1/5 h-20 bg-white grid place-items-center border border-[#D9D9D9] rounded">
+                                <img src="/src/images/Boardgame/Uno.png" alt="" class="rounded w-full h-full" />
+                            </div>
+                            <div class="w-full md:w-2/3 bg-white flex flex-col space-y-1 pl-3 py-2">
+                                <div class=" inline-flex items-center justify-between w-full">
+                                    <div class="inline-flex items-center">
+                                        <h3 class="text-[#3C3C3B] md:text-xs text-xs font-regular font-[Open Sans]">
+                                            Thông
+                                            báo
+                                            Boardgame mới</h3>
+                                    </div>
+                                    <p class="pl-6 text-xs text-gray-500">
+                                        12:43
+                                    </p>
+                                </div>
+                                <p class="text-[#3C3C3B] md:text-xs text-xs font-regular font-[Open Sans]">UNO</p>
+                                <p class="text-[#3C3C3B] md:text-xs text-xs font-regular font-[Open Sans]">Thể loại: Thẻ
+                                    bài</p>
+                                <p class="text-[#3C3C3B] md:text-xs text-xs font-regular font-[Open Sans]">Phiên bản:
+                                    Battle</p>
+                            </div>
+                        </div>
 
-    </div>
-    <div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg flex items-center space-x-4">
-        <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
-            <img src="/media/item_images/Chess.jpg" alt="tailwind logo" class="rounded-xl" />
+                    </div>
+                </div>
+                <!-- <div id="empty" class="hidden flex justify-between px-32 py-8">
+                    <p class="text-2xl text-gray-300 font-[Open Sans]">No new notifications</p>
+                </div> -->
+            </div>
+            <div class="flex justify-center w-full">
+                <button id="clear" class="inline-flex text-sm bg-white justify-self-center px-4 py-2 w-32 text-red-500 items-center rounded font-medium
+shadow transform active:scale-75 transition-transform duration-700 hover:bg-red-500
+hover:text-white hover:-translate-y-1 hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 ml-1 sm:mr-4" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Clear all
+                </button>
+            </div>
         </div>
-        <div>
-            <div class="text-xl font-medium text-black">Thông báo Boardgme mới</div>
-            <p class="text-slate-500">UNO</p>
-            <p class="text-slate-500">Thể loại: Thẻ bài</p>
-            <p class="text-slate-500">Phiên bản: Battle</p>
-        </div>
     </div>
-
 </body>
+</html>
