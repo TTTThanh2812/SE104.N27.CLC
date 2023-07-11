@@ -72,13 +72,33 @@ def detail(request, boardgame_id):
 
     return render(request, 'boardgame/detail.html', context)
 
-def search_view(request):
-    query = request.GET.get('query', '')
+def search_boardgames(query):
     boardgames = Boardgame.objects.filter(title__icontains=query)
-    
-    context = {
-        'boardgames': boardgames,
-        'query': query,
-    }
-    
-    return render(request, 'boardgame/search.html', context)
+    return boardgames
+
+def sort_boardgames(boardgames, sort_by):
+    if sort_by == 'price_asc':
+        boardgames = boardgames.order_by('price')
+    elif sort_by == 'price_desc':
+        boardgames = boardgames.order_by('-price')
+    return boardgames
+
+def search_view(request):
+    if request.method == 'GET':
+        query = request.GET.get('query', '')
+        sort_by = request.GET.get('sort_by', '')
+
+        # Tìm kiếm boardgame
+        boardgames = search_boardgames(query)
+
+        # Sắp xếp boardgame
+        if sort_by:
+            boardgames = sort_boardgames(boardgames, sort_by)
+
+        context = {
+            'boardgames': boardgames,
+            'query': query,
+            'sort_by': sort_by,
+        }
+
+        return render(request, 'boardgame/search.html', context)
