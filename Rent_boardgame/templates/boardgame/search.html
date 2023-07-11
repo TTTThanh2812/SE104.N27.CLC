@@ -6,10 +6,10 @@
     <div class="text-center pt-12 text-3xl font-bold text-[#0FB3AF]">Thể loại</div>
     <h1 class="text-left pt-6 text-xl font-medium text-[#0FB3AF] px-48 pb-4">{{ category.name }}</h1>
 
-    <!-- Search form -->
-    <form action="{% url 'boardgame:search' %}" method="GET">
-        <div class="mt-6 ml-80 w-4/5 flex justify-around items-center">
-            <div class="flex justify-center">
+    <div class="mt-6 ml-80 w-4/5 flex justify-around items-center">
+        <!-- Search form -->
+        <div class="flex justify-center">
+            <form action="{% url 'boardgame:search' %}" method="GET">
                 <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded mb-4 shadow-md ">
                     <input type="text" name="q" placeholder="Tìm kiếm...">
                     <button type="submit"
@@ -17,19 +17,30 @@
                         Tìm kiếm
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
-    </form>
+        <!-- Sort options -->
+        <div>
+            <form action="{% url 'boardgame:search' %}" method="GET">
+                <input type="hidden" name="query" value="{{ query }}">
+                <select name="sort_by" id="sort_by">
+                  <option value="">None</option>
+                  <option value="price" {% if sort_by == 'price_asc' %}selected{% endif %}>Price (Low to High)</option>
+                  <option value="price" {% if sort_by == 'price_desc' %}selected{% endif %}>Price (High to Low)</option>
+                </select>
+                <button type="submit"
+                    class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                    Sắp xếp
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-4 h-4">
+                        <path fill-rule="evenodd"
+                            d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
+                            clip-rule="evenodd" />
+                </svg>
 
-    <!-- Sort options -->
-    <select name="sort">
-        <option value="name">Name</option>
-    </select>
-    <select name="sort">
-        <option value="players">Players</option>
-        <option value="playtime">Playtime</option>
-        <option value="author">Author</option>
-    </select>
+            </button>
+            </form>
+        </div>
+    </div>
 
     <!-- Boardgame list -->
     {% if boardgames %}
