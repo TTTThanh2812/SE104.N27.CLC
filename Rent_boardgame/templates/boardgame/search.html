@@ -8,8 +8,17 @@
 
     <!-- Search form -->
     <form action="{% url 'boardgame:search' %}" method="GET">
-        <input type="text" name="q" placeholder="Search board games">
-        <button class="fas fa-search" type="submit">Search</button>
+        <div class="mt-6 ml-80 w-4/5 flex justify-around items-center">
+            <div class="flex justify-center">
+                <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded mb-4 shadow-md ">
+                    <input type="text" name="q" placeholder="Tìm kiếm...">
+                    <button type="submit"
+                        class="bg-black hover:bg-[#0FB3AFCC] rounded shadow-md  px-3 text-sm h-12 text-white">
+                        Tìm kiếm
+                    </button>
+                </div>
+            </div>
+        </div>
     </form>
 
     <!-- Sort options -->
@@ -23,59 +32,65 @@
     </select>
 
     <!-- Boardgame list -->
-    {% comment %}<ul>
-        <div class="grid grid-cols-3 gap-3 ">
-            {% for boardgame in boardgames %}
-                {{boardgame}}
-                {% comment %} <div class="shadow bg-[#ffffff] rounded-lg">
-                    <!-- href -> đi tới boardgame cụ thể -->
-                    <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
-                        <!-- Hình ảnh boardgame -->
-                        <div >
-                            <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
-                        </div>
+    {% if boardgames %}
+        <h1>Search Results for "{{ query }}"</h1>
 
-                        <div class="p-6 rounded-b-xl bg-white-100">
-                            <!-- Thông tin boardgame -->
-                            <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
-                            <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
-                            <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
-                            <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
-
-                            <!--Số sao-->
-                            {{boardgame.get_average_rating}}
-                            <!-- {% for boardgame_rating in boardgame_ratings %}
-                                {% if boardgame.name == boardgame_rating.boardgame.name%}                        
-                                        
-                                        {% for star in boardgame_rating.draw_average_stars %}
-                                            <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
-                                                <title> {{star}}</title>
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                        {% endfor %}  
-                                        
-                                        {% for non_star in boardgame_rating.draw_non_stars %}
-                                            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg> 
-                                        {% endfor %} 
-                                    </div>
-                                {% endif %} 
-                            {% endfor %}     -->
-                                
-                            <!-- Số lượt đánh giá-->
-                            <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
-                                {{boardgame.reviews.all.count}} Đánh giá
-                            </div> 
-
-                        </div>
-                    </a>
-                </div> {% endcomment %}
-    {% comment %}        {% endfor %}
-        </div>
-    </ul>{% endcomment %}
+        <ul>
+            <div class="grid grid-cols-3 gap-3 ">
+                {% for boardgame in boardgames %}
+                    <div class="shadow bg-[#ffffff] rounded-lg">
+                        <!-- href -> đi tới boardgame cụ thể -->
+                        <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                            <!-- Hình ảnh boardgame -->
+                            <div>
+                                <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition "
+                                    sizes="100vw">
+                            </div>
+            
+                            <div class="p-6 rounded-b-xl bg-white-100">
+                                <!-- Thông tin boardgame -->
+                                <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
+                                <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
+                                <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                                <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+            
+                                <!--Số sao-->
+                                {{boardgame.get_average_rating}}
+                                <!-- {% for boardgame_rating in boardgame_ratings %}
+                                            {% if boardgame.name == boardgame_rating.boardgame.name%}                        
+                                                    
+                                                    {% for star in boardgame_rating.draw_average_stars %}
+                                                        <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                                                            <title> {{star}}</title>
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                            </path>
+                                                        </svg>
+                                                    {% endfor %}  
+                                                    
+                                                    {% for non_star in boardgame_rating.draw_non_stars %}
+                                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                            </path>
+                                                        </svg> 
+                                                    {% endfor %} 
+                                                </div>
+                                            {% endif %} 
+                                        {% endfor %}     -->
+            
+                                <!-- Số lượt đánh giá-->
+                                <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
+                                    {{boardgame.reviews.all.count}} Đánh giá
+                                </div>
+            
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+                </div> 
+        </ul>
+    {% else %}
+        <h1>No results found for "{{ query }}"</h1>
+    {% endif %}
 {% endblock %}

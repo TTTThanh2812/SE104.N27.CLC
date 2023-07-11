@@ -8,9 +8,9 @@ from django.db.models import Q
 
 from .models import Boardgame, BoardgameReviews#, Review, Rating, Category
 # Create your views here.
-def detail(request, bgid):
+def detail(request, boardgame_id):
     # boardgame = get_object_or_404(Boardgame, bgid=bgid)
-    boardgame = Boardgame.objects.get(bgid=bgid)
+    boardgame = Boardgame.objects.get(bgid=boardgame_id)
     # Giá thuê của boardgame 
     rental_price = boardgame.rental_price
 
@@ -40,7 +40,7 @@ def detail(request, bgid):
 
     # draw_average_stars = range(0,average_stars)
     # draw_non_stars = range(0,5 - average_stars)
-    related_boardgame = Boardgame.objects.filter(category=boardgame.category, boardgame_status="stocking").exclude(bgid=bgid)[0:3]
+    related_boardgame = Boardgame.objects.filter(category=boardgame.category, boardgame_status="stocking").exclude(bgid=boardgame_id)[0:3]
     # related_boardgame_rating = []
     # for relate_bg_rating in related_boardgame:
     #     total_comments = Review.objects.filter(boardgame=relate_bg_rating).exclude(comment='').count()
@@ -73,20 +73,12 @@ def detail(request, bgid):
     return render(request, 'boardgame/detail.html', context)
 
 def search_view(request):
-    query = request.GET.get('q')  # Get the search query from the request
-
-    boardgames = Boardgame.objects.filter(title__icontains=query).order_by("-date")
-    # if query:
-    #     # Perform the search query using Q objects to search across multiple fields
-    #     search_results = Boardgame.objects.filter(
-    #         Q(title__icontains=query) 
-    #     )
-    # else:
-    #     search_results = Boardgame.objects.none()  # Return an empty queryset if no query is provided
-
+    query = request.GET.get('query', '')
+    boardgames = Boardgame.objects.filter(title__icontains=query)
+    
     context = {
         'boardgames': boardgames,
         'query': query,
     }
-
+    
     return render(request, 'boardgame/search.html', context)

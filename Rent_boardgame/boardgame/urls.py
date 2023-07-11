@@ -5,6 +5,6 @@ app_name = 'boardgame'
 
 urlpatterns = [
     # detail boardgame
-    path("<bgid>/", views.detail, name='detail'),
+    path("detail/<str:boardgame_id>/", views.detail, name='detail'),
     path('search/', views.search_view, name='search'),
 ]
