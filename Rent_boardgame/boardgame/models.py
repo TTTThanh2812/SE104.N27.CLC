@@ -55,18 +55,19 @@ class Producer(models.Model):
     def __str__(self): 
         return self.title
 
-AGE_RATINGS = (
+
+class  Boardgame(models.Model):
+    AGE_RATINGS = (
         ('G', 'Phổ biến'),
         ('7+', 'Trên 7 tuổi'),
         ('12+', 'Trên 12 tuổi'),
         ('16+', 'Trên 16 tuổi'),
         ('18+', 'Trên 18 tuổi'),
     )
-STATUS_BG = (
-    ('out_of_stock', 'Boardgame này đã hết'),
-    ('stocking', 'Boardgame này vẫn còn'),
-)
-class  Boardgame(models.Model):
+    STATUS_BG = (
+        ('out_of_stock', 'Boardgame này đã hết'),
+        ('stocking', 'Boardgame này vẫn còn'),
+    )
     bgid = ShortUUIDField(unique=True, primary_key=True, prefix="bg", alphabet='1234567890', length=2, max_length=6)
     
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -81,13 +82,13 @@ class  Boardgame(models.Model):
     rule = models.TextField(null=True, blank=True, default="This is rule for boardgame")
 
     age_rating = models.CharField(choices=AGE_RATINGS, max_length=5, default="G")
-    people = models.CharField(max_length=100)
-    play_time = models.CharField(max_length=50)
+    people = models.IntegerField()
+    play_time = models.IntegerField()
     price = models.DecimalField(max_digits=99999999999999, decimal_places=2)
 
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True, blank=True)
     producer = models.ForeignKey(Producer, on_delete=models.SET_NULL, null=True, blank=True)
-    publication_year = models.CharField(max_length=4, default="2000")
+    publication_year = models.IntegerField(default="2000")
 
     boardgame_status = models.CharField(choices=STATUS_BG, max_length=20, default="out_of_stock")
     in_stock = models.PositiveIntegerField(default=0)
