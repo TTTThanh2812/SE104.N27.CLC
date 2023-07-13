@@ -6,7 +6,7 @@ from boardgame.forms import BoardgameReviewForm
 from django.core.paginator import Paginator
 from django.db.models import F, DecimalField, ExpressionWrapper
 
-from .models import Boardgame, BoardgameReviews, Version, Author, Producer
+from .models import Boardgame, BoardgameReviews, Category, Version, Author, Producer
 # Create your views here.
 def detail(request, boardgame_id):
     # boardgame = get_object_or_404(Boardgame, bgid=bgid)
@@ -84,6 +84,7 @@ def sort_boardgames(boardgames, sort_by):
     return boardgames
 
 def filter_boardgames(boardgames, filters):
+    category = filters.get('category')
     version = filters.get('version')
     age_rating = filters.get('age_rating')
     people = filters.get('people')
@@ -94,6 +95,8 @@ def filter_boardgames(boardgames, filters):
     rental_price = filters.get('rental_price')
     rating = filters.get('rating')
 
+    if category:
+        boardgames = boardgames.filter(category__title=category)
     if version:
         boardgames = boardgames.filter(version__title=version)
     if age_rating:
@@ -133,6 +136,7 @@ def search_view(request):
         query = request.GET.get('query', '')
         sort_by = request.GET.get('sort_by', '')
         filters = {
+            'category': request.GET.get('category', None),
             'version': request.GET.get('version', None),
             'people': request.GET.get('people', None),
             'age_rating': request.GET.get('age_rating', None),
@@ -153,6 +157,7 @@ def search_view(request):
 
         # Lọc boardgame 
         boardgames = filter_boardgames(boardgames, filters)
+        categorys = Category.objects.all()
         versions = Version.objects.all()
         age_rating_choices = Boardgame.AGE_RATINGS
         authors = Author.objects.all()
@@ -163,6 +168,7 @@ def search_view(request):
             'query': query,
             'sort_by': sort_by,
             'filters': filters,
+            'categorys': categorys,
             'versions': versions,
             'age_rating_choices': age_rating_choices,
             'authors': authors,
