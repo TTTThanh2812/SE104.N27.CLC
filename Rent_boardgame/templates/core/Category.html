@@ -42,520 +42,263 @@
     </div>
 </div>
 
-<!-- Boardgame list -->
-<ul>
-    <div class="grid grid-cols-3 gap-3 ">
-        {% for boardgame in boardgames %}
-        <div class="shadow bg-[#ffffff] rounded-lg">
-            <!-- href -> đi tới boardgame cụ thể -->
-            <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
-                <!-- Hình ảnh boardgame -->
+<div class="grid grid-cols-5 gap-4">
+    <div class="mt-10 ml-16">
+        <!-- Filter options-->
+        <form method="GET" action="{% url 'boardgame:search' %}" >
+            <input type="hidden" name="query" value="{{ query }}">
+            <div class="grid grid-cols-1 gap-4">                
                 <div>
-                    <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition "
-                        sizes="100vw">
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center ">
+                        <label for="version" class="mr-2">Version:</label>
+                    </div>
+                    {% for version in versions %}
+                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                            <input type="checkbox" name="version[]" value="{{ version.title }}" id="{{ version.vid }}">
+                            <label for="{{ version.vid }}">{{ version.title }}</label>
+                        </div>
+                    {% endfor %}
                 </div>
 
-                <div class="p-6 rounded-b-xl bg-white-100">
-                    <!-- Thông tin boardgame -->
-                    <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
-                    <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
-                    <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
-                    <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="age_rating" class="mr-2">Age Rating:</label>
+                    </div>
+                    {% for choice in age_rating_choices %}
+                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                            <input type="checkbox" name="age_rating" id="age_rating_{{ choice.0 }}" value="{{ choice.0 }}">
+                            <label for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+               
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="people">Number of Players:</label>
+                    </div>
+                    <div id="people_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <input type="hidden" name="people" id="people">
+                </div>
+                
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="play_time">Play Time:</label>
+                    </div>
+                    <div id="play_time_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <input type="hidden" name="play_time" id="play_time">
+                </div>
 
-                    <!--Số sao-->
-                    {{boardgame.get_average_rating}}
-                    <!-- {% for boardgame_rating in boardgame_ratings %}
-                                {% if boardgame.name == boardgame_rating.boardgame.name%}                        
-                                        
-                                        {% for star in boardgame_rating.draw_average_stars %}
-                                            <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
-                                                <title> {{star}}</title>
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg>
-                                        {% endfor %}  
-                                        
-                                        {% for non_star in boardgame_rating.draw_non_stars %}
-                                            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                </path>
-                                            </svg> 
-                                        {% endfor %} 
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="author">Author:</label>
+                    </div>
+                    {% for author in authors %}
+                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                            <input type="checkbox" name="author[]" value="{{ author.title }}" id="{{ author.aid }}">
+                            <label for="{{ author.aid }}">{{ author.title }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="producer">Producer:</label>
+                    </div>
+                    {% for producer in producers %}
+                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                            <input type="checkbox" name="producer[]" value="{{ producer.title }}" id="{{ producer.pid }}">
+                            <label for="{{ producer.pid }}">{{ producer.title }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="publication_year">Publication Year:</label>
+                    </div>
+                    <div id="publication_year_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <input type="hidden" name="publication_year" id="publication_year">
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="rental_price_min">Rental Price (Min):</label>
+                        <input type="text" id="rental_price_min" name="rental_price_min" placeholder="Min value" />
+                    </div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="rental_price_max">Rental Price (Max):</label>
+                        <input type="text" id="rental_price_max" name="rental_price_max" placeholder="Max value" />
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="rating">Rating:</label>
+                    </div>
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <select name="rating" id="rating">
+                            <option value="">All</option>
+                            <option value="1">★☆☆☆☆</option>
+                            <option value="2">★★☆☆☆</option>
+                            <option value="3">★★★☆☆</option>
+                            <option value="4">★★★★☆</option>
+                            <option value="5">★★★★★</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                Filter
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-12 ml-12 col-span-4">
+        <!-- Boardgame list -->
+        {% if boardgames %}
+            <h1>Search Results for "{{ query }}"</h1>
+
+            <ul>
+                <div class="grid grid-cols-3 gap-3 ">
+                    {% for boardgame in boardgames %}
+                        <div class="shadow bg-[#ffffff] rounded-lg">
+                            <!-- href -> đi tới boardgame cụ thể -->
+                            <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                                <!-- Hình ảnh boardgame -->
+                                <div>
+                                    <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition "
+                                        sizes="100vw">
+                                </div>
+                
+                                <div class="p-6 rounded-b-xl bg-white-100">
+                                    <!-- Thông tin boardgame -->
+                                    <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
+                                    <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
+                                    <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                                    <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+                
+                                    <!--Số sao-->
+                                    {{boardgame.get_average_rating}}
+                                    <!-- {% for boardgame_rating in boardgame_ratings %}
+                                                {% if boardgame.name == boardgame_rating.boardgame.name%}                        
+                                                        
+                                                        {% for star in boardgame_rating.draw_average_stars %}
+                                                            <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                                                                <title> {{star}}</title>
+                                                                <path
+                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                </path>
+                                                            </svg>
+                                                        {% endfor %}  
+                                                        
+                                                        {% for non_star in boardgame_rating.draw_non_stars %}
+                                                            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                                                                <path
+                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                </path>
+                                                            </svg> 
+                                                        {% endfor %} 
+                                                    </div>
+                                                {% endif %} 
+                                            {% endfor %}     -->
+                
+                                    <!-- Số lượt đánh giá-->
+                                    <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
+                                        {{boardgame.reviews.all.count}} Đánh giá
                                     </div>
-                                {% endif %} 
-                            {% endfor %}     -->
-
-                    <!-- Số lượt đánh giá-->
-                    <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
-                        {{boardgame.reviews.all.count}} Đánh giá
-                    </div>
-
-                </div>
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-</ul>
-
-<div>
-    <div class="grid grid-cols-5 gap-4">
-        <div class="mt-10 ml-16">
-            <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                Thể loại
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                Chiến thuật
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Số người chơi
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                2 người
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                3-4 người
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-sm font-medium flex items-center">
-                <div class="mr-2 mt-4">
-                    0
-                </div>
-
-                <div class="mt-4 w-4/5 h-4 grid justify-items-center border border-[#0FB3AF] bg-white">
-                    <div class="w-2/3 h-4 flex justify-between bg-[#0FB3AF]">
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                    </div>
-                </div>
-                <div class="ml-2 mt-4">
-                    100
-                </div>
-            </div>
-
-            <div class="w-2/3 h-4 ml-6 flex justify-between">
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    15
-                </div>
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    80
-                </div>
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Độ tuổi
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                Dưới 7 tuổi
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Thời gian chơi
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                Dưới 15 phút
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                15-30 phút
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-sm font-medium flex items-center">
-                <div class="mr-2 mt-4">
-                    0
-                </div>
-
-                <div class="mt-4 w-4/5 h-4 grid justify-items-center border border-[#0FB3AF] bg-white">
-                    <div class="w-2/3 h-4 flex justify-between bg-[#0FB3AF]">
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                    </div>
-                </div>
-                <div class="ml-2 mt-4">
-                    120
-                </div>
-            </div>
-
-            <div class="w-2/3 h-4 ml-6 flex justify-between">
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    15
-                </div>
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    80
-                </div>
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Tác giả
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                Tác giả 1
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Nhà xuất bản
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                NXB 1
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Năm xuất bản
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                2020
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-sm font-medium flex items-center">
-                <div class="mr-2 mt-4">
-                    2000
-                </div>
-
-                <div class="mt-4 w-4/5 h-4 grid justify-items-center border border-[#0FB3AF] bg-white">
-                    <div class="w-2/3 h-4 flex justify-between bg-[#0FB3AF]">
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                    </div>
-                </div>
-                <div class="ml-2 mt-4">
-                    2023
-                </div>
-            </div>
-
-            <div class="w-2/3 h-4 ml-6 flex justify-between">
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    2005
-                </div>
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    2016
-                </div>
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Giá thuê
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                20.000-30.000
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-sm font-medium flex items-center">
-                <div class="mr-2 mt-4">
-                    0
-                </div>
-
-                <div class="mt-4 w-4/5 h-4 grid justify-items-center border border-[#0FB3AF] bg-white">
-                    <div class="w-2/3 h-4 flex justify-between bg-[#0FB3AF]">
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                        <div class="rounded-full w-4 h-4 border border-[#0FB3AF] bg-white"></div>
-                    </div>
-                </div>
-                <div class="ml-2 mt-4">
-                    500.000
-                </div>
-            </div>
-
-            <div class="w-2/3 h-4 ml-6 flex justify-between">
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    100.000
-                </div>
-                <div class="text-[#0FB3AF] mt-2 text-sm font-medium">
-                    400.000
-                </div>
-            </div>
-            <div class="text-[#0FB3AF] mt-5 text-xl font-medium flex items-center">
-                Đánh giá
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="ml-2 w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-            </div>
-            <div class="text-[#0FB3AF] mt-4 text-md font-medium flex items-center">
-                <div class="mr-3 w-5 h-5 border-2 border-[#0FB3AF] hover:border-[#0FB3AFCC]">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                </div>
-                Dưới 1 sao
-            </div>
-
-        </div>
-        <div class="mt-12 ml-12 col-span-4">
-            <div class="h-4/5 w-3/4">
-                <div class="grid grid-cols-3 gap-8 justify-items-center items-center">
-                    <div
-                        class="pb-4 max-w-sm w-full h-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-
-                        <div class=" w-full">
-                            <div><img class="rounded-t-lg object-cover max-h-48 w-full transition " sizes="100vw"
-                                    srcset="" src="/media/item_images/chess.jpg">
-                            </div>
-                            <div class="font-medium px-3">
-                                UNO
-                            </div>
-                            <table class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs pt-1 mx-3">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            Số lượng người chơi:
-                                        </td>
-                                        <td class="px-3">
-                                            5 - 10 (người)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Thời gian:
-                                        </td>
-                                        <td class="px-3">
-                                            60 phút
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="flex items-center pt-1">
-                                <div class="text-[#0FB3AF] text-2xl font-medium pr-2 px-3">
-                                    4
+                
                                 </div>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>First star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Second star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Third star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Fourth star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Fifth star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs px-3">
-                                33 đánh giá
-                            </div>
+                            </a>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="grid justify-items-center bg-white pt-16 flex items-center flex-wrap">
-                <nav aria-label="Page navigation">
-                    <ul class="inline-flex space-x-2">
-                        <li><button
-                                class="flex items-center justify-center w-10 h-10 text-[#3C3C3BCC]  rounded-full hover:bg-[#BFF5F3]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-full h-full p-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                                </svg>
-                        </li>
-                        <li><button
-                                class="w-10 h-10 text-[#3C3C3BCC] font-bold font-[Open Sans] rounded-full hover:bg-[#BFF5F3]">1</button>
-                        </li>
-                        <li><button
-                                class="w-10 h-10 text-white font-bold font-[Open Sans] bg-[#0FB3AF] rounded-full hover:bg-[#BFF5F3] ">2</button>
-                        </li>
-                        <li><button
-                                class="w-10 h-10 text-[#3C3C3BCC] font-bold font-[Open Sans] rounded-full hover:bg-[#BFF5F3]">3</button>
-                        </li>
-                        <li><button
-                                class="flex items-center justify-center w-10 h-10 text-[#3C3C3BCC] rounded-full hover:bg-[#BFF5F3]">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-full h-full p-2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                </svg>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="h-4/5 w-3/4">
-                <div class="text-[#0FB3AF] font-medium py-8 px-8" style="font-family:Maven Pro">Có thể bạn sẽ thích
-                </div>
-                <div class="grid grid-cols-3 gap-8 justify-items-center items-center">
-                    <div
-                        class="pb-4 max-w-sm w-full h-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
-
-                        <div class=" w-full">
-                            <div><img class="rounded-t-lg object-cover max-h-48 w-full transition " sizes="100vw"
-                                    srcset="" src="/media/item_images/chess.jpg">
-                            </div>
-                            <div class="font-medium px-3">
-                                UNO
-                            </div>
-                            <table class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs pt-1 mx-3">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            Số lượng người chơi:
-                                        </td>
-                                        <td class="px-3">
-                                            5 - 10 (người)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Thời gian:
-                                        </td>
-                                        <td class="px-3">
-                                            60 phút
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="flex items-center pt-1">
-                                <div class="text-[#0FB3AF] text-2xl font-medium pr-2 px-3">
-                                    4
-                                </div>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>First star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Second star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Third star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Fourth star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor"
-                                    viewBox="0 0 20 20">
-                                    <title>Fifth star</title>
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs px-3">
-                                33 đánh giá
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    {% endfor %}
+                    </div> 
+            </ul>
+        {% else %}
+            <h1>No results found for "{{ query }}"</h1>
+        {% endif %}
     </div>
+</div> 
 
-</div>
+<script>
+    //Number of Players
+    $(document).ready(function () {
+        var peopleSlider = document.getElementById('people_slider');
+        var peopleInput = document.getElementById('people');
+        noUiSlider.create(peopleSlider, {
+            start: [1, 10], // Giá trị mặc định
+            connect: true, // Kết nối hai nút trượt
+            range: {
+                'min': 1, // Giá trị tối thiểu
+                'max': 10 // Giá trị tối đa
+            },
+            tooltips: [true, true], // Hiển thị tooltip
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Number(value);
+                }
+            },
+            step: 1
+        });
+        peopleSlider.noUiSlider.on('update', function (values) {
+            peopleInput.value = values.join(',');
+        });
+    });
+
+    //Play Time
+    $(document).ready(function () {
+        var playTimeSlider = document.getElementById('play_time_slider');
+        var playTimeInput = document.getElementById('play_time');
+        noUiSlider.create(playTimeSlider, {
+          start: [0, 240], // Giá trị mặc định
+          connect: true, // Kết nối hai nút trượt
+          range: {
+            'min': 0, // Giá trị tối thiểu
+            'max': 240 // Giá trị tối đa
+          },
+          tooltips: [true, true], // Hiển thị tooltip
+          format: {
+            to: function (value) {
+              return Math.round(value);
+            },
+            from: function (value) {
+              return Number(value);
+            }
+          }
+        });
+        playTimeSlider.noUiSlider.on('update', function (values) {
+          playTimeInput.value = values.join(',');
+        });
+    });
+
+    //Publication Year:
+    $(document).ready(function () {
+        var publication_yearSlider = document.getElementById('publication_year_slider');
+        var publication_yearInput = document.getElementById('publication_year');
+        noUiSlider.create(publication_yearSlider, {
+            start: [2000, 2023], // Giá trị mặc định
+            connect: true, // Kết nối hai nút trượt
+            range: {
+                'min': 2000, // Giá trị tối thiểu
+                'max': 2023 // Giá trị tối đa
+            },
+            tooltips: [true, true], // Hiển thị tooltip
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Number(value);
+                }
+            },
+            step: 1
+        });
+        publication_yearSlider.noUiSlider.on('update', function (values) {
+            publication_yearInput.value = values.join(',');
+        });
+    });
+</script>
+
 {% endblock %}
