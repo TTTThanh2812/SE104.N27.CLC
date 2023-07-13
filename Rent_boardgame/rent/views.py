@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from rent.models import RentBoardgame
 from rent.forms import RentBoardgameForm
 from boardgame.models import Boardgame
-from decimal import Decimal
+from django.contrib import messages
 
 def request_rent_boardgame(request, bgid):
     boardgame = get_object_or_404(Boardgame, bgid=bgid)
@@ -27,8 +27,25 @@ def request_rent_boardgame(request, bgid):
             rent_request.rental_price = rental_price
             rent_request.deposit_price = deposit_price
             rent_request.total_price = total_price
-            rent_request.save()
-            return redirect('rent:rent_success')
+
+            # Kiểm tra điều kiện thuê
+            previous_rent = RentBoardgame.objects.filter(renter=request.user).order_by('-end_date').last()
+            if previous_rent:
+                if previous_rent.end_date == rent_request.start_date:
+                    # Ngày kết thúc boardgame trước đó trùng với ngày bắt đầu boardgame yêu cầu
+                    # Gửi yêu cầu thuê thành công
+                    rent_request.save()
+                    messages.success(request, "Gửi yêu cầu thuê thành công.")
+                    return redirect('rent:rent_success')
+                elif previous_rent.end_date > rent_request.start_date:
+                    # Ngày kết thúc boardgame trước đó lớn hơn ngày bắt đầu boardgame yêu cầu
+                    # Xuất thông báo yêu cầu thuê không thành công
+                    messages.error(request, "Yêu cầu thuê không thành công.")
+                    return redirect('rent:request_rent_boardgame', bgid=bgid)
+            else:
+                rent_request.save()
+                messages.success(request, "Gửi yêu cầu thuê thành công.")
+                return redirect('rent:rent_success')
     else:
         rent_form = RentBoardgameForm()
         print(rent_form.errors)

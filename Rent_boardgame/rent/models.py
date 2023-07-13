@@ -57,6 +57,9 @@ class RentBoardgame(models.Model):
         self.update_rental_status()
         super().save(*args, **kwargs)
     
+    def is_expired(self):
+        now = timezone.now().date()
+        return self.rental_status == 'active' and self.end_date < now  
 
     def __str__(self):
         return f"{self.renter.username} - {self.boardgame_numbers.boardgame.title} - {self.rid}"

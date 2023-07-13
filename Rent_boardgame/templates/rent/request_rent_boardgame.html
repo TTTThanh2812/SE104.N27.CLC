@@ -3,6 +3,13 @@
 {% block title %}{{ boardgame.title }}{% endblock %}
 
 {% block content %}
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
   <div class="grid justify-items-center">
       <h1 class="mb-8 text-4xl text-center font-bold text-[#3C3C3B]">Nhập thông tin thuê</h1>
       {% comment %} <div class="max-h-96 overflow-y-hidden hover:overflow-y-auto px-8 "> {% endcomment %}
