@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
 
-from boardgame.models import Category, Boardgame#, Rating, Review
+from boardgame.models import Category, Boardgame, Version, Author, Producer
 from userauths.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from core.forms import UserProfileForm
@@ -38,34 +38,19 @@ def allCategories(request):
 def category_view(request, cid):
     category = Category.objects.get(cid=cid)
     boardgames = Boardgame.objects.filter(category=category)
+    versions = Version.objects.all()
+    age_rating_choices = Boardgame.AGE_RATINGS
+    authors = Author.objects.all()
+    producers = Producer.objects.all()
 
-    search_query = request.GET.get('search')
-    if search_query:
-        boardgames = boardgames.filter(name__icontains=search_query)
-
-    sort_option = request.GET.get('sort')
-    if sort_option == 'category':
-        boardgames = boardgames.order_by('category')
-    elif sort_option == 'people':
-        boardgames = boardgames.order_by('people')
-    elif sort_option == 'age':
-        boardgames = boardgames.order_by('age_rating')
-    elif sort_option == 'time':
-        boardgames = boardgames.order_by('play_time')
-    elif sort_option == 'author':
-        boardgames = boardgames.order_by('author')
-    elif sort_option == 'producer':
-        boardgames = boardgames.order_by('producer')
-    elif sort_option == 'year':
-        boardgames = boardgames.order_by('publication_year')
-    elif sort_option == 'price':
-        boardgames = boardgames.order_by('price')
-    elif sort_option == 'rating':
-        boardgames = boardgames.order_by('-average_rating')
     
     return render(request, 'core/category.html', {
         'category': category,
         'boardgames': boardgames,
+        'versions': versions,
+        'age_rating_choices':age_rating_choices,
+        'authors': authors,
+        'producers': producers,
     })
 
 @login_required
