@@ -2,14 +2,14 @@ from django.db import models
 from userauths.models import User
 from django.utils import timezone
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from notifications.signals import notify
 
 ORDER_STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('canceled', 'Canceled'),
-    ]
+    ('pending', 'Pending'),
+    ('accepted', 'Accepted'),
+    ('canceled', 'Canceled'),
+]
 
 RENTAL_STATUS_CHOICES = [
     ('active', 'Active'),
@@ -22,15 +22,14 @@ class RentBoardgame(models.Model):
     renter = models.ForeignKey(User, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
-    boardgame_numbers = models.ForeignKey('boardgame.BoardgameNumbers', 
-                                          on_delete=models.CASCADE)
+    boardgame_numbers = models.ForeignKey('boardgame.BoardgameNumbers', on_delete=models.CASCADE)
     rental_price = models.DecimalField(max_digits=8, decimal_places=2)
     deposit_price = models.DecimalField(max_digits=8, decimal_places=2)
     total_price = models.DecimalField(max_digits=8, decimal_places=2)
     penalty_price = models.DecimalField(max_digits=8, decimal_places=2, default='0')
     created_at = models.DateTimeField(default=timezone.now)  
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
-    rental_status = models.CharField(max_length=20, choices=RENTAL_STATUS_CHOICES, blank=True)
+    rental_status = models.CharField(max_length=20, choices=RENTAL_STATUS_CHOICES, blank=True, null=True)
     
     class Meta:
         ordering = ['rid']
@@ -38,20 +37,19 @@ class RentBoardgame(models.Model):
     def boardgame_rent_id(self):
         return f"{self.boardgame_numbers.boardgame.category.cid}{self.boardgame_numbers.boardgame.version.vid}{self.boardgame_numbers.boardgame.bgid}{self.boardgame_numbers.bgnid}"
 
-    def send_expired_notification(self):
-        user = self.renter
-        message = "Your rental has expired."
-        notify.send(self, recipient=user, verb=message)
+    # def send_expired_notification(self):
+    #     user = self.renter
+    #     message = "Your rental has expired."
+    #     notify.send(self, recipient=user, verb=message)
     
     def update_rental_status(self):
         now = timezone.now().date()
         if self.rental_status == 'active':
             if now > self.end_date:
                 self.rental_status = 'expired'
-        elif self.rental_status == 'replied':
-            self.boardgame_numbers.boardgame_number_status = 'in_stock'
         elif self.order_status == 'accepted':
-            self.rental_status = 'active'
+            if self.boardgame_numbers.boardgame_number_status == 'order':
+                self.rental_status = 'active'
 
     def save(self, *args, **kwargs):
         self.update_rental_status()
@@ -73,15 +71,19 @@ def update_boardgame_stats_on_order_status(sender, instance, **kwargs):
         boardgame_number.boardgame.in_stock -= 1
         boardgame_number.boardgame.order += 1
     elif rental.order_status == 'canceled':
-        boardgame_number.boardgame.in_stock += 1   
+        boardgame_number.boardgame.in_stock += 1
         boardgame_number.boardgame.order -= 1
     elif rental.order_status == 'accepted':
-        boardgame_number.boardgame.order -= 1
-        boardgame_number.boardgame.rental += 1
-        # rental.rental_status = 'Active'
+        if boardgame_number.boardgame_number_status == 'order':
+            boardgame_number.boardgame.order -= 1
+            boardgame_number.boardgame.rental += 1
+        if rental.rental_status == 'replied':
+            if boardgame_number.boardgame_number_status == 'rental':
+                boardgame_number.boardgame.in_stock += 1
+                boardgame_number.boardgame.rental -= 1
+        
 
     boardgame_number.boardgame.total = boardgame_number.boardgame.in_stock + boardgame_number.boardgame.order + boardgame_number.boardgame.rental
-
     boardgame_number.boardgame.save()
 
 @receiver(post_save, sender=RentBoardgame, dispatch_uid="update_boardgame_number_stats_on_order_status")
@@ -92,9 +94,12 @@ def update_boardgame_number_stats_on_order_status(sender, instance, **kwargs):
     if rental.order_status == 'pending':
         boardgame_number.boardgame_number_status = 'order'
     elif rental.order_status == 'accepted':
-        boardgame_number.boardgame_number_status ='rental'
+        if boardgame_number.boardgame_number_status == 'order':
+            boardgame_number.boardgame_number_status = 'rental'
+        if rental.rental_status == 'replied':
+            if boardgame_number.boardgame_number_status == 'rental':
+                boardgame_number.boardgame_number_status = 'in_stock'
     elif rental.order_status == 'canceled':
         boardgame_number.boardgame_number_status = 'in_stock'
-        
-    boardgame_number.save()
     
+    boardgame_number.save()

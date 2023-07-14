@@ -42,10 +42,9 @@ def request_rent_boardgame(request, bgid):
                     # Xuất thông báo yêu cầu thuê không thành công
                     messages.error(request, "Yêu cầu thuê không thành công.")
                     return redirect('rent:request_rent_boardgame', bgid=bgid)
-            else:
-                rent_request.save()
-                messages.success(request, "Gửi yêu cầu thuê thành công.")
-                return redirect('rent:rent_success')
+            rent_request.save()
+            messages.success(request, "Gửi yêu cầu thuê thành công.")
+            return redirect('rent:rent_success')
     else:
         rent_form = RentBoardgameForm()
         print(rent_form.errors)
