@@ -20,14 +20,35 @@ class ProducerAdmin(admin.ModelAdmin):
 
 class BoardgameImagesAdmin(admin.TabularInline):
     model = BoardgameImages
+    extra = 0
 
 class BoardgameNumbersAdmin(admin.TabularInline):
     model = BoardgameNumbers
+    extra = 0
+    fields = ['bgnid', 'boardgame_number_status', 'description', 'date']
+    readonly_fields = ['bgnid']
 
 class BoardgameAdmin(admin.ModelAdmin):
     inlines = [BoardgameImagesAdmin, BoardgameNumbersAdmin]
-    list_display = ['user', 'title', 'category', 'version', 'boardgame_image', 'price', 'boardgame_status', 'in_stock', 'rental', 'total']
-    search_fields = ['title','category', 'version', 'boardgame_status']
+    list_display = ['title', 'category', 'version', 'boardgame_image', 'price', 'boardgame_status', 'in_stock', 'order', 'rental', 'total']
+    list_filter = ['title', 'category', 'version', 'boardgame_status']
+    # search_fields = ['title','category', 'version', 'boardgame_status']
+    ordering = ['price', 'in_stock', 'order', 'rental', 'total']
+    fieldsets = [
+        ('Boardgame Information', {
+            'fields': ('bgid', 'title', 'category', 'version', 'author', 'producer', 'publication_year')
+        }),
+        ('Game Details', {
+            'fields': ('image', 'description', 'rule', 'age_rating', 'people', 'play_time', 'price')
+        }),
+        ('Availability', {
+            'fields': ('boardgame_status', 'in_stock', 'order', 'rental', 'total')
+        }),
+        ('Additional Information', {
+            'fields': ('user', 'date')
+        }),
+    ]
+    readonly_fields = ['bgid', 'boardgame_status', 'in_stock', 'order', 'rental', 'total']
 
 class BoardgameReviewsAdmin(admin.ModelAdmin):
     list_display = ['user', 'boardgame', 'review', 'rating']
