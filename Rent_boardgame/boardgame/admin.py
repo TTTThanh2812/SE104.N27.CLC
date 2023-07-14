@@ -3,20 +3,24 @@ from django.contrib import admin
 from boardgame.models import Category, Version, Author, Producer, Boardgame, BoardgameImages, BoardgameNumbers, BoardgameReviews
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['title', 'cid']
-    search_fields = ['title']
+    list_display = ['cid', 'title']
+    list_filter = ['title']
+    readonly_fields = ['cid']
 
 class VersionAdmin(admin.ModelAdmin):
-    list_display = ['title', 'vid']
-    search_fields = ['title']
+    list_display = ['vid', 'title']
+    list_filter = ['title']
+    readonly_fields = ['vid']
 
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['title', 'aid']
-    search_fields = ['title']
+    list_display = ['aid', 'title']
+    list_filter = ['title']
+    readonly_fields = ['aid']
 
 class ProducerAdmin(admin.ModelAdmin):
-    list_display = ['title', 'pid']
-    search_fields = ['title']
+    list_display = ['pid', 'title']
+    list_filter = ['title']
+    readonly_fields = ['pid']
 
 class BoardgameImagesAdmin(admin.TabularInline):
     model = BoardgameImages
@@ -51,8 +55,15 @@ class BoardgameAdmin(admin.ModelAdmin):
     readonly_fields = ['bgid', 'boardgame_status', 'in_stock', 'order', 'rental', 'total']
 
 class BoardgameReviewsAdmin(admin.ModelAdmin):
-    list_display = ['user', 'boardgame', 'review', 'rating']
-    search_fields = ['boardgame__title', 'rating']
+    list_display = ['user', 'boardgame', 'display_review', 'rating', 'date']
+    list_filter = ['boardgame', 'rating']
+    readonly_fields = ['user', 'boardgame', 'review', 'rating', 'date']
+    def display_review(self, obj):
+        MAX_LENGTH = 50  
+        if len(obj.review) > MAX_LENGTH:
+            return obj.review[:MAX_LENGTH] + '...'  
+        return obj.review
+    display_review.short_description = 'Review'
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Version, VersionAdmin)
