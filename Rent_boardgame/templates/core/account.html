@@ -73,74 +73,45 @@
         </div>
     </div>
 
-    <div class=" flex justify-items-center mx-96 mt-16 rounded-xl shadow-lg border border-[#D9D9D9]">
-        <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
-            <img src="/media/item_images/Chess.jpg" alt="tailwind logo" class="rounded-xl" />
-        </div>
-        <div class="grid place-items-center ">
-            <div class="font-semibold italic text-lg text-[#0FB3AF] text-[Open Sans]">Boadgame đang đặt chỗ</div>
-            <div class="">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>MSBG: 12345678</td>
-                            <td class="pl-8">Tên Boardgame: Uno</td>
-                        </tr>
-                        <tr>
-                            <td>Thể loại: Thẻ bài</td>
-                            <td class="pl-8">Phiên bản: Mattel</td>
-                        </tr>
-                        <tr>
-                            <td>Số ngày thuê: 30 ngày</td>
-                        </tr>
-                        <tr>
-                            <td>Tiền thuê: 100.000 VNĐ</td>
-                            <td class="pl-8">Tiền cọc: 50.000 VNĐ</td>
-                        </tr>
-                        <tr>
-                            <td>Ngày đặt chỗ: 00/00/0000 </td>
-                            <td class="pl-8">Giờ đặt chỗ: 00:00 PM</td>
-                        </tr>
-                    </tbody>
-                </table>
+    {% for rental in pending_rentals %}
+        <div class=" flex justify-items-center mx-96 mt-16 rounded-xl shadow-lg border border-[#D9D9D9]">
+            <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
+                <img src="{{rental.boardgame_numbers.boardgame.image.url}}" alt="tailwind logo" class="rounded-xl" />
+            </div>
+            <div class="grid place-items-center ">
+                <div class="font-semibold italic text-lg text-[#0FB3AF] text-[Open Sans]">Boadgame đang đặt chỗ</div>
+                <div class="">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>MSBG: {{rental.boardgame_rent_id}}</td>
+                                <td class="pl-8">Tên Boardgame: {{rental.boardgame_numbers.boardgame.title}}</td>
+                            </tr>
+                            <tr>
+                                <td>Thể loại: {{rental.boardgame_numbers.boardgame.category.title}}</td>
+                                <td class="pl-8">Phiên bản: {{rental.boardgame_numbers.boardgame.version.title}}</td>
+                            </tr>
+                            <tr>
+                                <td>Số ngày thuê: {{rental.get_rental_duration}} ngày</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày bắt đầu: {{rental.start_date}}</td>
+                                <td class="pl-8">Ngày kết thúc: {{rental.end_date}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tiền thuê: {{rental.rental_price}}0 VNĐ</td>
+                                <td class="pl-8">Tiền cọc: {{rental.deposit_price}}0 VNĐ</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày đặt chỗ: {{rental.created_at.date}} </td>
+                                <td class="pl-8">Giờ đặt chỗ: {{rental.created_at.time}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class=" flex justify-items-center mx-96 mt-8 rounded-xl shadow-lg border border-[#D9D9D9]">
-
-        <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
-            <img src="/media/item_images/Go.jpg" alt="tailwind logo" class="rounded-xl" />
-        </div>
-        <div class="grid place-items-center ">
-            <div class="font-semibold italic text-lg text-[#0FB3AF] text-[Open Sans]">Boadgame đang đặt chỗ</div>
-            <div class="">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>MSBG: 12345678</td>
-                            <td class="pl-8">Tên Boardgame: Uno</td>
-                        </tr>
-                        <tr>
-                            <td>Thể loại: Thẻ bài</td>
-                            <td class="pl-8">Phiên bản: Mattel</td>
-                        </tr>
-                        <tr>
-                            <td>Số ngày thuê: 30 ngày</td>
-                        </tr>
-                        <tr>
-                            <td>Tiền thuê: 100.000 VNĐ</td>
-                            <td class="pl-8">Tiền cọc: 50.000 VNĐ</td>
-                        </tr>
-                        <tr>
-                            <td>Ngày đặt chỗ: 00/00/0000 </td>
-                            <td class="pl-8">Giờ đặt chỗ: 00:00 PM</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 
     <div class="grid justify-items-center pt-24">
         <div class="text-2xl text-[#0FB3AF] pb-8">Danh sách đơn hàng</div>
@@ -161,29 +132,33 @@
                             Ngày trả
                         </th>
                         <th scope="col" class="px-14 py-3">
-                            Giá
+                            Giá thuê
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="bg-white border-b border-[#A7A7A6]">
-                        <th scope="row" class="px-14 py-4 whitespace-nowrap">
-                            Uno
-                        </th>
-                        <td class="px-14 py-4">
-                            30
-                        </td>
-                        <td class="px-14 py-4">
-                            11/2/2023
-                        </td>
-                        <td class="px-14 py-4">
-                            12/2/2023
-                        </td>
-                        <td class="px-14 py-4">
-                            40000
-                        </td>
-                    </tr>
-                </tbody>
+                {% for rental in rent_history %}
+                    <div class="rental-item">
+                        <tbody>
+                            <tr class="bg-white border-b border-[#A7A7A6]">
+                                <th scope="row" class="px-14 py-4 whitespace-nowrap">
+                                    {{ rental.boardgame_numbers.boardgame.title }}
+                                </th>
+                                <td class="px-14 py-4">
+                                    {{rental.get_rental_duration}}
+                                </td>
+                                <td class="px-14 py-4">
+                                    {{rental.start_date}}
+                                </td>
+                                <td class="px-14 py-4">
+                                    {{rental.end_date}}
+                                </td>
+                                <td class="px-14 py-4">
+                                    {{rental.rental_price}}0 
+                                </td>
+                            </tr>
+                        </tbody>
+                    </div>
+                {% endfor %}
             </table>
         </div>
     </div>

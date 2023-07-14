@@ -8,6 +8,7 @@ from django.urls import reverse
 
 from boardgame.models import Category, Boardgame, Version, Author, Producer
 from userauths.models import User
+from rent.models import RentBoardgame
 from django.contrib.auth.forms import PasswordChangeForm
 from core.forms import UserProfileForm
 
@@ -56,9 +57,14 @@ def category_view(request, cid):
 @login_required
 def account(request):
     user =  User.objects.get(user_id=request.user.user_id)
+    # Lấy danh sách yêu cầu thuê đang ở trạng thái chờ của người dùng
+    pending_rentals = RentBoardgame.objects.filter(renter=user, order_status='pending')
+    rent_history = RentBoardgame.objects.filter(renter=user, order_status='accepted')
     context = {
-        'user': user
-    }
+        'user': user,
+        'pending_rentals': pending_rentals,
+        'rent_history':rent_history,
+        }
     return render(request, 'core/account.html', context)
 
 @login_required
