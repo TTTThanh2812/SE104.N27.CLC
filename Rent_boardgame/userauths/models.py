@@ -15,3 +15,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    @property
+    def is_profile_complete(self):
+        return bool(self.email and self.username and self.user_id and self.phone_number and self.address)

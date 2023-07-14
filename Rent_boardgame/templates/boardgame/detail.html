@@ -62,12 +62,20 @@
                     rentButton.addEventListener('click', function() {
                         // Kiểm tra người dùng đã đăng nhập hay chưa
                         var isAuthenticated = {{ user.is_authenticated|lower }};
-        
+                        
                         if (isAuthenticated) {
-                            // Người dùng đã đăng nhập, chuyển hướng tới trang thông tin thuê
-                            var bgid = "{{ boardgame.bgid }}";
-                            window.location.href = "{% url "rent:request_rent_boardgame" bgid=boardgame.bgid%}";
-                        } else {
+                            var isProfileComplete = {{ user.is_profile_complete|lower }};
+                            if (isProfileComplete) {
+                                // Người dùng đã đăng nhập và thông tin đã đầy đủ, chuyển hướng tới trang thuê
+                                var bgid = "{{ boardgame.bgid }}";
+                                window.location.href = "{% url 'rent:request_rent_boardgame' bgid=boardgame.bgid%}";
+                            }
+                            else {
+                                // Người dùng đã đăng nhập nhưng thông tin chưa đầy đủ, chuyển hướng tới trang thông tin cá nhân
+                                window.location.href = "{% url 'core:account' %}";
+                            }
+                        } 
+                        else {
                             // Người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
                             window.location.href = "{% url 'userauths:sign_in' %}";
                         }
