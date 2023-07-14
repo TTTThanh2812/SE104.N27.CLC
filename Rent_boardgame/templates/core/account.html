@@ -74,7 +74,7 @@
     </div>
 
     {% for rental in pending_rentals %}
-        <div class=" flex justify-items-center mx-96 mt-16 rounded-xl shadow-lg border border-[#D9D9D9]">
+        <div class=" flex justify-items-center mx-72 mt-16 rounded-xl shadow-lg border border-[#D9D9D9]">
             <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
                 <img src="{{rental.boardgame_numbers.boardgame.image.url}}" alt="tailwind logo" class="rounded-xl" />
             </div>
@@ -109,9 +109,54 @@
                         </tbody>
                     </table>
                 </div>
+                <div><a href="">
+                    <button type="button" class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded-md px-4 text-sm h-8
+                    text-white" style="font-family: Maven Pro;">
+                        Hủy
+                    </button>
+                </a></div>  
             </div>
         </div>
     {% endfor %}
+
+    <div class=" flex justify-items-center mx-72 mt-8 rounded-xl shadow-lg border border-[#D9D9D9]">
+
+        <div class="w-full h-full md:w-1/3 bg-white grid place-items-center rounded-lg">
+            <img src="/media/item_images/Go.jpg" alt="tailwind logo" class="rounded-xl" />
+        </div>
+        <div class="grid place-items-center ">
+            <div class="font-semibold italic text-lg text-[#0FB3AF] text-[Open Sans]">Boadgame đang thuê</div>
+            <div class="">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>MSBG: 12345678</td>
+                            <td class="pl-8">Tên Boardgame: Uno</td>
+                        </tr>
+                        <tr>
+                            <td>Thể loại: Thẻ bài</td>
+                            <td class="pl-8">Phiên bản: Mattel</td>
+                        </tr>
+                        <tr>
+                            <td>Số ngày thuê: 30 ngày</td>
+                        </tr>
+                        <tr>
+                            <td>Tiền thuê: 100.000 VNĐ</td>
+                            <td class="pl-8">Tiền cọc: 50.000 VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td>Ngày bắt đầu: 00/00/0000 </td>
+                            <td class="pl-8">Ngày kết thúc: 00/00/0000</td>
+                        </tr>
+                        <tr>
+                            <td>Số ngày thuê còn lại: 3 ngày</td>
+                            <td>Tiền phạt: 0.000 VNĐ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <div class="grid justify-items-center pt-24">
         <div class="text-2xl text-[#0FB3AF] pb-8">Danh sách đơn hàng</div>
@@ -119,6 +164,9 @@
             <table class="w-full text-sm text-center text-black font-regular">
                 <thead class="border-b border-[#A7A7A6] text-xs uppercase bg-gray-50">
                     <tr>
+                        <th scope="col" class="px-14 py-3">
+                            STT
+                        </th>
                         <th scope="col" class="px-14 py-3">
                             Tên
                         </th>
@@ -134,12 +182,18 @@
                         <th scope="col" class="px-14 py-3">
                             Giá thuê
                         </th>
+                        <th scope="col" class="px-14 py-3">
+                            Tiền phạt
+                        </th>
                     </tr>
                 </thead>
                 {% for rental in rent_history %}
                     <div class="rental-item">
                         <tbody>
                             <tr class="bg-white border-b border-[#A7A7A6]">
+                                <td class="px-14 py-4 whitespace-nowrap">
+                                    1
+                                </td>
                                 <th scope="row" class="px-14 py-4 whitespace-nowrap">
                                     {{ rental.boardgame_numbers.boardgame.title }}
                                 </th>
@@ -154,6 +208,9 @@
                                 </td>
                                 <td class="px-14 py-4">
                                     {{rental.rental_price}}0 
+                                </td>
+                                <td class="px-14 py-4">
+                                    4000
                                 </td>
                             </tr>
                         </tbody>
