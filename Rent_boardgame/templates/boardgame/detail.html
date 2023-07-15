@@ -46,39 +46,42 @@
         <p class="text-xl text-gray-500"><strong>Nhà xuất bản: </strong>{{ boardgame.producer}}</p>
         <p class="text-xl text-gray-500"><strong>Năm sản xuất: </strong>{{ boardgame.publication_year}}</p>
 
-        <dh-component id="rent-button" >
-            {% comment %} <a href="{% url "rent:request_rent_boardgame" bgid=boardgame.bgid%}"> {% endcomment %}
+        <dh-component id="rent-button">
+            {% comment %} <a href="{% url " rent:request_rent_boardgame" bgid=boardgame.bgid%}"> {% endcomment %}
                 <button class="bg-[#C32F2F] hover:bg-[#C32F2FCC] rounded px-5 text-md text-center h-8 text-white">
                     Thuê
                 </button>
-            {% comment %} </a> {% endcomment %}
+                {% comment %} </a> {% endcomment %}
         </dh-component>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 var rentButton = document.getElementById('rent-button');
-        
+
                 if (rentButton) {
-                    rentButton.addEventListener('click', function() {
+                    rentButton.addEventListener('click', function () {
                         // Kiểm tra người dùng đã đăng nhập hay chưa
-                        var isAuthenticated = {{ user.is_authenticated|lower }};
-                        
-                        if (isAuthenticated) {
-                            var isProfileComplete = {{ user.is_profile_complete|lower }};
-                            if (isProfileComplete) {
-                                // Người dùng đã đăng nhập và thông tin đã đầy đủ, chuyển hướng tới trang thuê
-                                var bgid = "{{ boardgame.bgid }}";
-                                window.location.href = "{% url 'rent:request_rent_boardgame' bgid=boardgame.bgid%}";
-                            }
-                            else {
-                                // Người dùng đã đăng nhập nhưng thông tin chưa đầy đủ, chuyển hướng tới trang thông tin cá nhân
-                                window.location.href = "{% url 'core:account' %}";
-                            }
+                        var isAuthenticated = {{ user.is_authenticated| lower
+                    }};
+
+                if (isAuthenticated) {
+                    var isProfileComplete = {{ user.is_profile_complete| lower
+                }
+            };
+            if (isProfileComplete) {
+                // Người dùng đã đăng nhập và thông tin đã đầy đủ, chuyển hướng tới trang thuê
+                var bgid = "{{ boardgame.bgid }}";
+                window.location.href = "{% url 'rent:request_rent_boardgame' bgid=boardgame.bgid%}";
+            }
+            else {
+                // Người dùng đã đăng nhập nhưng thông tin chưa đầy đủ, chuyển hướng tới trang thông tin cá nhân
+                window.location.href = "{% url 'core:account' %}";
+            }
                         } 
                         else {
-                            // Người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
-                            window.location.href = "{% url 'userauths:sign_in' %}";
-                        }
+                // Người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
+                window.location.href = "{% url 'userauths:sign_in' %}";
+            }
                     });
                 }
             });
@@ -135,7 +138,8 @@
 
     <div class="col-span-2 p-6 bg-gray-100 rounded-xl comment-list">
         <h4 class="text-xxl text-gray-500"> Star reviews </h4>
-        <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0 }}
+        <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0
+            }}
         </p>
 
     </div>
@@ -216,19 +220,23 @@
 </div>
 
 <div class="ml-64 w-3/5">
+
     <div class="ml-10 mt-10">
-        <button
-            class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+        <a href="#" class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 
+        hover:text-white hover:bg-[#0FB3AFCC] hover:border-transparent focus:outline-none focus:ring-2 
+        focus:ring-[#0FB3AFCC] focus:ring-offset-2">
             Mô tả
-        </button>
-        <button
-            class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+        </a>
+        <a href="#" class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 
+        hover:text-white hover:bg-[#0FB3AFCC] hover:border-transparent focus:outline-none focus:ring-2 
+        focus:ring-[#0FB3AFCC] focus:ring-offset-2">
             Quy tắc
-        </button>
-        <button
-            class="px-4 py-1 mr-4 text-sm text-[#0FB3AF] font-semibold rounded-full border border-[#0FB3AF] hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+        </a>
+        <a href="#" class="px-4 py-1 mr-4 text-sm text-gray-500 font-semibold rounded-full border border-gray-500 
+        hover:text-white hover:bg-[#0FB3AFCC] hover:border-transparent focus:outline-none focus:ring-2 
+        focus:ring-[#0FB3AFCC] focus:ring-offset-2">
             Bình luận
-        </button>
+        </a>
     </div>
     <div class="grid grid-cols-2 gap-2">
         <div>
