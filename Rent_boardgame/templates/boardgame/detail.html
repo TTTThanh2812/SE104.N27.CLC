@@ -61,27 +61,24 @@
                 if (rentButton) {
                     rentButton.addEventListener('click', function () {
                         // Kiểm tra người dùng đã đăng nhập hay chưa
-                        var isAuthenticated = {{ user.is_authenticated| lower
-                    }};
+                    var isAuthenticated = {{ user.is_authenticated| lower }};
 
-                if (isAuthenticated) {
-                    var isProfileComplete = {{ user.is_profile_complete| lower
-                }
-            };
-            if (isProfileComplete) {
-                // Người dùng đã đăng nhập và thông tin đã đầy đủ, chuyển hướng tới trang thuê
-                var bgid = "{{ boardgame.bgid }}";
-                window.location.href = "{% url 'rent:request_rent_boardgame' bgid=boardgame.bgid%}";
-            }
-            else {
-                // Người dùng đã đăng nhập nhưng thông tin chưa đầy đủ, chuyển hướng tới trang thông tin cá nhân
-                window.location.href = "{% url 'core:account' %}";
-            }
-                        } 
+                    if (isAuthenticated) {
+                        var isProfileComplete = {{ user.is_profile_complete| lower }};
+                        if (isProfileComplete) {
+                            // Người dùng đã đăng nhập và thông tin đã đầy đủ, chuyển hướng tới trang thuê
+                            var bgid = "{{ boardgame.bgid }}";
+                            window.location.href = "{% url 'rent:request_rent_boardgame' bgid=boardgame.bgid%}";
+                        }
                         else {
-                // Người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
-                window.location.href = "{% url 'userauths:sign_in' %}";
-            }
+                            // Người dùng đã đăng nhập nhưng thông tin chưa đầy đủ, chuyển hướng tới trang thông tin cá nhân
+                            window.location.href = "{% url 'core:account' %}";
+                        }
+                    } 
+                    else {
+                        // Người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
+                        window.location.href = "{% url 'userauths:sign_in' %}";
+                    }
                     });
                 }
             });
@@ -101,14 +98,14 @@
 
             <p class="text-xl text-gray-500"><strong>Tổng đánh giá: </strong>{{ reviews.count }}</p>
             {% for r in page_obj %}
-            <div class="review">
-                <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user.username|title }}</p>
-                <p class="text-xl text-gray-500"><strong>Thời gian đánh giá: </strong>{{ r.date| date:"d M, Y" }}</p>
-                <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ r.review }}</p>
-                <p class="text-xl text-gray-500"><strong>Số sao: </strong>{{ r.rating}}</p>
-            </div>
+                <div class="review">
+                    <p class="text-xl text-gray-500"><strong>Người đánh giá: </strong>{{ r.user.username|title }}</p>
+                    <p class="text-xl text-gray-500"><strong>Thời gian đánh giá: </strong>{{ r.date| date:"d M, Y" }} {{r.time}}</p>
+                    <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ r.review }}</p>
+                    <p class="text-xl text-gray-500"><strong>Số sao: </strong>{{ r.rating}}</p>
+                </div>
             {% empty %}
-            <p>No reviews yet.</p>
+                <p>No reviews yet.</p>
             {% endfor %}
         </div>
         <!-- Chuyển trang -->
@@ -116,19 +113,19 @@
             {% if page_obj.has_other_pages %}
             <div class="pagination">
                 {% if page_obj.has_previous %}
-                <a href="?page=1">First</a>
-                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    <a href="?page=1">First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
                 {% endif %}
                 {% for num in page_obj.paginator.page_range %}
-                {% if num == page_obj.number %}
-                <span class="current-page">{{ num }}</span>
-                {% else %}
-                <a href="?page={{ num }}">{{ num }}</a>
-                {% endif %}
+                    {% if num == page_obj.number %}
+                        <span class="current-page">{{ num }}</span>
+                        {% else %}
+                        <a href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
                 {% endif %}
             </div>
             {% endif %}
@@ -138,8 +135,7 @@
 
     <div class="col-span-2 p-6 bg-gray-100 rounded-xl comment-list">
         <h4 class="text-xxl text-gray-500"> Star reviews </h4>
-        <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0
-            }}
+        <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0}}
         </p>
 
     </div>

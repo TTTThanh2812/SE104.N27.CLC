@@ -25,8 +25,8 @@
             <input type="hidden" name="query" value="{{ query }}">
             <select name="sort_by" id="sort_by">
                 <option value="">Không</option>
-                <option value="price" {% if sort_by=='price_asc' %}selected{% endif %}>Giá (Tăng dần)</option>
-                <option value="price" {% if sort_by=='price_desc' %}selected{% endif %}>Giá (Thấp dần)</option>
+                <option value="price" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá (Tăng dần)</option>
+                <option value="price" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá (Thấp dần)</option>
             </select>
             <button type="submit"
                 class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
@@ -162,7 +162,7 @@
                 {% for boardgame in boardgames %}
                 <div class="shadow bg-[#ffffff] rounded-lg">
                     <!-- href -> đi tới boardgame cụ thể -->
-                    <a href="{% url " boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                    <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
                         <!-- Hình ảnh boardgame -->
                         <div>
                             <img src="{{ boardgame.image.url }}"
