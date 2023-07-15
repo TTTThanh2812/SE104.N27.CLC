@@ -24,20 +24,15 @@
         <form action="{% url 'boardgame:search' %}" method="GET">
             <input type="hidden" name="query" value="{{ query }}">
             <select name="sort_by" id="sort_by">
-              <option value="">None</option>
-              <option value="price" {% if sort_by == 'price_asc' %}selected{% endif %}>Price (Low to High)</option>
-              <option value="price" {% if sort_by == 'price_desc' %}selected{% endif %}>Price (High to Low)</option>
+                <option value="">None</option>
+                <option value="price" {% if sort_by=='price_asc' %}selected{% endif %}>Price (Low to High)</option>
+                <option value="price" {% if sort_by=='price_desc' %}selected{% endif %}>Price (High to Low)</option>
             </select>
             <button type="submit"
                 class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
                 Sắp xếp
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-4 h-4">
-                    <path fill-rule="evenodd"
-                        d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-                        clip-rule="evenodd" />
-            </svg>
 
-        </button>
+            </button>
         </form>
     </div>
 </div>
@@ -45,18 +40,18 @@
 <div class="grid grid-cols-5 gap-4">
     <div class="mt-10 ml-16">
         <!-- Filter options-->
-        <form method="GET" action="{% url 'boardgame:search' %}" >
+        <form method="GET" action="{% url 'boardgame:search' %}">
             <input type="hidden" name="query" value="{{ query }}">
-            <div class="grid grid-cols-1 gap-4">                
+            <div class="grid grid-cols-1 gap-4">
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center ">
                         <label for="version" class="mr-2">Version:</label>
                     </div>
                     {% for version in versions %}
-                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                            <input type="checkbox" name="version[]" value="{{ version.title }}" id="{{ version.vid }}">
-                            <label for="{{ version.vid }}">{{ version.title }}</label>
-                        </div>
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="version[]" value="{{ version.title }}" id="{{ version.vid }}">
+                        <label for="{{ version.vid }}">{{ version.title }}</label>
+                    </div>
                     {% endfor %}
                 </div>
 
@@ -65,13 +60,13 @@
                         <label for="age_rating" class="mr-2">Age Rating:</label>
                     </div>
                     {% for choice in age_rating_choices %}
-                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                            <input type="checkbox" name="age_rating" id="age_rating_{{ choice.0 }}" value="{{ choice.0 }}">
-                            <label for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
-                        </div>
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="age_rating" id="age_rating_{{ choice.0 }}" value="{{ choice.0 }}">
+                        <label for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
+                    </div>
                     {% endfor %}
                 </div>
-               
+
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="people">Number of Players:</label>
@@ -79,7 +74,7 @@
                     <div id="people_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="people" id="people">
                 </div>
-                
+
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="play_time">Play Time:</label>
@@ -93,10 +88,10 @@
                         <label for="author">Author:</label>
                     </div>
                     {% for author in authors %}
-                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                            <input type="checkbox" name="author[]" value="{{ author.title }}" id="{{ author.aid }}">
-                            <label for="{{ author.aid }}">{{ author.title }}</label>
-                        </div>
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="author[]" value="{{ author.title }}" id="{{ author.aid }}">
+                        <label for="{{ author.aid }}">{{ author.title }}</label>
+                    </div>
                     {% endfor %}
                 </div>
 
@@ -105,10 +100,10 @@
                         <label for="producer">Producer:</label>
                     </div>
                     {% for producer in producers %}
-                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                            <input type="checkbox" name="producer[]" value="{{ producer.title }}" id="{{ producer.pid }}">
-                            <label for="{{ producer.pid }}">{{ producer.title }}</label>
-                        </div>
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="producer[]" value="{{ producer.title }}" id="{{ producer.pid }}">
+                        <label for="{{ producer.pid }}">{{ producer.title }}</label>
+                    </div>
                     {% endfor %}
                 </div>
 
@@ -147,7 +142,8 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+            <button type="submit"
+                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
                 Filter
             </button>
         </form>
@@ -156,30 +152,30 @@
     <div class="mt-12 ml-12 col-span-4">
         <!-- Boardgame list -->
         {% if boardgames %}
-            <h1>Search Results for "{{ query }}"</h1>
+        <h1>Search Results for "{{ query }}"</h1>
 
-            <ul>
-                <div class="grid grid-cols-3 gap-3 ">
-                    {% for boardgame in boardgames %}
-                        <div class="shadow bg-[#ffffff] rounded-lg">
-                            <!-- href -> đi tới boardgame cụ thể -->
-                            <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
-                                <!-- Hình ảnh boardgame -->
-                                <div>
-                                    <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition "
-                                        sizes="100vw">
-                                </div>
-                
-                                <div class="p-6 rounded-b-xl bg-white-100">
-                                    <!-- Thông tin boardgame -->
-                                    <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
-                                    <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
-                                    <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
-                                    <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
-                
-                                    <!--Số sao-->
-                                    {{boardgame.get_average_rating}}
-                                    <!-- {% for boardgame_rating in boardgame_ratings %}
+        <ul>
+            <div class="grid grid-cols-3 gap-3 ">
+                {% for boardgame in boardgames %}
+                <div class="shadow bg-[#ffffff] rounded-lg">
+                    <!-- href -> đi tới boardgame cụ thể -->
+                    <a href="{% url " boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                        <!-- Hình ảnh boardgame -->
+                        <div>
+                            <img src="{{ boardgame.image.url }}"
+                                class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
+                        </div>
+
+                        <div class="p-6 rounded-b-xl bg-white-100">
+                            <!-- Thông tin boardgame -->
+                            <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
+                            <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
+                            <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                            <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+
+                            <!--Số sao-->
+                            {{boardgame.get_average_rating}}
+                            <!-- {% for boardgame_rating in boardgame_ratings %}
                                                 {% if boardgame.name == boardgame_rating.boardgame.name%}                        
                                                         
                                                         {% for star in boardgame_rating.draw_average_stars %}
@@ -201,23 +197,23 @@
                                                     </div>
                                                 {% endif %} 
                                             {% endfor %}     -->
-                
-                                    <!-- Số lượt đánh giá-->
-                                    <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
-                                        {{boardgame.reviews.all.count}} Đánh giá
-                                    </div>
-                
-                                </div>
-                            </a>
+
+                            <!-- Số lượt đánh giá-->
+                            <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
+                                {{boardgame.reviews.all.count}} Đánh giá
+                            </div>
+
                         </div>
-                    {% endfor %}
-                    </div> 
-            </ul>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </ul>
         {% else %}
-            <h1>No results found for "{{ query }}"</h1>
+        <h1>No results found for "{{ query }}"</h1>
         {% endif %}
     </div>
-</div> 
+</div>
 
 <script>
     //Number of Players
@@ -252,24 +248,24 @@
         var playTimeSlider = document.getElementById('play_time_slider');
         var playTimeInput = document.getElementById('play_time');
         noUiSlider.create(playTimeSlider, {
-          start: [0, 240], // Giá trị mặc định
-          connect: true, // Kết nối hai nút trượt
-          range: {
-            'min': 0, // Giá trị tối thiểu
-            'max': 240 // Giá trị tối đa
-          },
-          tooltips: [true, true], // Hiển thị tooltip
-          format: {
-            to: function (value) {
-              return Math.round(value);
+            start: [0, 240], // Giá trị mặc định
+            connect: true, // Kết nối hai nút trượt
+            range: {
+                'min': 0, // Giá trị tối thiểu
+                'max': 240 // Giá trị tối đa
             },
-            from: function (value) {
-              return Number(value);
+            tooltips: [true, true], // Hiển thị tooltip
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Number(value);
+                }
             }
-          }
         });
         playTimeSlider.noUiSlider.on('update', function (values) {
-          playTimeInput.value = values.join(',');
+            playTimeInput.value = values.join(',');
         });
     });
 
