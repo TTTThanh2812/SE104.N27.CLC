@@ -50,7 +50,7 @@
                     {% for version in versions %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
                         <input type="checkbox" name="version[]" value="{{ version.title }}" id="{{ version.vid }}">
-                        <label for="{{ version.vid }}">{{ version.title }}</label>
+                        <label class="ml-2" for="{{ version.vid }}">{{ version.title }}</label>
                     </div>
                     {% endfor %}
                 </div>
@@ -62,7 +62,7 @@
                     {% for choice in age_rating_choices %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
                         <input type="checkbox" name="age_rating" id="age_rating_{{ choice.0 }}" value="{{ choice.0 }}">
-                        <label for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
+                        <label class="ml-2" for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
                     </div>
                     {% endfor %}
                 </div>
@@ -71,57 +71,60 @@
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="people">Số người chơi</label>
                     </div>
-                    <div id="people_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <div id="people_slider" class="w-48 h-3 mt-12 text-sm bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="people" id="people">
                 </div>
 
                 <div>
-                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                    <div class="mt-4 text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="play_time">Thời gian:</label>
                     </div>
-                    <div id="play_time_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <div id="play_time_slider" class="w-48 h-3 mt-12 text-sm bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="play_time" id="play_time">
                 </div>
 
                 <div>
-                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                    <div class="mt-4 text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="author">Tác giả</label>
                     </div>
                     {% for author in authors %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
                         <input type="checkbox" name="author[]" value="{{ author.title }}" id="{{ author.aid }}">
-                        <label for="{{ author.aid }}">{{ author.title }}</label>
+                        <label class="ml-2" for="{{ author.aid }}">{{ author.title }}</label>
                     </div>
                     {% endfor %}
                 </div>
 
                 <div>
-                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                    <div class="mt-4 text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="producer">Nhà xuất bản</label>
                     </div>
                     {% for producer in producers %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
                         <input type="checkbox" name="producer[]" value="{{ producer.title }}" id="{{ producer.pid }}">
-                        <label for="{{ producer.pid }}">{{ producer.title }}</label>
+                        <label class="ml-2" for="{{ producer.pid }}">{{ producer.title }}</label>
                     </div>
                     {% endfor %}
                 </div>
 
                 <div>
-                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                    <div class="mt-4 text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="publication_year">Năm phát hành</label>
                     </div>
-                    <div id="publication_year_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <div id="publication_year_slider" class="w-48 h-3 mt-12 text-sm bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="publication_year" id="publication_year">
                 </div>
 
                 <div>
-                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="rental_price_min">Giá thuê (Thấp nhất):</label>
+                    <div class="mt-4 text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="publication_year">Giá thuê</label>
+                    </div>
+                    <div class="w-80 ml-4 text-[#0FB3AF] text-md font-medium flex ">
+                        <label class="mr-4" for="rental_price_min">Thấp nhất</label>
                         <input type="text" id="rental_price_min" name="rental_price_min" placeholder="Min value" />
                     </div>
-                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="rental_price_max">Giá thuê (Cao nhất):</label>
+                    <div class="w-80 ml-4 text-[#0FB3AF] text-md font-medium flex ">
+                        <label class="mr-4" for="rental_price_max">Cao nhất</label>
                         <input type="text" id="rental_price_max" name="rental_price_max" placeholder="Max value" />
                     </div>
                 </div>
@@ -143,7 +146,7 @@
                 </div>
             </div>
             <button type="submit"
-                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                class="mt-4 bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
                 Lọc
             </button>
         </form>
