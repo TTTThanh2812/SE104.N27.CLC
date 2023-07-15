@@ -72,11 +72,15 @@
                         }
                         else {
                             // Người dùng đã đăng nhập nhưng thông tin chưa đầy đủ, chuyển hướng tới trang thông tin cá nhân
+                            var incompleteMessage = "Vui lòng cung cấp đầy đủ thông tin cá nhân trước khi thuê.";
+                            alert(incompleteMessage);
                             window.location.href = "{% url 'core:account' %}";
                         }
                     } 
                     else {
                         // Người dùng chưa đăng nhập, chuyển hướng tới trang đăng nhập
+                        var incompleteMessage = "Vui lòng đăng nhập trước khi thuê.";
+                        alert(incompleteMessage);
                         window.location.href = "{% url 'userauths:sign_in' %}";
                     }
                     });

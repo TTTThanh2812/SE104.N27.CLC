@@ -14,7 +14,7 @@ def register_view(request):
         if form.is_valid():
             new_user = form.save()
             username = form.cleaned_data.get("username")
-            messages.success(request, f"Hey {username}, You account was created successfully.")
+            messages.success(request, f"Hey {username}, You account was created successfully.", extra_tags='bg-green-500 text-white')
             new_user = authenticate(username=form.cleaned_data['email'],
                                     password=form.cleaned_data['password1']
             )
@@ -31,7 +31,7 @@ def register_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        messages.warning(request, f"Hey you are alreadly Logged in.")
+        messages.warning(request, f"Hey you are alreadly Logged in.", extra_tags='bg-yellow-500 text-black')
         return redirect("core:home")
     
     if request.method == "POST":
@@ -43,15 +43,15 @@ def login_view(request):
             user = User.objects.get(email=email)
         except:
             # It's not raining
-            messages.warning(request, f"User with {email} dose not exist")
+            messages.warning(request, f"User with {email} dose not exist", extra_tags='bg-yellow-500 text-black')
 
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"You are logged in.")
+            messages.success(request, f"You are logged in.", extra_tags='bg-green-500 text-white')
             return redirect("core:home")
         else:
-            messages.warning(request, f"User Dose Not Exits, create an account.")
+            messages.warning(request, f"User Dose Not Exits, create an account.", extra_tags='bg-yellow-500 text-black')
 
     context ={
 
@@ -61,6 +61,6 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.warning(request, f"You logged out.")
+    messages.warning(request, f"You logged out.", extra_tags='bg-yellow-500 text-black')
     
     return redirect("userauths:sign_in")

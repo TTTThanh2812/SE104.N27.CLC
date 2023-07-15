@@ -59,11 +59,13 @@ def account(request):
     user =  User.objects.get(user_id=request.user.user_id)
     # Lấy danh sách yêu cầu thuê đang ở trạng thái chờ của người dùng
     pending_rentals = RentBoardgame.objects.filter(renter=user, order_status='pending')
-    rent_history = RentBoardgame.objects.filter(renter=user, order_status='accepted')
+    rent_history = RentBoardgame.objects.filter(renter=user, order_status='accepted', rental_status='replied')
+    renting = RentBoardgame.objects.filter(renter=user, order_status='accepted', rental_status='active')
     context = {
         'user': user,
         'pending_rentals': pending_rentals,
-        'rent_history':rent_history,
+        'rent_history': rent_history,
+        'renting': renting,
         }
     return render(request, 'core/account.html', context)
 
@@ -74,13 +76,13 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Cập nhật session auth hash để tránh đăng xuất người dùng
-            messages.success(request, 'Mật khẩu đã được thay đổi thành công!')
+            messages.success(request, 'Mật khẩu đã được thay đổi thành công!', extra_tags='bg-green-500 text-white')
             return redirect(reverse('core:account'))
         else:
             if 'old_password' in form.errors:
-                messages.error(request, 'Mật khẩu cũ không đúng.')
+                messages.error(request, 'Mật khẩu cũ không đúng.', extra_tags='bg-red-500 text-white')
             if 'new_password2' in form.errors:
-                messages.error(request, 'Mật khẩu xác nhận không khớp với mật khẩu mới.')
+                messages.error(request, 'Mật khẩu xác nhận không khớp với mật khẩu mới.', extra_tags='bg-red-500 text-white')
     else:
         form = PasswordChangeForm(user=request.user)
     
@@ -95,7 +97,7 @@ def edit_infomation(request):
         form = UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Thông tin cá nhân đã được cập nhật thành công!')
+            messages.success(request, 'Thông tin cá nhân đã được cập nhật thành công!', extra_tags='bg-green-500 text-white')
             return redirect(reverse('core:account'))
     else:
         form = UserProfileForm(instance=request.user)

@@ -31,7 +31,7 @@ def request_rent_boardgame(request, bgid):
             # Kiểm tra xem người dùng đang yêu cầu thuê boardgame nào khác hay không
             has_pending_order = RentBoardgame.objects.filter(renter=request.user, order_status='pending').exists()
             if has_pending_order:
-                messages.error(request, "Bạn đã có một đơn hàng chờ xử lý. Vui lòng hoàn thành hoặc hủy đơn hàng trước khi yêu cầu thuê boardgame khác.")
+                messages.error(request, "Bạn đã có một đơn hàng chờ xử lý. Vui lòng hoàn thành hoặc hủy đơn hàng trước khi yêu cầu thuê boardgame khác.", extra_tags='bg-red-500 text-white')
                 return redirect('boardgame:detail', boardgame.bgid)
             else:
                 # Kiểm tra điều kiện thuê
@@ -41,15 +41,15 @@ def request_rent_boardgame(request, bgid):
                         # Ngày kết thúc boardgame trước đó trùng với ngày bắt đầu boardgame yêu cầu
                         # Gửi yêu cầu thuê thành công
                         rent_request.save()
-                        messages.success(request, "Gửi yêu cầu thuê thành công.")
+                        messages.success(request, "Gửi yêu cầu thuê thành công.", extra_tags='bg-green-500 text-white')
                         return redirect('rent:rent_success')
                     elif previous_rent.end_date > rent_request.start_date:
                         # Ngày kết thúc boardgame trước đó lớn hơn ngày bắt đầu boardgame yêu cầu
                         # Xuất thông báo yêu cầu thuê không thành công
-                        messages.error(request, f"Bạn đang thuê 1 boardgame có này kết thúc {previous_rent.end_date}, hãy chọn lại ngày bắt đầu ")
+                        messages.error(request, f"Bạn đang thuê 1 boardgame có này kết thúc {previous_rent.end_date}, hãy chọn lại ngày bắt đầu ", extra_tags='bg-red-500 text-white')
                         return redirect('rent:request_rent_boardgame', bgid=bgid)
                 rent_request.save()
-                messages.success(request, "Gửi yêu cầu thuê thành công.")
+                messages.success(request, "Gửi yêu cầu thuê thành công.", extra_tags='bg-green-500 text-white')
                 return redirect('rent:rent_success')
     else:
         rent_form = RentBoardgameForm()
