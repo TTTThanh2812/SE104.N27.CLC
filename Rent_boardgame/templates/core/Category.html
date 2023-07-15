@@ -24,9 +24,9 @@
         <form action="{% url 'boardgame:search' %}" method="GET">
             <input type="hidden" name="query" value="{{ query }}">
             <select name="sort_by" id="sort_by">
-                <option value="">None</option>
-                <option value="price" {% if sort_by=='price_asc' %}selected{% endif %}>Price (Low to High)</option>
-                <option value="price" {% if sort_by=='price_desc' %}selected{% endif %}>Price (High to Low)</option>
+                <option value="">Không</option>
+                <option value="price" {% if sort_by=='price_asc' %}selected{% endif %}>Giá (Tăng dần)</option>
+                <option value="price" {% if sort_by=='price_desc' %}selected{% endif %}>Giá (Thấp dần)</option>
             </select>
             <button type="submit"
                 class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
@@ -45,7 +45,7 @@
             <div class="grid grid-cols-1 gap-4">
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center ">
-                        <label for="version" class="mr-2">Version:</label>
+                        <label for="version" class="mr-2">Phiên bản</label>
                     </div>
                     {% for version in versions %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
@@ -57,7 +57,7 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="age_rating" class="mr-2">Age Rating:</label>
+                        <label for="age_rating" class="mr-2">Độ tuổi</label>
                     </div>
                     {% for choice in age_rating_choices %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
@@ -69,7 +69,7 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="people">Number of Players:</label>
+                        <label for="people">Số người chơi</label>
                     </div>
                     <div id="people_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="people" id="people">
@@ -77,7 +77,7 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="play_time">Play Time:</label>
+                        <label for="play_time">Thời gian:</label>
                     </div>
                     <div id="play_time_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="play_time" id="play_time">
@@ -85,7 +85,7 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="author">Author:</label>
+                        <label for="author">Tác giả</label>
                     </div>
                     {% for author in authors %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
@@ -97,7 +97,7 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="producer">Producer:</label>
+                        <label for="producer">Nhà xuất bản</label>
                     </div>
                     {% for producer in producers %}
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
@@ -109,7 +109,7 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="publication_year">Publication Year:</label>
+                        <label for="publication_year">Năm phát hành</label>
                     </div>
                     <div id="publication_year_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
                     <input type="hidden" name="publication_year" id="publication_year">
@@ -117,22 +117,22 @@
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="rental_price_min">Rental Price (Min):</label>
+                        <label for="rental_price_min">Giá thuê (Thấp nhất):</label>
                         <input type="text" id="rental_price_min" name="rental_price_min" placeholder="Min value" />
                     </div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="rental_price_max">Rental Price (Max):</label>
+                        <label for="rental_price_max">Giá thuê (Cao nhất):</label>
                         <input type="text" id="rental_price_max" name="rental_price_max" placeholder="Max value" />
                     </div>
                 </div>
 
                 <div>
                     <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                        <label for="rating">Rating:</label>
+                        <label for="rating">Đánh giá</label>
                     </div>
                     <div class="text-[#0FB3AF] text-md font-medium flex items-center">
                         <select name="rating" id="rating">
-                            <option value="">All</option>
+                            <option value="">Tất cả</option>
                             <option value="1">★☆☆☆☆</option>
                             <option value="2">★★☆☆☆</option>
                             <option value="3">★★★☆☆</option>
@@ -144,7 +144,7 @@
             </div>
             <button type="submit"
                 class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
-                Filter
+                Lọc
             </button>
         </form>
     </div>
@@ -152,7 +152,7 @@
     <div class="mt-12 ml-12 col-span-4">
         <!-- Boardgame list -->
         {% if boardgames %}
-        <h1>Search Results for "{{ query }}"</h1>
+        <h1>Chiến thuật {{ query }}</h1>
 
         <ul>
             <div class="grid grid-cols-3 gap-3 ">
