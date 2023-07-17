@@ -10,7 +10,7 @@ from boardgame.models import Category, Boardgame, Version, Author, Producer
 from userauths.models import User
 from rent.models import RentBoardgame
 from django.contrib.auth.forms import PasswordChangeForm
-from core.forms import UserProfileForm
+from userauths.froms import UserProfileForm, PasswordChangeCustomForm
 
 # from .models import UserProfile
 
@@ -72,7 +72,7 @@ def account(request):
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
+        form = PasswordChangeCustomForm(user=request.user, data=request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Cập nhật session auth hash để tránh đăng xuất người dùng
@@ -84,7 +84,7 @@ def change_password(request):
             if 'new_password2' in form.errors:
                 messages.error(request, 'Mật khẩu xác nhận không khớp với mật khẩu mới.', extra_tags='bg-red-500 text-white')
     else:
-        form = PasswordChangeForm(user=request.user)
+        form = PasswordChangeCustomForm(user=request.user)
     
     context = {
         'form': form

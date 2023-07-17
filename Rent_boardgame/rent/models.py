@@ -66,44 +66,30 @@ class RentBoardgame(models.Model):
     def __str__(self):
         return f"{self.renter.username} - {self.boardgame_numbers.boardgame.title} - {self.rid}"
 
-@receiver(post_save, sender=RentBoardgame, dispatch_uid="update_boardgame_stats_on_order_status")
-def update_boardgame_stats_on_order_status(sender, instance, **kwargs):
+@receiver(post_save, sender=RentBoardgame, dispatch_uid="update_order_status")
+def update_order_status(sender, instance, **kwargs):
     rental = instance
     boardgame_number = rental.boardgame_numbers
 
     if rental.order_status == 'pending':
         boardgame_number.boardgame.in_stock -= 1
         boardgame_number.boardgame.order += 1
+        boardgame_number.boardgame_number_status = 'order'
     elif rental.order_status == 'canceled':
         boardgame_number.boardgame.in_stock += 1
         boardgame_number.boardgame.order -= 1
+        boardgame_number.boardgame_number_status = 'in_stock'
     elif rental.order_status == 'accepted':
         if boardgame_number.boardgame_number_status == 'order':
             boardgame_number.boardgame.order -= 1
             boardgame_number.boardgame.rental += 1
+            boardgame_number.boardgame_number_status = 'rental'
         if rental.rental_status == 'replied':
             if boardgame_number.boardgame_number_status == 'rental':
                 boardgame_number.boardgame.in_stock += 1
                 boardgame_number.boardgame.rental -= 1
+                boardgame_number.boardgame_number_status = 'in_stock'
         
-
     boardgame_number.boardgame.total = boardgame_number.boardgame.in_stock + boardgame_number.boardgame.order + boardgame_number.boardgame.rental
     boardgame_number.boardgame.save()
-
-@receiver(post_save, sender=RentBoardgame, dispatch_uid="update_boardgame_number_stats_on_order_status")
-def update_boardgame_number_stats_on_order_status(sender, instance, **kwargs):
-    rental = instance
-    boardgame_number = rental.boardgame_numbers
-    
-    if rental.order_status == 'pending':
-        boardgame_number.boardgame_number_status = 'order'
-    elif rental.order_status == 'accepted':
-        if boardgame_number.boardgame_number_status == 'order':
-            boardgame_number.boardgame_number_status = 'rental'
-        if rental.rental_status == 'replied':
-            if boardgame_number.boardgame_number_status == 'rental':
-                boardgame_number.boardgame_number_status = 'in_stock'
-    elif rental.order_status == 'canceled':
-        boardgame_number.boardgame_number_status = 'in_stock'
-    
     boardgame_number.save()
