@@ -3,194 +3,191 @@
 {% block title %}{{ category.title }}{% endblock %}
 
 {% block content %}
-    <div class="text-center pt-12 text-3xl font-bold text-[#0FB3AF]">Thể loại</div>
+<div class="text-center pt-12 text-3xl font-bold text-[#0FB3AF]">Thể loại</div>
 
-    <div class="mt-6 ml-80 w-4/5 flex justify-around items-center">
-        <!-- Search form -->
-        <div class="flex justify-center">
-            <form action="{% url 'boardgame:search' %}" method="GET">
-                <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded shadow-md ">
-                    <input type="text" name="q" placeholder="Tìm kiếm...">
-                    <button type="submit"
-                        class="bg-black hover:bg-[#0FB3AFCC] rounded shadow-md  px-3 text-sm h-12 text-white">
-                        Tìm kiếm
-                    </button>
-                </div>
-            </form>
-        </div>
-        <!-- Sort options -->
-        <div>
-            <form action="{% url 'boardgame:search' %}" method="GET">
-                <input type="hidden" name="query" value="{{ query }}">
-                <select name="sort_by" id="sort_by">
-                  <option value="">None</option>
-                  <option value="price" {% if sort_by == 'price_asc' %}selected{% endif %}>Price (Low to High)</option>
-                  <option value="price" {% if sort_by == 'price_desc' %}selected{% endif %}>Price (High to Low)</option>
-                </select>
+<div class="mt-6 ml-80 w-4/5 flex justify-around items-center">
+    <!-- Search form -->
+    <div class="flex justify-center">
+        <form action="{% url 'boardgame:search' %}" method="GET">
+            <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded shadow-md ">
+                <input type="text" name="q" placeholder="Tìm kiếm...">
                 <button type="submit"
-                    class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
-                    Sắp xếp
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-4 h-4">
-                        <path fill-rule="evenodd"
-                            d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-                            clip-rule="evenodd" />
-                </svg>
+                    class="bg-black hover:bg-[#0FB3AFCC] rounded shadow-md  px-3 text-sm h-12 text-white">
+                    Tìm kiếm
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Sort options -->
+    <div>
+        <form action="{% url 'boardgame:search' %}" method="GET">
+            <input type="hidden" name="query" value="{{ query }}">
+            <select name="sort_by" id="sort_by">
+                <option value="">Không</option>
+                <option value="price" {% if sort_by=='price_asc' %}selected{% endif %}>Giá (Tăng dần) </option>
+                <option value="price" {% if sort_by=='price_desc' %}selected{% endif %}>Giá (Giảm dần)</option>
+            </select>
+            <button type="submit"
+                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                Sắp xếp
+
 
             </button>
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 
-    <div class="grid grid-cols-5 gap-4">
-        <div class="mt-10 ml-16">
-            <form method="GET" action="{% url 'boardgame:search' %}" >
-                <input type="hidden" name="query" value="{{ query }}">
-                <div class="grid grid-cols-1 gap-4">
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="category" class="mr-2">Category:</label>
-                        </div>
-                        {% for category in categorys %}
-                            <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                                <input type="checkbox" name="category[]" value="{{ category.title }}" id="{{ category.cid }}">
-                                <label for="{{ category.cid }}">{{ category.title }}</label>
-                            </div>
-                        {% endfor %}
+<div class="grid grid-cols-5 gap-4">
+    <div class="mt-10 ml-16">
+        <form method="GET" action="{% url 'boardgame:search' %}">
+            <input type="hidden" name="query" value="{{ query }}">
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="category" class="mr-2">Thể loại</label>
                     </div>
-                    
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center ">
-                            <label for="version" class="mr-2">Version:</label>
-                        </div>
-                        {% for version in versions %}
-                            <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                                <input type="checkbox" name="version[]" value="{{ version.title }}" id="{{ version.vid }}">
-                                <label for="{{ version.vid }}">{{ version.title }}</label>
-                            </div>
-                        {% endfor %}
+                    {% for category in categorys %}
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="category[]" value="{{ category.title }}" id="{{ category.cid }}">
+                        <label for="{{ category.cid }}">{{ category.title }}</label>
                     </div>
+                    {% endfor %}
+                </div>
 
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="age_rating" class="mr-2">Age Rating:</label>
-                        </div>
-                        {% for choice in age_rating_choices %}
-                            <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                                <input type="checkbox" name="age_rating" id="age_rating_{{ choice.0 }}" value="{{ choice.0 }}">
-                                <label for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
-                            </div>
-                        {% endfor %}
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center ">
+                        <label for="version" class="mr-2">Phiên bản</label>
                     </div>
-                   
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="people">Number of Players:</label>
-                        </div>
-                        <div id="people_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
-                        <input type="hidden" name="people" id="people">
+                    {% for version in versions %}
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="version[]" value="{{ version.title }}" id="{{ version.vid }}">
+                        <label for="{{ version.vid }}">{{ version.title }}</label>
                     </div>
-                    
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="play_time">Play Time:</label>
-                        </div>
-                        <div id="play_time_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
-                        <input type="hidden" name="play_time" id="play_time">
-                    </div>
+                    {% endfor %}
+                </div>
 
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="author">Author:</label>
-                        </div>
-                        {% for author in authors %}
-                            <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                                <input type="checkbox" name="author[]" value="{{ author.title }}" id="{{ author.aid }}">
-                                <label for="{{ author.aid }}">{{ author.title }}</label>
-                            </div>
-                        {% endfor %}
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="age_rating" class="mr-2">Độ tuổi</label>
                     </div>
-
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="producer">Producer:</label>
-                        </div>
-                        {% for producer in producers %}
-                            <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                                <input type="checkbox" name="producer[]" value="{{ producer.title }}" id="{{ producer.pid }}">
-                                <label for="{{ producer.pid }}">{{ producer.title }}</label>
-                            </div>
-                        {% endfor %}
+                    {% for choice in age_rating_choices %}
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="age_rating" id="age_rating_{{ choice.0 }}" value="{{ choice.0 }}">
+                        <label for="age_rating_{{ choice.0 }}">{{ choice.1 }}</label>
                     </div>
+                    {% endfor %}
+                </div>
 
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="publication_year">Publication Year:</label>
-                        </div>
-                        <div id="publication_year_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
-                        <input type="hidden" name="publication_year" id="publication_year">
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="people">Số người chơi</label>
                     </div>
+                    <div id="people_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <input type="hidden" name="people" id="people">
+                </div>
 
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="rental_price_min">Rental Price (Min):</label>
-                            <input type="text" id="rental_price_min" name="rental_price_min" placeholder="Min value" />
-                        </div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="rental_price_max">Rental Price (Max):</label>
-                            <input type="text" id="rental_price_max" name="rental_price_max" placeholder="Max value" />
-                        </div>
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="play_time">Thời gian</label>
                     </div>
+                    <div id="play_time_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <input type="hidden" name="play_time" id="play_time">
+                </div>
 
-                    <div>
-                        <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
-                            <label for="rating">Rating:</label>
-                        </div>
-                        <div class="text-[#0FB3AF] text-md font-medium flex items-center">
-                            <select name="rating" id="rating">
-                                <option value="">All</option>
-                                <option value="1">★☆☆☆☆</option>
-                                <option value="2">★★☆☆☆</option>
-                                <option value="3">★★★☆☆</option>
-                                <option value="4">★★★★☆</option>
-                                <option value="5">★★★★★</option>
-                            </select>
-                        </div>
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="author">Tác giả</label>
+                    </div>
+                    {% for author in authors %}
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="author[]" value="{{ author.title }}" id="{{ author.aid }}">
+                        <label for="{{ author.aid }}">{{ author.title }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="producer">Nhà xuất bản</label>
+                    </div>
+                    {% for producer in producers %}
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <input type="checkbox" name="producer[]" value="{{ producer.title }}" id="{{ producer.pid }}">
+                        <label for="{{ producer.pid }}">{{ producer.title }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="publication_year">Năm phát hành</label>
+                    </div>
+                    <div id="publication_year_slider" class="w-64 h-4 bg-gray-300 rounded-full"></div>
+                    <input type="hidden" name="publication_year" id="publication_year">
+                </div>
+
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="rental_price_min">Thấp nhất</label>
+                        <input type="text" id="rental_price_min" name="rental_price_min" placeholder="Min value" />
+                    </div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="rental_price_max">Cao nhất</label>
+                        <input type="text" id="rental_price_max" name="rental_price_max" placeholder="Max value" />
                     </div>
                 </div>
-                <button type="submit" class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
-                    Filter
-                </button>
-            </form>
-        </div>
 
-        <div class="mt-12 ml-12 col-span-4">
-            {% if boardgames %}
-                <h1>Search Results for "{{ query }}"</h1>
+                <div>
+                    <div class="text-[#0FB3AF] text-xl font-medium flex items-center">
+                        <label for="rating">Đánh giá</label>
+                    </div>
+                    <div class="text-[#0FB3AF] text-md font-medium flex items-center">
+                        <select name="rating" id="rating">
+                            <option value="">Tất cả</option>
+                            <option value="1">★☆☆☆☆</option>
+                            <option value="2">★★☆☆☆</option>
+                            <option value="3">★★★☆☆</option>
+                            <option value="4">★★★★☆</option>
+                            <option value="5">★★★★★</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit"
+                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                Lọc
+            </button>
+        </form>
+    </div>
 
-                <ul>
-                    <div class="grid grid-cols-3 gap-3 ">
-                        {% for boardgame in boardgames %}
-                            <div class="shadow bg-[#ffffff] rounded-lg">
-                                <!-- href -> đi tới boardgame cụ thể -->
-                                <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
-                                    <!-- Hình ảnh boardgame -->
-                                    <div>
-                                        <img src="{{ boardgame.image.url }}" class="rounded-t-lg object-contain max-h-48 w-full transition "
-                                            sizes="100vw">
-                                    </div>
-                    
-                                    <div class="p-6 rounded-b-xl bg-white-100">
-                                        <!-- Thông tin boardgame -->
-                                        <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
-                                        <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
-                                        <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
-                                        <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
-                    
-                                        <!--Số sao-->
-                                        {{boardgame.get_average_rating}}
-                                        <!-- {% for boardgame_rating in boardgame_ratings %}
+    <div class="mt-12 ml-12 col-span-4">
+        {% if boardgames %}
+        <h1>Search Results for "{{ query }}"</h1>
+
+        <ul>
+            <div class="grid grid-cols-3 gap-3 ">
+                {% for boardgame in boardgames %}
+                <div class="shadow bg-[#ffffff] rounded-lg">
+                    <!-- href -> đi tới boardgame cụ thể -->
+                    <a href="{% url " boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                        <!-- Hình ảnh boardgame -->
+                        <div>
+                            <img src="{{ boardgame.image.url }}"
+                                class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
+                        </div>
+
+                        <div class="p-6 rounded-b-xl bg-white-100">
+                            <!-- Thông tin boardgame -->
+                            <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
+                            <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
+                            <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                            <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+
+                            <!--Số sao-->
+                            {{boardgame.get_average_rating}}
+                            <!-- {% for boardgame_rating in boardgame_ratings %}
                                                     {% if boardgame.name == boardgame_rating.boardgame.name%}                        
-                                                            
+                                                                        
                                                             {% for star in boardgame_rating.draw_average_stars %}
                                                                 <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
                                                                     <title> {{star}}</title>
@@ -199,7 +196,7 @@
                                                                     </path>
                                                                 </svg>
                                                             {% endfor %}  
-                                                            
+                                                                        
                                                             {% for non_star in boardgame_rating.draw_non_stars %}
                                                                 <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
                                                                     <path
@@ -210,110 +207,110 @@
                                                         </div>
                                                     {% endif %} 
                                                 {% endfor %}     -->
-                    
-                                        <!-- Số lượt đánh giá-->
-                                        <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
-                                            {{boardgame.reviews.all.count}} Đánh giá
-                                        </div>
-                    
-                                    </div>
-                                </a>
+
+                            <!-- Số lượt đánh giá-->
+                            <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
+                                {{boardgame.reviews.all.count}} Đánh giá
                             </div>
-                        {% endfor %}
-                        </div> 
-                </ul>
-            {% else %}
-                <h1>No results found for "{{ query }}"</h1>
-            {% endif %}
-        </div>
-    </div> 
 
-    <script>
-        //Number of Players
-        $(document).ready(function () {
-            // Initialize the people slider
-            var peopleSlider = document.getElementById('people_slider');
-            var peopleInput = document.getElementById('people');
-            noUiSlider.create(peopleSlider, {
-                start: [1, 10], // Default values
-                connect: true, // Connect the handles
-                range: {
-                    'min': 1, // Min value
-                    'max': 10 // Max value
-                },
-                tooltips: [true, true], // Show tooltips
-                format: {
-                    to: function (value) {
-                        return Math.round(value);
-                    },
-                    from: function (value) {
-                        return Number(value);
-                    }
-                },
-                step: 1
-            });
-            // Set the value of the hidden input field when the slider changes
-            peopleSlider.noUiSlider.on('update', function (values) {
-                peopleInput.value = values.join(',');
-            });
-        });
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </ul>
+        {% else %}
+        <h1>No results found for "{{ query }}"</h1>
+        {% endif %}
+    </div>
+</div>
 
-        //Play Time
-        $(document).ready(function () {
-            var playTimeSlider = document.getElementById('play_time_slider');
-            var playTimeInput = document.getElementById('play_time');
-            noUiSlider.create(playTimeSlider, {
-              start: [0, 240], // Giá trị mặc định
-              connect: true, // Kết nối hai nút trượt
-              range: {
-                'min': 0, // Giá trị tối thiểu
-                'max': 240 // Giá trị tối đa
-              },
-              tooltips: [true, true], // Hiển thị tooltip
-              format: {
+<script>
+    //Number of Players
+    $(document).ready(function () {
+        // Initialize the people slider
+        var peopleSlider = document.getElementById('people_slider');
+        var peopleInput = document.getElementById('people');
+        noUiSlider.create(peopleSlider, {
+            start: [1, 10], // Default values
+            connect: true, // Connect the handles
+            range: {
+                'min': 1, // Min value
+                'max': 10 // Max value
+            },
+            tooltips: [true, true], // Show tooltips
+            format: {
                 to: function (value) {
-                  return Math.round(value);
+                    return Math.round(value);
                 },
                 from: function (value) {
-                  return Number(value);
+                    return Number(value);
                 }
-              }
-            });
-            playTimeSlider.noUiSlider.on('update', function (values) {
-              playTimeInput.value = values.join(',');
-            });
+            },
+            step: 1
         });
-
-        //Publication Year:
-        $(document).ready(function () {
-            // Initialize the publication_year slider
-            var publication_yearSlider = document.getElementById('publication_year_slider');
-            var publication_yearInput = document.getElementById('publication_year');
-            noUiSlider.create(publication_yearSlider, {
-                start: [2000, 2023], // Default values
-                connect: true, // Connect the handles
-                range: {
-                    'min': 2000, // Min value
-                    'max': 2023 // Max value
-                },
-                tooltips: [true, true], // Show tooltips
-                format: {
-                    to: function (value) {
-                        return Math.round(value);
-                    },
-                    from: function (value) {
-                        return Number(value);
-                    }
-                },
-                step: 1
-            });
-            // Set the value of the hidden input field when the slider changes
-            publication_yearSlider.noUiSlider.on('update', function (values) {
-                publication_yearInput.value = values.join(',');
-            });
+        // Set the value of the hidden input field when the slider changes
+        peopleSlider.noUiSlider.on('update', function (values) {
+            peopleInput.value = values.join(',');
         });
-    </script>
+    });
+
+    //Play Time
+    $(document).ready(function () {
+        var playTimeSlider = document.getElementById('play_time_slider');
+        var playTimeInput = document.getElementById('play_time');
+        noUiSlider.create(playTimeSlider, {
+            start: [0, 240], // Giá trị mặc định
+            connect: true, // Kết nối hai nút trượt
+            range: {
+                'min': 0, // Giá trị tối thiểu
+                'max': 240 // Giá trị tối đa
+            },
+            tooltips: [true, true], // Hiển thị tooltip
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Number(value);
+                }
+            }
+        });
+        playTimeSlider.noUiSlider.on('update', function (values) {
+            playTimeInput.value = values.join(',');
+        });
+    });
+
+    //Publication Year:
+    $(document).ready(function () {
+        // Initialize the publication_year slider
+        var publication_yearSlider = document.getElementById('publication_year_slider');
+        var publication_yearInput = document.getElementById('publication_year');
+        noUiSlider.create(publication_yearSlider, {
+            start: [2000, 2023], // Default values
+            connect: true, // Connect the handles
+            range: {
+                'min': 2000, // Min value
+                'max': 2023 // Max value
+            },
+            tooltips: [true, true], // Show tooltips
+            format: {
+                to: function (value) {
+                    return Math.round(value);
+                },
+                from: function (value) {
+                    return Number(value);
+                }
+            },
+            step: 1
+        });
+        // Set the value of the hidden input field when the slider changes
+        publication_yearSlider.noUiSlider.on('update', function (values) {
+            publication_yearInput.value = values.join(',');
+        });
+    });
+</script>
 
 
-    
+
 {% endblock %}
