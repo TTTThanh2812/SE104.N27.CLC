@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'boardgame',
     'userauths',
     'rent',
-    'notifications',
+    'myadmin.apps.MyAdminConfig',
+    # 'notifications',
 ]
 
 MIDDLEWARE = [
