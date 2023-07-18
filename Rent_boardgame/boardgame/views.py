@@ -37,8 +37,13 @@ def detail(request, boardgame_id):
     # Lấy trung bình rating của boardgame 
     average_rating = BoardgameReviews.objects.filter(boardgame=boardgame).aggregate(Avg('rating'))
 
-    # draw_average_stars = range(0,average_stars)
-    # draw_non_stars = range(0,5 - average_stars)
+    if (boardgame.get_average_rating()):
+        average_stars = int(boardgame.get_average_rating())
+    else:
+        average_stars = 0
+    draw_average_stars = range(0,average_stars)
+    draw_non_stars = range(0,5 - average_stars)
+
     related_boardgame = Boardgame.objects.filter(category=boardgame.category, boardgame_status="stocking").exclude(bgid=boardgame_id)[0:3]
     # related_boardgame_rating = []
     # for relate_bg_rating in related_boardgame:
@@ -63,8 +68,8 @@ def detail(request, boardgame_id):
         'average_rating':average_rating,
         'review_form': review_form,
         'page_obj': page_obj,
-        # 'draw_average_stars':draw_average_stars,
-        # 'draw_non_stars':draw_non_stars,
+        'draw_average_stars':draw_average_stars,
+        'draw_non_stars':draw_non_stars,
         'related_boardgame':related_boardgame,
         # 'related_boardgame_rating':related_boardgame_rating,
     }

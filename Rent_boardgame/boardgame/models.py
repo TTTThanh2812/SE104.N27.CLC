@@ -124,6 +124,16 @@ class  Boardgame(models.Model):
     
     def get_average_rating(self):
         return self.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
+    @property
+    def draw_average_stars(self):
+        if (self.get_average_rating()):
+            average_stars = int(self.get_average_rating())
+            return range(0,average_stars)
+    @property
+    def draw_non_stars(self):
+        if (self.get_average_rating()):
+            average_stars = int(self.get_average_rating())
+            return range(0,5-average_stars)
     
     def __str__(self):
         return self.title

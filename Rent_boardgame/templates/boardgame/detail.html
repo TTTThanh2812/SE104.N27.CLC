@@ -13,29 +13,6 @@
     <div class="col-span-2 p-6 py-20 bg-white-100 rounded-xl ">
         <h1 class="mb-6 text-4xl font-bold"> {{ boardgame.title }} </h1>
 
-        <div class="flex items-center pt-1">
-            {% comment %} <p class="text-xl text-gray-500"><strong>Đánh giá: </strong>{{ average_stars }}</p> {%
-            endcomment %}
-
-            <!--Vẽ sao đánh giá-->
-            {% comment %} {% for star in draw_average_stars %}
-            <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
-                <title> {{star}}</title>
-                <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                </path>
-            </svg>
-            {% endfor %}
-
-            {% for non_star in draw_non_stars %}
-            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
-                <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                </path>
-            </svg>
-            {% endfor %} {% endcomment %}
-        </div>
-
         <p class="text-xl text-gray-500"><strong>Phiên bản: </strong>{{ boardgame.version}}</p>
         <p class="text-xl text-gray-500"><strong>Giá thuê: </strong>{{ boardgame.rental_price}}00 VNĐ / Ngày</p>
         <p class="text-xl text-gray-500"><strong>Số lượng hiện có: </strong>{{ boardgame.in_stock }} Boardgame</p>
@@ -139,9 +116,28 @@
 
     <div class="col-span-2 p-6 bg-gray-100 rounded-xl comment-list">
         <h4 class="text-xxl text-gray-500"> Star reviews </h4>
-        <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0}}
-        </p>
+        <div class="flex items-center pt-1">
+            <p class="text-xl text-gray-500"><strong>Trung bình review: </strong>{{ average_rating.rating__avg|floatformat:0}}</p>
+            <!--Vẽ sao đánh giá-->
+            {% if average_rating.rating__avg %}
+                {% for star in draw_average_stars %}
+                    <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                        <title> {{star}}</title>
+                        <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                        </path>
+                    </svg>
+                {% endfor %}
 
+                {% for non_star in draw_non_stars %}
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                        </path>
+                    </svg>
+                {% endfor %} 
+            {% endif %}
+        </div>
     </div>
 
     <div class="col-start-2 col-span-3 p-6 bg-gray-100 rounded-xl form-group">
@@ -181,29 +177,25 @@
                     <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
 
                     <!--Số sao-->
-                    {{boardgame.get_average_rating}}
-                    <!-- {% for boardgame_rating in boardgame_ratings %}
-                                            {% if boardgame.name == boardgame_rating.boardgame.name%}                        
-                                                                
-                                                    {% for star in boardgame_rating.draw_average_stars %}
-                                                        <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
-                                                            <title> {{star}}</title>
-                                                            <path
-                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                            </path>
-                                                        </svg>
-                                                    {% endfor %}  
-                                                                
-                                                    {% for non_star in boardgame_rating.draw_non_stars %}
-                                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
-                                                            <path
-                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                            </path>
-                                                        </svg> 
-                                                    {% endfor %} 
-                                                </div>
-                                            {% endif %} 
-                                        {% endfor %}     -->
+                    <div class="flex items-center pt-1">
+                        {{boardgame.get_average_rating}}    
+                        {% for star in boardgame.draw_average_stars %}
+                            <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                                <title> {{star}}</title>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg>
+                        {% endfor %}  
+                                        
+                        {% for non_star in boardgame.draw_non_stars %}
+                            <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
+                            </svg> 
+                        {% endfor %} 
+                    </div>
 
                     <!-- Số lượt đánh giá-->
                     <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
