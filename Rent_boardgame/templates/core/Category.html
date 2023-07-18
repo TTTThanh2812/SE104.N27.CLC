@@ -10,10 +10,10 @@
     <!-- Search form -->
     <div class="flex justify-center">
         <form action="{% url 'boardgame:search' %}" method="GET">
-            <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded mb-4 shadow-md ">
-                <input type="text" name="q" placeholder="Tìm kiếm...">
+            <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded shadow-md ">
+                <input type="text" name="query" placeholder="Tìm kiếm..." class="w-2/3 px-3 focus:outline-none">
                 <button type="submit"
-                    class="bg-black hover:bg-[#0FB3AFCC] rounded shadow-md  px-3 text-sm h-12 text-white">
+                    class="w-1/3 bg-black hover:bg-[#0FB3AFCC] rounded shadow-md px-3 text-sm text-white">
                     Tìm kiếm
                 </button>
             </div>
@@ -23,15 +23,43 @@
     <div>
         <form action="{% url 'boardgame:search' %}" method="GET">
             <input type="hidden" name="query" value="{{ query }}">
+
+            {% if filters.category %}
+                <input type="hidden" name="category" value="{{ filters.category }}">
+            {% endif %}
+            {% if filters.version %}
+                <input type="hidden" name="version" value="{{ filters.version }}">
+            {% endif %}
+            {% if filters.people  %}
+                <input type="hidden" name="people" value="{{ filters.people }}">
+            {% endif %}
+            {% if filters.age_rating %}
+                <input type="hidden" name="age_rating" value="{{ filters.age_rating }}"> 
+            {% endif %}
+            <input type="hidden" name="play_time" value="{{ filters.play_time }}">
+            {% if filters.author %}
+                <input type="hidden" name="author" value="{{ filters.author }}">
+            {% endif %}
+            {% if filters.producer %}
+                <input type="hidden" name="producer" value="{{ filters.producer }}">
+            {% endif %}
+            <input type="hidden" name="publication_year" value="{{ filters.publication_year }}">
+            {% if filters.rental_price_min %}
+                <input type="hidden" name="rental_price_min" value="{{ filters.rental_price_min }}">
+            {% endif %}
+            {% if filters.rental_price_max %}
+                <input type="hidden" name="rental_price_max" value="{{ filters.rental_price_max }}">
+            {% endif %}
+            <input type="hidden" name="rating" value="{{ filters.rating }}"> 
+            
             <select name="sort_by" id="sort_by">
                 <option value="">Không</option>
-                <option value="price" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá (Tăng dần)</option>
-                <option value="price" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá (Thấp dần)</option>
+                <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá (Tăng dần)</option>
+                <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá (Giảm dần)</option>
             </select>
             <button type="submit"
-                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center items-center rounded-md px-3 text-sm text-white h-8">
                 Sắp xếp
-
             </button>
         </form>
     </div>

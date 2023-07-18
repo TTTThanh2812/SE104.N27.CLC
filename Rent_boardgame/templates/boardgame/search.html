@@ -10,9 +10,9 @@
     <div class="flex justify-center">
         <form action="{% url 'boardgame:search' %}" method="GET">
             <div class="mt-4 flex justify-between flex border border-black w-96 h-12 rounded shadow-md ">
-                <input type="text" name="q" placeholder="Tìm kiếm...">
+                <input type="text" name="query" placeholder="Tìm kiếm..." class="w-2/3 px-3 focus:outline-none">
                 <button type="submit"
-                    class="bg-black hover:bg-[#0FB3AFCC] rounded shadow-md  px-3 text-sm h-12 text-white">
+                    class="w-1/3 bg-black hover:bg-[#0FB3AFCC] rounded shadow-md px-3 text-sm text-white">
                     Tìm kiếm
                 </button>
             </div>
@@ -22,16 +22,43 @@
     <div>
         <form action="{% url 'boardgame:search' %}" method="GET">
             <input type="hidden" name="query" value="{{ query }}">
+
+            {% if filters.category %}
+                <input type="hidden" name="category" value="{{ filters.category }}">
+            {% endif %}
+            {% if filters.version %}
+                <input type="hidden" name="version" value="{{ filters.version }}">
+            {% endif %}
+            {% if filters.people  %}
+                <input type="hidden" name="people" value="{{ filters.people }}">
+            {% endif %}
+            {% if filters.age_rating %}
+                <input type="hidden" name="age_rating" value="{{ filters.age_rating }}"> 
+            {% endif %}
+            <input type="hidden" name="play_time" value="{{ filters.play_time }}">
+            {% if filters.author %}
+                <input type="hidden" name="author" value="{{ filters.author }}">
+            {% endif %}
+            {% if filters.producer %}
+                <input type="hidden" name="producer" value="{{ filters.producer }}">
+            {% endif %}
+            <input type="hidden" name="publication_year" value="{{ filters.publication_year }}">
+            {% if filters.rental_price_min %}
+                <input type="hidden" name="rental_price_min" value="{{ filters.rental_price_min }}">
+            {% endif %}
+            {% if filters.rental_price_max %}
+                <input type="hidden" name="rental_price_max" value="{{ filters.rental_price_max }}">
+            {% endif %}
+            <input type="hidden" name="rating" value="{{ filters.rating }}"> 
+            
             <select name="sort_by" id="sort_by">
                 <option value="">Không</option>
-                <option value="price" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá (Tăng dần) </option>
-                <option value="price" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá (Giảm dần)</option>
+                <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá (Tăng dần)</option>
+                <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá (Giảm dần)</option>
             </select>
             <button type="submit"
-                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-sm text-white h-8">
+                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center items-center rounded-md px-3 text-sm text-white h-8">
                 Sắp xếp
-
-
             </button>
         </form>
     </div>
@@ -130,12 +157,12 @@
                     <div class="mt-4 text-[#0FB3AF] text-xl font-medium flex items-center">
                         <label for="publication_year">Giá thuê</label>
                     </div>
-                    <div class="w-80 ml-4 text-[#0FB3AF] text-md font-medium flex">
-                        <label for="rental_price_min">Thấp nhất</label>
+                    <div class="w-80 ml-4 text-[#0FB3AF] text-md font-medium flex ">
+                        <label class="mr-4" for="rental_price_min">Thấp nhất</label>
                         <input type="text" id="rental_price_min" name="rental_price_min" placeholder="Min value" />
                     </div>
-                    <div class="w-80 ml-4 text-[#0FB3AF] text-md font-medium flex">
-                        <label for="rental_price_max">Cao nhất</label>
+                    <div class="w-80 ml-4 text-[#0FB3AF] text-md font-medium flex ">
+                        <label class="mr-4" for="rental_price_max">Cao nhất</label>
                         <input type="text" id="rental_price_max" name="rental_price_max" placeholder="Max value" />
                     </div>
                 </div>
@@ -165,65 +192,65 @@
 
     <div class="mt-12 ml-12 col-span-4">
         {% if boardgames %}
-        <h1>Search Results for "{{ query }}"</h1>
+            <h1>Search Results for "{{ query }}"</h1>
 
-        <ul>
-            <div class="grid grid-cols-3 gap-3 ">
-                {% for boardgame in boardgames %}
-                <div class="shadow bg-[#ffffff] rounded-lg">
-                    <!-- href -> đi tới boardgame cụ thể -->
-                    <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
-                        <!-- Hình ảnh boardgame -->
-                        <div>
-                            <img src="{{ boardgame.image.url }}"
-                                class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
+            <ul>
+                <div class="grid grid-cols-3 gap-3 ">
+                    {% for boardgame in boardgames %}
+                        <div class="shadow bg-[#ffffff] rounded-lg">
+                        <!-- href -> đi tới boardgame cụ thể -->
+                            <a href="{% url "boardgame:detail" boardgame.bgid %}" class="boardgame-info">
+                            <!-- Hình ảnh boardgame -->
+                                <div>
+                                    <img src="{{ boardgame.image.url }}"
+                                        class="rounded-t-lg object-contain max-h-48 w-full transition " sizes="100vw">
+                                </div>
+
+                                <div class="p-6 rounded-b-xl bg-white-100">
+                                    <!-- Thông tin boardgame -->
+                                    <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
+                                    <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
+                                    <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
+                                    <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
+
+                                    <!--Số sao-->
+                                    {{boardgame.get_average_rating}}
+                                    <!-- {% for boardgame_rating in boardgame_ratings %}
+                                            {% if boardgame.name == boardgame_rating.boardgame.name%}                        
+                                                                
+                                                    {% for star in boardgame_rating.draw_average_stars %}
+                                                        <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
+                                                            <title> {{star}}</title>
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                            </path>
+                                                        </svg>
+                                                    {% endfor %}  
+                                                                
+                                                    {% for non_star in boardgame_rating.draw_non_stars %}
+                                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                            </path>
+                                                        </svg> 
+                                                    {% endfor %} 
+                                                </div>
+                                            {% endif %} 
+                                        {% endfor %}     -->
+
+                                    <!-- Số lượt đánh giá-->
+                                    <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
+                                        {{boardgame.reviews.all.count}} Đánh giá
+                                    </div>
+
+                                </div>
+                            </a>
                         </div>
-
-                        <div class="p-6 rounded-b-xl bg-white-100">
-                            <!-- Thông tin boardgame -->
-                            <h2 class="text-xl font-bold">{{ boardgame.title }}</h2>
-                            <p class="text-gray-500">Phiên bản: {{ boardgame.version }}</p>
-                            <p class="text-gray-500">Thời gian: {{ boardgame.play_time }} phút</p>
-                            <p class="text-gray-500">Số lượng người chơi: {{ boardgame.people }} người</p>
-
-                            <!--Số sao-->
-                            {{boardgame.get_average_rating}}
-                            <!-- {% for boardgame_rating in boardgame_ratings %}
-                                                    {% if boardgame.name == boardgame_rating.boardgame.name%}                        
-                                                                        
-                                                            {% for star in boardgame_rating.draw_average_stars %}
-                                                                <svg aria-hidden="true" class="w-5 h-5 text-[#0FB3AF]" fill="currentColor" viewBox="0 0 20 20">
-                                                                    <title> {{star}}</title>
-                                                                    <path
-                                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                                    </path>
-                                                                </svg>
-                                                            {% endfor %}  
-                                                                        
-                                                            {% for non_star in boardgame_rating.draw_non_stars %}
-                                                                <svg aria-hidden="true" class="w-5 h-5 text-gray-300 " fill="currentColor" viewBox="0 0 20 20">
-                                                                    <path
-                                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                                    </path>
-                                                                </svg> 
-                                                            {% endfor %} 
-                                                        </div>
-                                                    {% endif %} 
-                                                {% endfor %}     -->
-
-                            <!-- Số lượt đánh giá-->
-                            <div class="font-thin text-[#7E7E7E] font-['Open Sans'] text-xs">
-                                {{boardgame.reviews.all.count}} Đánh giá
-                            </div>
-
-                        </div>
-                    </a>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-        </ul>
+            </ul>
         {% else %}
-        <h1>No results found for "{{ query }}"</h1>
+            <h1>No results found for "{{ query }}"</h1>
         {% endif %}
     </div>
 </div>
@@ -313,7 +340,5 @@
         });
     });
 </script>
-
-
 
 {% endblock %}
