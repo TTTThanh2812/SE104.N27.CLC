@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import Avg
 from boardgame.forms import BoardgameReviewForm
 from django.core.paginator import Paginator
-from django.db.models import F, DecimalField, ExpressionWrapper
 
 from .models import Boardgame, BoardgameReviews, Category, Version, Author, Producer
 # Create your views here.
@@ -91,8 +90,9 @@ def filter_boardgames(boardgames, filters):
     play_time = filters.get('play_time')
     author = filters.get('author')
     producer = filters.get('producer')
-    publication_year = filters.get('publication_year')
-    rental_price = filters.get('rental_price')
+    publication_year = filters.get('publication_year')  
+    rental_price_min = filters.get('rental_price_min')
+    rental_price_max = filters.get('rental_price_max')
     rating = filters.get('rating')
 
     if category:
@@ -105,11 +105,8 @@ def filter_boardgames(boardgames, filters):
         min_people, max_people = people.split(',')
         boardgames = boardgames.filter(people__gte=min_people, people__lte=max_people)
     if play_time:
-        play_time_parts = play_time.split('-')
-        if len(play_time_parts) == 2:
-            min_play_time = int(play_time_parts[0])
-            max_play_time = int(play_time_parts[1])
-            boardgames = boardgames.filter(play_time__gte=min_play_time, play_time__lte=max_play_time)
+        min_play_time, max_play_time = play_time.split(',')
+        boardgames = boardgames.filter(play_time__gte=min_play_time, play_time__lte=max_play_time)
     if author:
         boardgames = boardgames.filter(author__title=author)    
     if producer:
@@ -117,24 +114,21 @@ def filter_boardgames(boardgames, filters):
     if publication_year:
         min_publication_year, max_publication_year = publication_year.split(',')
         boardgames = boardgames.filter(publication_year__gte=min_publication_year, publication_year__lte=max_publication_year)
-    if rental_price:
-        min_price, max_price = rental_price.split('-')
-
-        # Tính toán giá thuê
-        rental_price_min = ExpressionWrapper(F('price') * 0.1, output_field=DecimalField())
-        rental_price_max = ExpressionWrapper(F('price') * 0.1, output_field=DecimalField())
-
-        # Lọc theo giá thuê
-        boardgames = boardgames.annotate(rental_price_min=rental_price_min, rental_price_max=rental_price_max)
-        boardgames = boardgames.filter(rental_price_min__gte=min_price, rental_price_max__lte=max_price)
+    if rental_price_min and rental_price_max:
+        min_price = float(rental_price_min) * 10
+        max_price = float(rental_price_max) * 10
+        boardgames = boardgames.filter(price__gte=min_price, price__lte=max_price)
     if rating:
         boardgames = boardgames.filter(reviews__rating=int(rating))
     return boardgames
 
 def search_view(request):
     if request.method == 'GET':
+        # Tìm kiếm boardgame
         query = request.GET.get('query', '')
-        sort_by = request.GET.get('sort_by', '')
+        boardgames = search_boardgames(query)
+
+        # Lọc boardgame 
         filters = {
             'category': request.GET.get('category', None),
             'version': request.GET.get('version', None),
@@ -144,18 +138,10 @@ def search_view(request):
             'author': request.GET.get('author', None),
             'producer': request.GET.get('producer', None),
             'publication_year': request.GET.get('publication_year', None),
-            'rental_price': request.GET.get('rental_price', None),
+            'rental_price_min': request.GET.get('rental_price_min', None),
+            'rental_price_max': request.GET.get('rental_price_max', None),
             'rating': request.GET.get('rating', None),
         }
-
-        # Tìm kiếm boardgame
-        boardgames = search_boardgames(query)
-
-        # Sắp xếp boardgame
-        if sort_by:
-            boardgames = sort_boardgames(boardgames, sort_by)
-
-        # Lọc boardgame 
         boardgames = filter_boardgames(boardgames, filters)
         categorys = Category.objects.all()
         versions = Version.objects.all()
@@ -163,16 +149,21 @@ def search_view(request):
         authors = Author.objects.all()
         producers = Producer.objects.all()
 
+        # Sắp xếp boardgame
+        sort_by = request.GET.get('sort_by', '')
+        if sort_by:
+            boardgames = sort_boardgames(boardgames, sort_by)
+
         context = {
             'boardgames': boardgames,
             'query': query,
-            'sort_by': sort_by,
             'filters': filters,
             'categorys': categorys,
             'versions': versions,
             'age_rating_choices': age_rating_choices,
             'authors': authors,
             'producers': producers,
+            'sort_by': sort_by,
         }
 
         return render(request, 'boardgame/search.html', context)

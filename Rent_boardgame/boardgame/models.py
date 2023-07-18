@@ -114,6 +114,13 @@ class  Boardgame(models.Model):
     # Giá thuê
     def rental_price(self):
         return float(self.price) * 0.1
+    @property
+    def rental_price_min(self):
+        return self.price * 0.1
+
+    @property
+    def rental_price_max(self):
+        return self.price * 0.1
     
     def get_average_rating(self):
         return self.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
