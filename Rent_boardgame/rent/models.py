@@ -5,6 +5,21 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from notifications.signals import notify
 
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    boardgame = models.ForeignKey('boardgame.Boardgame', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    rental_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    total_rental_price = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+
+    def save(self, *args, **kwargs):
+        self.rental_price = self.boardgame.rental_price()
+        self.total_rental_price = self.rental_price * self.quantity
+        super(Cart, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.boardgame.title}"
+
 ORDER_STATUS_CHOICES = [
     ('pending', 'Pending'),
     ('accepted', 'Accepted'),

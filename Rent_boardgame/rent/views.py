@@ -1,8 +1,57 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from rent.models import RentBoardgame
+from rent.models import RentBoardgame, Cart
 from rent.forms import RentBoardgameForm
 from boardgame.models import Boardgame
 from django.contrib import messages
+
+def add_to_cart(request, bgid):
+    boardgame = get_object_or_404(Boardgame, bgid=bgid)
+
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('userauths:sign_in')
+        
+        cart_item, created = Cart.objects.get_or_create(user=request.user, boardgame=boardgame)
+        
+        if created:
+            cart_item.quantity = 1
+        else:
+            cart_item.quantity += 1
+        cart_item.total_rental_price = cart_item.boardgame.rental_price 
+        cart_item.save()
+        return redirect('rent:cart')
+    
+    return redirect('boardgame:detail', bgid=bgid)
+
+def update_cart_item(request, cart_item_id):
+    cart_item = Cart.objects.get(id=cart_item_id)
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'increase':
+            cart_item.quantity += 1
+        elif action == 'decrease':
+            cart_item.quantity -= 1
+            if cart_item.quantity < 1:
+                cart_item.quantity = 1
+
+        cart_item.total_rental_price = cart_item.rental_price * cart_item.quantity
+        cart_item.save()
+
+    return redirect('rent:cart')
+
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(Cart, id=cart_item_id)
+    cart_item.delete()
+    return redirect('rent:cart')
+
+def view_cart(request):
+    user = request.user
+    cart_items = Cart.objects.filter(user=user)
+    context = {
+        'cart_items': cart_items
+    }
+    return render(request, 'rent/cart.html', context)
 
 def request_rent_boardgame(request, bgid):
     boardgame = get_object_or_404(Boardgame, bgid=bgid)
