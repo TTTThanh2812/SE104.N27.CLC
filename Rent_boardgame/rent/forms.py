@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import formset_factory
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from boardgame.models import BoardgameNumbers
@@ -25,6 +26,14 @@ class RentBoardgameForm(forms.Form):
                 raise ValidationError(_('Not enough boardgame numbers in stock.'))
 
         return quantity
+
+class RentBoardgameCartForm(forms.Form):
+    start_date = forms.DateField(label='Start Date', widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(label='End Date', widget=forms.DateInput(attrs={'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        self.boardgame_number = kwargs.pop('boardgame_number', None)
+        super().__init__(*args, **kwargs)
 
 class RentBoardgameItemForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea, required=False)
