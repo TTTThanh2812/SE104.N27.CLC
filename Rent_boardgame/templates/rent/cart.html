@@ -8,67 +8,70 @@
     </div>
     <div class="ml-4 grid justify-items-center">
         {% if cart_items %}
-            {% for cart_item in cart_items %}
-                <div class="mb-10 w-3/5 h-48 rounded-lg border border-gray border-l-4 border-black grid grid-cols-3">
-                    <div class="flex items-center">
-                        <input type="checkbox" class="ml-12 w-6 h-6 checked:bg-[#0FB3AF] indeterminate:bg-[#0FB3AF]" name="boardgames[]" value="{{ cart_item.boardgame.id }}">
-                        <div
-                            class="ml-14  self-center w-32 md:w-32 h-32 bg-white grid place-items-center border border-[#D9D9D9] rounded">
-                            <img src="{{ cart_item.boardgame.image.url }}" alt="" class="rounded w-full h-full" />
-                        </div>
-                    </div>
-                    <div class="self-center">
-                        <div class="w-full md:w-2/3 bg-white flex flex-col space-y-1">
-                            <p class="text-black md:text-xl text-4xl font-bold font-[Open Sans]">{{ cart_item.boardgame.title }}</p>
-                            <p class="text-black md:text-md text-xl font-regular font-[Open Sans]">{{ cart_item.total_rental_price }}00 VNĐ/ngày</p>
-                            <p class="mt-8 text-black md:text-md text-md font-regular font-[Open Sans]">Số lượng:</p>
-                            <div class="flex items-center">
-                                <form action="{% url 'rent:update_cart_item' cart_item_id=cart_item.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="action" value="decrease">
-                                    <button type="submit" class='fas fa-minus-square'></button>
-                                </form>
-                                <span class="mx-2 text-black md:text-md text-md font-regular font-[Open Sans]">{{ cart_item.quantity }}</span>
-                                <form action="{% url 'rent:update_cart_item' cart_item_id=cart_item.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="action" value="increase">
-                                    <button type="submit" class='fas fa-plus-square'></button>
-                                </form>
+            <form action="{% url 'rent:request_rent_cart' %}" method="POST">
+                {% csrf_token %}
+                {% for cart_item in cart_items %}
+                    <div class="mb-10 h-48 rounded-lg border border-gray border-l-4 border-black grid grid-cols-3">
+                        <div class="flex items-center">
+                            <input type="checkbox" class="ml-12 w-6 h-6 checked:bg-[#0FB3AF] indeterminate:bg-[#0FB3AF]" name="boardgames[]" value="{{ cart_item.id }}">
+                            <div
+                                class="ml-14 self-center w-32 md:w-32 h-32 bg-white grid place-items-center border border-[#D9D9D9] rounded">
+                                <img src="{{ cart_item.boardgame.image.url }}" alt="" class="rounded w-full h-full">
                             </div>
                         </div>
+                        <div class="self-center">
+                            <div class="w-full md:w-2/3 bg-white flex flex-col space-y-1">
+                                <p class="text-black md:text-xl text-4xl font-bold font-[Open Sans]">{{ cart_item.boardgame.title }}</p>
+                                <p class="text-black md:text-md text-xl font-regular font-[Open Sans]">{{ cart_item.total_rental_price }}00 VNĐ/ngày</p>
+                                <p class="mt-8 text-black md:text-md text-md font-regular font-[Open Sans]">Số lượng:</p>
+                                <div class="flex items-center">
+                                    <button type="button" class="fas fa-minus-square" onclick="updateCartItem('{{ cart_item.id }}', 'decrease')"></button>
+                                    <span class="mx-2 text-black md:text-md text-md font-regular font-[Open Sans]">{{ cart_item.quantity }}</span>
+                                    <button type="button" class="fas fa-plus-square" onclick="updateCartItem('{{ cart_item.id }}', 'increase')"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ml-36 w-16 h-16 self-center stroke-[#C32F2F] hover:stroke-[#B30F0F]">
+                            <button type="submit" class='fas fa-trash-alt' style='font-size:48px;color: red' 
+                                formaction="{% url 'rent:remove_from_cart' cart_item_id=cart_item.id %}" formmethod="POST"></button>
+                        </div>
                     </div>
-                    <div class="ml-36 w-16 h-16 self-center stroke-[#C32F2F] hover:stroke-[#B30F0F]">
-                        <form action="{% url 'rent:remove_from_cart' cart_item_id=cart_item.id %}" method="POST">
-                            {% csrf_token %}
-                            <button type="submit" class='fas fa-trash-alt' style='font-size:48px;color: red'></button>
-                        </form>
-                    </div>
+                {% endfor %}
+                <div class="mb-14 mt-2 flex justify-around flex items-center">
+                    <div class="flex justify-center flex items-center">
+                        <input type="checkbox" class="ml-12 w-6 h-6 checked:bg-[#0FB3AF] indeterminate:bg-[#0FB3AF]" id="select-all" onchange="selectAllBoardgames()">
+                        <label for="select-all" class="ml-2 text-black md:text-md text-xl font-regular font-[Open Sans]">Tất cả</label>
+                    </div>       
+                    <button type="submit"
+                        class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-xl text-white h-12">
+                        Thuê
+                    </button>
                 </div>
-            {% endfor %}
+            </form>
         {% else %}
             <p>Giỏ hàng của bạn đang trống.</p>
         {% endif %}
     </div>
-    <div class="mb-14 mt-2 flex justify-around flex items-center">
-        <div class="flex justify-center flex items-center">
-            <input type="checkbox" class="ml-12 w-6 h-6 checked:bg-[#0FB3AF] indeterminate:bg-[#0FB3AF]" id="select-all" onchange="selectAllBoardgames()">
-            <label for="select-all" class="ml-2 text-black md:text-md text-xl font-regular font-[Open Sans]">Tất cả</label>
-        </div> 
-        <form action="#" method="POST">
-            {% csrf_token %}        
-            <button type="submit"
-                class="bg-[#0FB3AF] hover:bg-[#0FB3AFCC] flex justify-center flex items-center rounded-md px-3 text-xl text-white h-12">
-                Thuê
-            </button>
-        </form>
-    </div>
     <script>
         function selectAllBoardgames() {
-          var selectAllCheckbox = document.getElementById('select-all');
-          var boardgameCheckboxes = document.getElementsByName('boardgames[]');
-          for (var i = 0; i < boardgameCheckboxes.length; i++) {
-            boardgameCheckboxes[i].checked = selectAllCheckbox.checked;
-          }
+            var selectAllCheckbox = document.getElementById('select-all');
+            var boardgameCheckboxes = document.getElementsByName('boardgames[]');
+            for (var i = 0; i < boardgameCheckboxes.length; i++) {
+              boardgameCheckboxes[i].checked = selectAllCheckbox.checked;
+            }
         }
-        </script>
-{% endblock %}
+        function updateCartItem(cartItemId, action) {
+            $.ajax({
+                url: "{% url 'rent:update_cart_item' cart_item_id='__cart_item_id__' %}".replace('__cart_item_id__', cartItemId),
+                method: "POST",
+                data: { action: action, csrfmiddlewaretoken: '{{ csrf_token }}' },
+                success: function () {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(error.responseText);
+                }
+            });
+        }
+    </script>  
+{% endblock %} 

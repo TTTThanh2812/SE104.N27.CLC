@@ -130,21 +130,21 @@ def request_rent_cart(request):
                 start_date = form.cleaned_data['start_date']
                 end_date = form.cleaned_data['end_date']
                 quantity = 0
-
+                rent_boardgame = RentBoardgame.objects.create(renter=request.user, start_date=start_date, end_date=end_date)
                 for cart_item in cart_items:
                     boardgame = cart_item.boardgame
                     if boardgame.boardgame_status == 'out_of_stock':
                         messages.error(request, 'This boardgame is currently out of stock.')
+                        rent_boardgame.delete()
                         return redirect('rent:cart')
 
                     quantity += cart_item.quantity
                     if cart_item.quantity > boardgame.in_stock:
                         messages.error(request, 'Not enough boardgames available for rent.')
+                        rent_boardgame.delete()
                         return redirect('rent:cart')
                     
                     if request.user.is_authenticated:
-                        rent_boardgame = RentBoardgame.objects.create(renter=request.user, start_date=start_date, end_date=end_date)
-
                         for _ in range(cart_item.quantity):
                             boardgame_number = BoardgameNumbers.objects.filter(boardgame=boardgame, boardgame_number_status='in_stock').first()
                             if not boardgame_number:
@@ -167,7 +167,7 @@ def request_rent_cart(request):
                 rent_boardgame.end_date = end_date
                 rent_boardgame.save()
 
-                messages.success(request, f'Successfully rented boardgame(s).')
+                messages.success(request, f'Successfully rented {quantity} boardgame(s).')
                 return redirect('rent:rent_success')
             else:
                 # Invalid formset
@@ -183,18 +183,6 @@ def request_rent_cart(request):
         'cart_items': cart_items
     }
     return render(request, 'rent/request_rent_cart.html', context)
-# def request_rent_cart(request):
-#     if request.method == 'POST':
-#         selected_boardgames = request.POST.getlist('boardgames[]')
-#         cart_items = Cart.objects.filter(pk__in=selected_boardgames)
-#         form = RentBoardgameForm(request.POST)
-#         context = {
-#             'form': form,
-#             'cart_items': cart_items
-#         }
-#         return render(request, 'rent/request_rent_cart.html', context)
-#     else:
-#         return redirect('rent:cart')
 
 def rent_success(request):
     rental_requests = RentBoardgame.objects.filter(renter=request.user)
