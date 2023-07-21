@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path, include
-from myadmin.admin import myadmin_site
+# from myadmin.admin import myadmin_site
 
 
 urlpatterns = [
@@ -28,7 +28,7 @@ urlpatterns = [
     path('boardgames/', include('boardgame.urls')),
     path("user/", include("userauths.urls")),
     path("rent/", include("rent.urls")),
-    path('myadmin/', myadmin_site.urls),
+    # path('myadmin/', myadmin_site.urls),
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

@@ -6,7 +6,6 @@ from userauths.models import User
 from django.db.models import Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from rent.models import RentBoardgame
 # Create your models here.
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
@@ -56,7 +55,7 @@ class Producer(models.Model):
         return self.title
 
 
-class  Boardgame(models.Model):
+class Boardgame(models.Model):
     AGE_RATINGS = (
         ('G', 'Phổ biến'),
         ('7+', 'Trên 7 tuổi'),
@@ -135,6 +134,9 @@ class  Boardgame(models.Model):
             average_stars = int(self.get_average_rating())
             return range(0,5-average_stars)
     
+    def save(self, *args, **kwargs):
+        super(Boardgame, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.title
     
@@ -164,6 +166,9 @@ class BoardgameNumbers(models.Model):
 
     class Meta:
         verbose_name_plural = "Boardgame Numbers"
+
+    def save(self, *args, **kwargs):
+        super(BoardgameNumbers, self).save(*args, **kwargs)
 
 @receiver(post_save, sender=BoardgameNumbers)
 def update_boardgame_stats(sender, instance, **kwargs):

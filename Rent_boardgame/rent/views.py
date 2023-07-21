@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from rent.models import RentBoardgame, Cart
+from rent.models import RentBoardgame, RentBoardgameItem, Cart
 from rent.forms import RentBoardgameForm
-from boardgame.models import Boardgame
+from boardgame.models import Boardgame, BoardgameNumbers
 from django.contrib import messages
+from decimal import Decimal
 
 def add_to_cart(request, bgid):
     boardgame = get_object_or_404(Boardgame, bgid=bgid)
@@ -10,18 +11,19 @@ def add_to_cart(request, bgid):
     if request.method == 'POST':
         if not request.user.is_authenticated:
             return redirect('userauths:sign_in')
-        
+
         cart_item, created = Cart.objects.get_or_create(user=request.user, boardgame=boardgame)
-        
+
         if created:
             cart_item.quantity = 1
         else:
             cart_item.quantity += 1
-        cart_item.total_rental_price = cart_item.boardgame.rental_price 
+
+        cart_item.total_rental_price = cart_item.boardgame.rental_price
         cart_item.save()
         return redirect('rent:cart')
-    
-    return redirect('boardgame:detail', bgid=bgid)
+
+    return redirect('boardgame:detail', boardgame.bgid)
 
 def update_cart_item(request, cart_item_id):
     cart_item = Cart.objects.get(id=cart_item_id)
@@ -55,60 +57,89 @@ def view_cart(request):
 
 def request_rent_boardgame(request, bgid):
     boardgame = get_object_or_404(Boardgame, bgid=bgid)
+
     if request.method == 'POST':
-        rent_form = RentBoardgameForm(request.POST)
+        rent_form = RentBoardgameForm(request.POST)  # Pass None for direct rental
         if rent_form.is_valid():
-            rent_request = rent_form.save(commit=False)
-            rent_request.renter = request.user
-            boardgame_number = boardgame.boardgame_numbers.filter(boardgame_number_status='in_stock').first()
-            rent_request.boardgame_numbers = boardgame_number
-            
-            start_date = rent_request.start_date
-            end_date = rent_request.end_date
-            rental_days = (end_date - start_date).days
-            # Tính toán giá thuê, giá cọc, tổng tiền phải trả
-            rental_price_per_day = float(boardgame_number.boardgame.price) * 0.1
-            rental_price = rental_price_per_day * rental_days
-            # rental_price = rent_request.calculate_rental_price()
-            deposit_price = rental_price * 0.5
-            total_price = rental_price + deposit_price
+            start_date = rent_form.cleaned_data['start_date']
+            end_date = rent_form.cleaned_data['end_date']
+            quantity = rent_form.cleaned_data['quantity']
 
-            rent_request.rental_price = rental_price
-            rent_request.deposit_price = deposit_price
-            rent_request.total_price = total_price
-
-            # Kiểm tra xem người dùng đang yêu cầu thuê boardgame nào khác hay không
-            has_pending_order = RentBoardgame.objects.filter(renter=request.user, order_status='pending').exists()
-            if has_pending_order:
-                messages.error(request, "Bạn đã có một đơn hàng chờ xử lý. Vui lòng hoàn thành hoặc hủy đơn hàng trước khi yêu cầu thuê boardgame khác.", extra_tags='bg-red-500 text-white')
+            # Check if the boardgame is available for rent
+            if boardgame.boardgame_status == 'out_of_stock':
+                messages.error(request, 'This boardgame is currently out of stock.')
                 return redirect('boardgame:detail', boardgame.bgid)
-            else:
-                # Kiểm tra điều kiện thuê
-                previous_rent = RentBoardgame.objects.filter(renter=request.user).order_by('-end_date').last()
-                if previous_rent:
-                    if previous_rent.end_date == rent_request.start_date:
-                        # Ngày kết thúc boardgame trước đó trùng với ngày bắt đầu boardgame yêu cầu
-                        # Gửi yêu cầu thuê thành công
-                        rent_request.save()
-                        messages.success(request, "Gửi yêu cầu thuê thành công.", extra_tags='bg-green-500 text-white')
-                        return redirect('rent:rent_success')
-                    elif previous_rent.end_date > rent_request.start_date:
-                        # Ngày kết thúc boardgame trước đó lớn hơn ngày bắt đầu boardgame yêu cầu
-                        # Xuất thông báo yêu cầu thuê không thành công
-                        messages.error(request, f"Bạn đang thuê 1 boardgame có này kết thúc {previous_rent.end_date}, hãy chọn lại ngày bắt đầu ", extra_tags='bg-red-500 text-white')
-                        return redirect('rent:request_rent_boardgame', bgid=bgid)
-                rent_request.save()
-                messages.success(request, "Gửi yêu cầu thuê thành công.", extra_tags='bg-green-500 text-white')
+
+            if quantity > boardgame.in_stock:
+                messages.error(request, 'Not enough boardgames available for rent.')
+                return redirect('boardgame:detail', boardgame.bgid)
+
+            if request.user.is_authenticated:
+                # Rent the boardgame directly
+                rent_boardgame = RentBoardgame.objects.create(renter=request.user, start_date=start_date, end_date=end_date)
+
+                for _ in range(quantity):
+                    boardgame_number = BoardgameNumbers.objects.filter(boardgame=boardgame, boardgame_number_status='in_stock').first()
+                    if not boardgame_number:
+                        messages.error(request, 'Not enough boardgames available for rent.')
+                        return redirect('boardgame:detail', boardgame.bgid)
+
+                    rent_item = RentBoardgameItem.objects.create(rent_boardgame=rent_boardgame, boardgame_number=boardgame_number)
+                    rent_item.rental_price = boardgame_number.boardgame.rental_price()
+                    rent_item.save()
+
+                    boardgame_number.boardgame.in_stock -= 1
+                    boardgame_number.boardgame.order += 1
+                    boardgame_number.boardgame_number_status = 'order'
+                    boardgame_number.boardgame.total = boardgame_number.boardgame.in_stock + boardgame_number.boardgame.order + boardgame_number.boardgame.rental
+                    boardgame_number.boardgame.save()
+                    boardgame_number.save()
+
+                rent_boardgame.start_date = start_date
+                rent_boardgame.end_date = end_date
+                rent_boardgame.save()
+                
+
+                messages.success(request, f'Successfully rented {quantity} boardgame(s).')
                 return redirect('rent:rent_success')
     else:
         rent_form = RentBoardgameForm()
         print(rent_form.errors)
 
     context = {
-        'rent_form': rent_form,
         'boardgame': boardgame,
+        'rent_form': rent_form,
     }
-    return render(request, "rent/request_rent_boardgame.html", context)
+    return render(request, 'rent/request_rent_boardgame.html', context)
+
+# @login_required
+# def request_rent_cart(request):
+#     if request.method == 'POST':
+#         form = RentBoardgameForm(request.POST)
+#         if form.is_valid():
+#             start_date = form.cleaned_data['start_date']
+#             end_date = form.cleaned_data['end_date']
+
+#             rent_boardgame = RentBoardgame.objects.create(renter=request.user, start_date=start_date, end_date=end_date)
+
+#             cart_items = Cart.objects.filter(user=request.user)
+
+#             for cart_item in cart_items:
+#                 RentBoardgameItem.objects.create(rent_boardgame=rent_boardgame, boardgame_number=cart_item.boardgame, quantity=cart_item.quantity)
+
+#             # Clear the cart after successful rental
+#             cart_items.delete()
+
+#             return redirect('rent:cart')
+#     else:
+#         form = RentBoardgameForm()
+
+#     cart_items = Cart.objects.filter(user=request.user)
+#     context = {
+#         'form': form,
+#         'cart_items': cart_items
+#     }
+#     return render(request, 'rent/request_rent_cart.html', context)
 
 def rent_success(request):
     rental_requests = RentBoardgame.objects.filter(renter=request.user)
