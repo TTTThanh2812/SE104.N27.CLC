@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse
+from notifications.models import Notification
 
 from boardgame.models import Category, Boardgame, Version, Author, Producer
 from userauths.models import User
@@ -106,3 +107,24 @@ def edit_infomation(request):
         'form': form
     }
     return render(request, 'core/edit_infomation.html', context)
+
+def leaderboard(request):
+    top_boardgames = Boardgame.objects.annotate(avg_rating=models.Avg('reviews__rating')).order_by('-avg_rating')
+    for t_boardgame in top_boardgames:
+        most_recent_review = t_boardgame.reviews.order_by('-date').first()
+        t_boardgame.most_recent_comment = most_recent_review
+
+    return render(request, 'core/leaderboard.html', {
+        'top_boardgames': top_boardgames,
+    })
+
+def notification(request):
+    # unread_notifications = Notification.objects.filter(recipient=request.user, read=False)
+
+    # unread_notifications.update(read=True)
+
+    context = {
+        # 'unread_notifications': unread_notifications,
+    }
+
+    return render(request, 'core/notification.html', context)

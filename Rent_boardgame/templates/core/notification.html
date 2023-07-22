@@ -1,30 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=My+Soul&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./test.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./Tailwind/build/tailwind.css">
-</head>
-<body>
+{% extends 'core/base.html' %}
+
+{% block title %}{{ boardgame.title }}{% endblock %}
+
+{% block content %}
     <div class=" grid justify-items-center pb-32 pt-16 ">
-        <div id="overlay" class="fixed z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div>
-        <div id="dialog" class="fixed z-50 bg-white rounded-md py-6 drop-shadow-lg">
-            <div class="grid justify-items-end px-4">
+        {% comment %} <div id="overlay" class="fixed z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60"></div> {% endcomment %}
+        {% comment %} <div id="dialog" class="fixed z-50 bg-white rounded-md py-6 drop-shadow-lg"> {% endcomment %}
+            {% comment %} <div class="grid justify-items-end px-4">
                 <button type="button" class="bg-white rounded-md px-1 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 active:scale-75 transition-transform duration-700 hover:-translate-y-1 hover:scale-110">
                     <span class="sr-only">Close menu</span>
                     <i class="fa fa-times" aria-hidden="true"></i>
                   </button>
-            </div>
+            </div> {% endcomment %}
             <div class="grid justify-items-center items-center w-full px-16 pb-2">
                 <h3 class="font-bold text-xl sm:text-3xl text-[#3C3C3B]">Thông báo</h3>
             </div>
@@ -69,8 +56,8 @@
             </div>
             <div class="flex justify-center w-full">
                 <button id="clear" class="inline-flex text-sm bg-white justify-self-center px-4 py-2 w-32 text-red-500 items-center rounded font-medium
-shadow transform active:scale-75 transition-transform duration-700 hover:bg-red-500
-hover:text-white hover:-translate-y-1 hover:scale-110">
+                        shadow transform active:scale-75 transition-transform duration-700 hover:bg-red-500
+                        hover:text-white hover:-translate-y-1 hover:scale-110">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 ml-1 sm:mr-4" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -79,7 +66,6 @@ hover:text-white hover:-translate-y-1 hover:scale-110">
                     Clear all
                 </button>
             </div>
-        </div>
+        {% comment %} </div> {% endcomment %}
     </div>
-</body>
-</html>
+{% endblock %}

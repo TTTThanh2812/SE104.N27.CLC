@@ -32,13 +32,13 @@
             <div class="ml-48 space-x-6 w-1/3">
                 <a href="/" class="text-lg font-semibold hover:text-teal-500">Trang chủ</a> <!-- click trả về trang chủ -->
                 <a href="{% url "core:allCategories" %}" class="text-lg font-semibold hover:text-teal-500">Thể loại</a> <!-- click đi tới thể loại -->
-                <a href="#" class="text-lg font-semibold hover:text-teal-500">Xếp hạng</a> <!-- click đi tới xếp hạng -->
+                <a href="{% url "core:leaderboard" %}" class="text-lg font-semibold hover:text-teal-500">Xếp hạng</a> <!-- click đi tới xếp hạng -->
             </div>
                 
             <div class="space-x-6">
                 <button type="button"
                     class=" text-black-400 hover:text-gray-500 rounded-full focus:ring-offset-black-800">
-                    <a href="#" class="fa fa-bell fa-lg"></a>
+                    <a href="{% url "core:notification" %}" class="fa fa-bell fa-lg"></a>
                 </button>
                 <button type="button"
                     class=" text-black-400 hover:text-gray-500 rounded-full focus:ring-offset-black-800">

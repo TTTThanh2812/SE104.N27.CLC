@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'userauths',
     'rent',
     'myadmin.apps.MyAdminConfig',
-    # 'notifications',
+    'notifications',
 ]
 
 MIDDLEWARE = [

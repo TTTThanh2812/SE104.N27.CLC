@@ -47,6 +47,23 @@ class RentBoardgame(models.Model):
 
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
     rental_status = models.CharField(max_length=20, choices=RENTAL_STATUS_CHOICES, blank=True, null=True)
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[('not_paid', 'Not Paid'), ('paid', 'Paid')],
+        default='not_paid',
+    )
+    deposit_refund_status = models.CharField(
+        max_length=20,
+        choices=[('not_refunded', 'Not Refunded'), ('refunded', 'Refunded')],
+        default='not_refunded',
+    )
+    description = models.TextField(null=True, blank=True, default="This is notes on orders")
+
+    def is_due_for_payment(self):
+        return self.end_date < timezone.now().date()
+
+    def is_deposit_refunded(self):
+        return self.deposit_refund_status == 'refunded'
 
     def update_rental_status(self):
         now = timezone.now().date()
@@ -123,6 +140,10 @@ class RentBoardgame(models.Model):
                 self.rid = 'rent01'
         self.update_boardgame_numbers()
         self.update_rental_status()
+        if self.is_due_for_payment() and self.payment_status != 'paid':
+            self.payment_status = 'not_paid'
+        if self.is_deposit_refunded() and self.deposit_refund_status != 'refunded':
+            self.deposit_refund_status = 'not_refunded'
         super(RentBoardgame, self).save(*args, **kwargs)
 
         self.rental_price = sum(item.rental_price for item in self.items.all())

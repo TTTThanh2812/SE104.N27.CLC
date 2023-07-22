@@ -129,10 +129,24 @@ class RentBoardgameItemInline(admin.TabularInline):
     model = RentBoardgameItem
     form = RentBoardgameItemForm
     formset = RentBoardgameItemInlineFormSet
-    extra = 1
+    extra = 0
+    # fields = ['boardgame_number__boardgame', 'boardgame_number', 'quantity', 'rental_price', 'description']
+    fieldsets = [
+        ('Boardgame Number Details', {
+            'fields': ['get_boardgame', 'boardgame_number', 'quantity', 'rental_price', 'description'],  # Hiển thị trường boardgame_number, description và boardgame_number.boardgame
+        }),
+        # Thêm các trường khác của RentBoardgameItem tùy ý ở đây
+    ]
+    readonly_fields = ['get_boardgame', 'boardgame_number', 'quantity', 'rental_price']
+
+    def get_boardgame(self, obj):
+        return obj.boardgame_number.boardgame if obj.boardgame_number else None
+    get_boardgame.short_description = 'Boardgame' 
 
 class RentBoardgameAdmin(admin.ModelAdmin):
     inlines = [RentBoardgameItemInline]
+    list_display = ['renter', 'rid', 'start_date', 'end_date', 'order_status', 'rental_status', 'payment_status','deposit_refund_status', 'description']
+    list_filter = ['renter', 'order_status', 'rental_status']
 
     def update_boardgame_numbers(self, obj):
         # print('update_boardgame_numbers')
@@ -168,7 +182,8 @@ class RentBoardgameAdmin(admin.ModelAdmin):
     
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email']
+    list_display = ['user_id', 'username', 'phone_number', 'email']
+    list_filter = ['user_id', 'username']
 
 # class GlobalSearchAdmin(admin.AdminSite):
 #     def get_search_results(self, request, queryset, search_term):
