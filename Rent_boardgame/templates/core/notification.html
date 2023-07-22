@@ -68,4 +68,16 @@
             </div>
         {% comment %} </div> {% endcomment %}
     </div>
+    <h1>Notifications</h1>
+    {% if notifications %}
+        <ul>
+            {% for notification in notifications %}
+                <li>
+                    <strong>{{ notification.actor }}:</strong> {{ notification.description }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No new notifications.</p>
+    {% endif %}
 {% endblock %}

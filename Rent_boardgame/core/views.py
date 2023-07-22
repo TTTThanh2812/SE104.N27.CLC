@@ -118,13 +118,13 @@ def leaderboard(request):
         'top_boardgames': top_boardgames,
     })
 
+@login_required
 def notification(request):
-    # unread_notifications = Notification.objects.filter(recipient=request.user, read=False)
-
-    # unread_notifications.update(read=True)
+    user = request.user
+    notifications = Notification.objects.filter(recipient=user, unread=True)
 
     context = {
-        # 'unread_notifications': unread_notifications,
+        'notifications': notifications
     }
 
     return render(request, 'core/notification.html', context)

@@ -41,7 +41,7 @@ class BoardgameAdmin(admin.ModelAdmin):
     inlines = [BoardgameImagesAdmin, BoardgameNumbersAdmin]
     list_display = ['title', 'category', 'version', 'boardgame_image', 'price', 'boardgame_status', 'in_stock', 'order', 'rental', 'total']
     list_filter = ['title', 'category', 'version', 'boardgame_status']
-    # search_fields = ['title','category', 'version', 'boardgame_status']
+    search_fields = ['title','category', 'version', 'boardgame_status']
     ordering = ['price', 'in_stock', 'order', 'rental', 'total']
     fieldsets = [
         ('Boardgame Information', {

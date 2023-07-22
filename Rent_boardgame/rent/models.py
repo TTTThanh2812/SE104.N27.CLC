@@ -3,7 +3,7 @@ from userauths.models import User
 from django.utils import timezone
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
-from notifications.signals import notify
+from notifications.models import Notification
 from boardgame.models import BoardgameNumbers
 
 class Cart(models.Model):
@@ -69,6 +69,22 @@ class RentBoardgame(models.Model):
         now = timezone.now().date()
         if self.rental_status == 'active' and now > self.end_date:
             self.rental_status = 'expired'
+            self.send_rental_expired_notification()
+        if self.rental_status == 'expired':
+            self.send_rental_expired_notification()
+
+    def send_rental_expired_notification(self):
+        user = self.renter
+        if user:
+            boardgame_titles = ', '.join([item.boardgame_number.boardgame.title for item in self.items.all()])
+            Notification.objects.create(
+                recipient=user,
+                verb='Rental Expired',
+                target=self,
+                description=f'Your rental for boardgame(s) {boardgame_titles} has expired.',
+                level='warning',
+                actor = User.objects.filter(is_staff=True).first(),
+            )
 
     def update_boardgame_numbers(self):
         if self.order_status == 'canceled':
